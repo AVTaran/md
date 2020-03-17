@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<sw_stocklocation>
+			<version>0.1.0</version>
+		</sw_stocklocation>
+	</modules>
+
+	<global>
+		<helpers>
+			<sw_stocklocation>
+				<class>Sw_StockLocation_Helper</class>
+			</sw_stocklocation>
+		</helpers>
+		<models>
+			<sw_stocklocation>
+				<class>Sw_StockLocation_Model</class>
+			</sw_stocklocation>
+		</models>
+		<events>
+			<catalog_product_save_after>
+				<observers>
+					<sw_stocklocation>
+						<class>sw_stocklocation/observer</class>
+						<method>logUpdate</method>
+						<type>singleton</type>
+					</sw_stocklocation>
+				</observers>
+			</catalog_product_save_after>
+		</events>
+	</global>
+
+	<frontend>
+		<routers>
+			<stocklocation>
+				<use>standard</use>
+				<args>
+					<module>Sw_StockLocation</module>
+					<frontName>stocklocation</frontName>
+				</args>
+			</stocklocation>
+		</routers>
+	</frontend>
+
+	<admin>
+		<routers>
+			<adminhtml>
+				<args>
+					<modules>
+						<Sw_StockLocation after="Mage_Adminhtml">Sw_StockLocation</Sw_StockLocation>
+					</modules>
+				</args>
+			</adminhtml>
+		</routers>
+	</admin>
+
+</config>
+
+
