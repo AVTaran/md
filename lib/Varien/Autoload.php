@@ -81,6 +81,12 @@ class Varien_Autoload
      */
     public function autoload($class)
     {
+
+
+	//print_R($class);
+	//die('d');
+
+
         if ($this->_collectClasses) {
             $this->_arrLoadedClasses[self::$_scope][] = $class;
         }

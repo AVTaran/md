@@ -318,6 +318,7 @@ class Mage_Adminhtml_Block_Page_Menu extends Mage_Adminhtml_Block_Template
     {
         $helperName      = 'adminhtml';
         $childAttributes = $child->attributes();
+
         if (isset($childAttributes['module'])) {
             $helperName  = (string)$childAttributes['module'];
         }

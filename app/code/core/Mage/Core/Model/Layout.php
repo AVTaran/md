@@ -433,12 +433,32 @@ class Mage_Core_Model_Layout extends Varien_Simplexml_Config
      */
     public function createBlock($type, $name='', array $attributes = array())
     {
+
+
+
         try {
             $block = $this->_getBlockInstance($type, $attributes);
+
+
+
         } catch (Exception $e) {
+
+
+		//if ($type == 'stocklocation/zones') {
+			//echo '<pre>'; print_r($name); echo '</pre>';
+			//echo '<pre>'; print_r($attributes); echo '</pre>';
+			//echo '<pre>';
+			//print_r($e);
+			//echo '</pre>';
+			//die(' 3 ------------');
+		//}
+
+
             Mage::logException($e);
             return false;
         }
+
+
 
         if (empty($name) || '.'===$name{0}) {
             $block->setIsAnonymous(true);
@@ -606,6 +626,7 @@ class Mage_Core_Model_Layout extends Varien_Simplexml_Config
      */
     public function helper($name)
     {
+
         $helper = Mage::helper($name);
         if (!$helper) {
             return false;

@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<layout>
+	<swstocklocation_index_index>
+		<reference name="content">
+			<block type="swstocklocation/zones" name="swIndex" template="sw_stocklocation/index.phtml" />
+		</reference>
+	</swstocklocation_index_index>
+
+	<swstocklocation_index_view>
+		<reference name="content">
+			<block type="swstocklocation/view" name="zones.content" template="sw_stocklocation/view.phtml" />
+		</reference>
+	</swstocklocation_index_view>
+
+</layout>
+
+

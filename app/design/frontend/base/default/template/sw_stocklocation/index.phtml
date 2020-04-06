@@ -1,0 +1,29 @@
+ 
+<h1>List of warehause's zones</h1>
+
+<?php
+/*
+$zones = Mage::registry('zones');
+
+
+// print_r($zones);
+
+foreach ($zones as $item) {
+	echo '<h2>'.$item['id']. ' - ' . $item['name'] . ' ('.$item['dimensions'].')</h2>';
+}
+*/
+?>
+
+
+<?php
+$zones = $this->getZonesCollection();
+$zonesViewUrl = Mage::getUrl('stocklocation/index/view');
+?>
+<?php foreach ($zones as $item): ?>
+    <h2>
+        <a href="<?php echo $zonesViewUrl; ?>?id=<?php echo $item->getId(); ?>">
+            <?php echo $item->getName(); ?>
+        </a>
+    </h2>
+<?php endforeach; ?>
+
