@@ -1,6 +1,6 @@
 <?php
 
-class sw_StockLocation_Model_Zones extends Mage_Core_Model_Abstract {
+class Sw_StockLocation_Model_Zones extends Mage_Core_Model_Abstract {
 
 	public function _construct() {
 		parent::_construct();

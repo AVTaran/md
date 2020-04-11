@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <config>
 	<modules>
-		<sw_StockLocation>
+		<Sw_StockLocation>
 			<version>0.1.0</version>
-		</sw_StockLocation>
+		</Sw_StockLocation>
 	</modules>
 
 	<frontend>
@@ -18,7 +18,7 @@
 			<swstocklocation>
 				<use>standard</use>
 				<args>
-					<module>sw_StockLocation</module>
+					<module>Sw_StockLocation</module>
 					<frontName>stocklocation</frontName>
 				</args>
 			</swstocklocation>
@@ -28,11 +28,11 @@
 	<global>
 		<models>
 			<swstocklocation>
-				<class>sw_StockLocation_Model</class>
+				<class>Sw_StockLocation_Model</class>
 				<resourceModel>swstocklocation_resource</resourceModel>
 			</swstocklocation>
 			<swstocklocation_resource>
-				<class>sw_StockLocation_Model_Resource</class>
+				<class>Sw_StockLocation_Model_Resource</class>
 				<entities>
 					<table_block>
 						<table>sw_sl_block</table>
@@ -58,20 +58,20 @@
 
 		<blocks>
 			<swstocklocation>
-				<class>sw_StockLocation_Block</class>
+				<class>Sw_StockLocation_Block</class>
 			</swstocklocation>
 		</blocks>
 
 		<helpers>
 			<swstocklocation>
-				<class>sw_StockLocation_Helper</class>
+				<class>Sw_StockLocation_Helper</class>
 			</swstocklocation>
 		</helpers>
 
 		<resources>
 			<swstocklocation_setup>
 				<setup>
-					<module>sw_StockLocation</module>
+					<module>Sw_StockLocation</module>
 				</setup>
 			</swstocklocation_setup>
 		</resources>
@@ -83,7 +83,7 @@
 			<swstocklocation_admin>
 				<use>admin</use>
 				<args>
-					<module>sw_StockLocation</module>
+					<module>Sw_StockLocation</module>
 					<frontName>swstocklocation_admin</frontName>
 				</args>
 			</swstocklocation_admin>
@@ -100,13 +100,28 @@
 					<zona>
 						<title>Zones</title>
 						<sort_order>10</sort_order>
-						<action>swstocklocation_admin/adminhtml_stocklocation/zones</action>
+						<action>swstocklocation_admin/adminhtml_zones</action>
 					</zona>
 					<block>
 						<title>Blocks</title>
 						<sort_order>20</sort_order>
-						<action>swstocklocation_admin/adminhtml_stocklocation/blocks</action>
+						<action>swstocklocation_admin/adminhtml_blocks</action>
 					</block>
+					<shelf>
+						<title>Shelfs</title>
+						<sort_order>30</sort_order>
+						<action>swstocklocation_admin/adminhtml_shelfs</action>
+					</shelf>
+					<shelf>
+						<title>Shelfs</title>
+						<sort_order>30</sort_order>
+						<action>swstocklocation_admin/adminhtml_shelfs</action>
+					</shelf>
+					<box>
+						<title>Boxes</title>
+						<sort_order>40</sort_order>
+						<action>swstocklocation_admin/adminhtml_boxes</action>
+					</box>
 				</children>
 			</swstocklocation>
 		</menu>

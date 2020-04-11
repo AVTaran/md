@@ -1,12 +1,12 @@
 <?php
 
 
-class sw_StockLocation_Block_Adminhtml_Zones_Edit_Form extends Mage_Adminhtml_Block_Widget_Form {
+class sw_StockLocation_Block_Adminhtml_Shelfs_Edit_Form extends Mage_Adminhtml_Block_Widget_Form {
 
 	protected function _prepareForm() {
 
 		$helper = Mage::helper('swstocklocation');
-		$model = Mage::registry('current_zones');
+		$model = Mage::registry('current_shelfs');
 
 		$form = new Varien_Data_Form(array(
 			'id' => 'edit_form',
@@ -19,7 +19,7 @@ class sw_StockLocation_Block_Adminhtml_Zones_Edit_Form extends Mage_Adminhtml_Bl
 
 		$this->setForm($form);
 
-		$fieldset = $form->addFieldset('zones_form', array('legend' => $helper->__('Zone\'s Information')));
+		$fieldset = $form->addFieldset('shelfs_form', array('legend' => $helper->__('Shelf\'s Information')));
 
 		$fieldset->addField('name', 'text', array(
 			'label' => $helper->__('Name'),

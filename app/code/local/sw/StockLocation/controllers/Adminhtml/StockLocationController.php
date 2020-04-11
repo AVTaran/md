@@ -7,7 +7,7 @@ class Sw_StockLocation_Adminhtml_StockLocationController extends Mage_Adminhtml_
 		$this->loadLayout();
 		$this->_setActiveMenu('swstocklocation');
 
-		echo '<h1>StockLocation: Admin section</h1>';
+		// echo '<h1>StockLocation: Admin section</h1>';
 
 		$this->renderLayout();
 	}

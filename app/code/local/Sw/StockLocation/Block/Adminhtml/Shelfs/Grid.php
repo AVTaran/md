@@ -1,10 +1,10 @@
 <?php
 
 
-class sw_StockLocation_Block_Adminhtml_Zones_Grid extends Mage_Adminhtml_Block_Widget_Grid {
+class sw_StockLocation_Block_Adminhtml_Shelfs_Grid extends Mage_Adminhtml_Block_Widget_Grid {
 
 	protected function _prepareCollection() {
-		$collection = Mage::getModel('swstocklocation/zones')->getCollection();
+		$collection = Mage::getModel('swstocklocation/shelfs')->getCollection();
 		$this->setCollection($collection);
 		return parent::_prepareCollection();
 	}
@@ -13,7 +13,7 @@ class sw_StockLocation_Block_Adminhtml_Zones_Grid extends Mage_Adminhtml_Block_W
 	protected function _prepareColumns() {
 		$helper = Mage::helper('swstocklocation');
 		$this->addColumn('id', array(
-			'header' => $helper->__('Zone ID'),
+			'header' => $helper->__('Shelfs ID'),
 			'index' => 'id'
 		));
 		$this->addColumn('Name', array(
@@ -37,7 +37,7 @@ class sw_StockLocation_Block_Adminhtml_Zones_Grid extends Mage_Adminhtml_Block_W
 
 	protected function _prepareMassaction() {
 		$this->setMassactionIdField('id');
-		$this->getMassactionBlock()->setFormFieldName('zones');
+		$this->getMassactionBlock()->setFormFieldName('shelfs');
 		$this->getMassactionBlock()->addItem(
 			'delete', 
 			array(
@@ -51,7 +51,7 @@ class sw_StockLocation_Block_Adminhtml_Zones_Grid extends Mage_Adminhtml_Block_W
 
 	public function getRowUrl($model) {
 		return $this->getUrl(
-			'*/*/edit', 
+			'*/adminhtml_shelfs/edit', 
 			array(
 				'id' => $model->getId(),
 			)

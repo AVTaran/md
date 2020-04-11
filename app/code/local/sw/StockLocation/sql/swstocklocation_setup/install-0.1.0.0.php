@@ -1,7 +1,7 @@
 <?php
 
 
-die('SW StockLocation module setup');
+die('Sw StockLocation module setup');
 
 
 $installer = $this;
@@ -68,3 +68,36 @@ $installer->endSetup();
 $installer->installEntities();
 
 
+/*
+
+
+
+
+ALTER TABLE `sw_sl_shelf` ADD `length` INT(10) NOT NULL AFTER `name`;
+ALTER TABLE `sw_sl_shelf` ADD `width` INT(10) NOT NULL AFTER `length`;
+ALTER TABLE `sw_sl_shelf` ADD `height` INT(10) NOT NULL AFTER `width`;
+
+ALTER TABLE `sw_sl_shelf` ADD `sp_x` INT(10) NOT NULL AFTER `height`;
+ALTER TABLE `sw_sl_shelf` ADD `sp_y` INT(10) NOT NULL AFTER `sp_x`;
+ALTER TABLE `sw_sl_shelf` ADD `sp_z` INT(10) NOT NULL AFTER `sp_y`;
+
+
+
+ALTER TABLE `sw_sl_box` ADD `length` INT(10) NOT NULL AFTER `name`;
+ALTER TABLE `sw_sl_box` ADD `width` INT(10) NOT NULL AFTER `length`;
+ALTER TABLE `sw_sl_box` ADD `height` INT(10) NOT NULL AFTER `width`;
+
+ALTER TABLE `sw_sl_box` ADD `sp_x` INT(10) NOT NULL AFTER `height`;
+ALTER TABLE `sw_sl_box` ADD `sp_y` INT(10) NOT NULL AFTER `sp_x`;
+ALTER TABLE `sw_sl_box` ADD `sp_z` INT(10) NOT NULL AFTER `sp_y`;
+
+
+
+ALTER TABLE `sw_sl_section` ADD `length` INT(10) NOT NULL AFTER `name`;
+ALTER TABLE `sw_sl_section` ADD `width` INT(10) NOT NULL AFTER `length`;
+ALTER TABLE `sw_sl_section` ADD `height` INT(10) NOT NULL AFTER `width`;
+
+
+
+
+*/
