@@ -1,28 +1,39 @@
 <?php
 
 
-class sw_StockLocation_Block_Adminhtml_Zones_Grid extends Mage_Adminhtml_Block_Widget_Grid {
+class sw_StockLocation_Block_Adminhtml_Boxes_Grid extends Mage_Adminhtml_Block_Widget_Grid {
 
 	protected function _prepareCollection() {
-		$collection = Mage::getModel('swstocklocation/zones')->getCollection();
+		$collection = Mage::getModel('swstocklocation/boxes')->getCollection();
 		$this->setCollection($collection);
 		return parent::_prepareCollection();
 	}
 
 
-	// https://makandracards.com/magento1/35007-grid-column-options
-	// https://stackoverflow.com/questions/39686057/magento-adding-a-column-in-existing-table
-
 	protected function _prepareColumns() {
 		$helper = Mage::helper('swstocklocation');
 		$this->addColumn('id', array(
-			'header' => $helper->__('Zone ID'),
+			'header' => $helper->__('Boxes ID'),
 			'index' => 'id'
+		));
+		$this->addColumn('shelf', array(
+			'header'	=> $helper->__('Shelf'),
+			'index'		=> 'id_shelf',
+			'options'	=> $helper->getObjectList('shelfs'),
+			'type'		=> 'options',
+			'width'		=> '50px',
 		));
 		$this->addColumn('Name', array(
 			'header' => $helper->__('Name'),
 			'index' => 'name',
 			'type' => 'text',
+		));
+		$this->addColumn('typeboxes', array(
+			'header'	=> $helper->__('Type of box'),
+			'index'		=> 'id_typebox',
+			'options'	=> $helper->getObjectList('typeboxes'),
+			'type'		=> 'options',
+			'width'		=> '50px',
 		));
 		$this->addColumn('coordinates', array(
 			'header' => $helper->__('coordinates'),
@@ -40,7 +51,7 @@ class sw_StockLocation_Block_Adminhtml_Zones_Grid extends Mage_Adminhtml_Block_W
 
 	protected function _prepareMassaction() {
 		$this->setMassactionIdField('id');
-		$this->getMassactionBlock()->setFormFieldName('zones');
+		$this->getMassactionBlock()->setFormFieldName('boxes');
 		$this->getMassactionBlock()->addItem(
 			'delete', 
 			array(

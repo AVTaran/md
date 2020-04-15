@@ -1,11 +1,11 @@
 <?php
 
 
-class sw_StockLocation_Block_Adminhtml_Blocks_Grid extends Mage_Adminhtml_Block_Widget_Grid {
+class sw_StockLocation_Block_Adminhtml_Locations_Grid extends Mage_Adminhtml_Block_Widget_Grid {
 
 	protected function _prepareCollection() {
 
-		$collection = Mage::getModel('swstocklocation/blocks')->getCollection();
+		$collection = Mage::getModel('swstocklocation/locations')->getCollection();
 		$this->setCollection($collection);
 		return parent::_prepareCollection();
 	}
@@ -14,26 +14,56 @@ class sw_StockLocation_Block_Adminhtml_Blocks_Grid extends Mage_Adminhtml_Block_
 	protected function _prepareColumns() {
 		$helper = Mage::helper('swstocklocation');
 		$this->addColumn('id', array(
-			'header'	=> $helper->__('Block ID'),
+			'header'	=> $helper->__('Location ID'),
 			'index'		=> 'id',
 			'width'		=> '50px',
-		));
-		$this->addColumn('zone', array(
-			'header'	=> $helper->__('Zone'),
-			'index'		=> 'id_zone',
-			'options'	=> $helper->getObjectList('zones'),
-			'type'		=> 'options',
-			'width'		=> '150px',
 		));
 		$this->addColumn('name', array(
 			'header'	=> $helper->__('Name'),
 			'index'		=> 'name',
 			'type'		=> 'text',
+			'width'		=> '100px',
 			// 'filter'	=> true,
 			// 'sort'		=> true,
 		));
 
+		$this->addColumn('zone', array(
+			'header'	=> $helper->__('Zone'),
+			'index'		=> 'id_zone',
+			'options'	=> $helper->getObjectList('zones'),
+			'type'		=> 'options',
+			'width'		=> '50px',
+		));
+		$this->addColumn('block', array(
+			'header'	=> $helper->__('Block'),
+			'index'		=> 'id_block',
+			'options'	=> $helper->getObjectList('blocks'),
+			'type'		=> 'options',
+			'width'		=> '50px',
+		));
+		$this->addColumn('shelf', array(
+			'header'	=> $helper->__('Shelf'),
+			'index'		=> 'id_shelf',
+			'options'	=> $helper->getObjectList('shelfs'),
+			'type'		=> 'options',
+			'width'		=> '50px',
+		));
+		$this->addColumn('box', array(
+			'header'	=> $helper->__('Box'),
+			'index'		=> 'id_box',
+			'options'	=> $helper->getObjectList('boxes'),
+			'type'		=> 'options',
+			'width'		=> '50px',
+		));
+		$this->addColumn('section', array(
+			'header'	=> $helper->__('Section'),
+			'index'		=> 'id_section',
+			'options'	=> $helper->getObjectList('sections'),
+			'type'		=> 'options',
+			'width'		=> '50px',
+		));
 
+		/*
 		$this->addColumn('length', array(
 			'header'	=> $helper->__('Length'),
 			'index'		=> 'length',
@@ -83,6 +113,7 @@ class sw_StockLocation_Block_Adminhtml_Blocks_Grid extends Mage_Adminhtml_Block_
 			//'index' => 'dimensions',
 			//'type' => 'text',
 		//));
+		*/
 
 		return parent::_prepareColumns();
 	}
@@ -90,7 +121,7 @@ class sw_StockLocation_Block_Adminhtml_Blocks_Grid extends Mage_Adminhtml_Block_
 
 	protected function _prepareMassaction() {
 		$this->setMassactionIdField('id');
-		$this->getMassactionBlock()->setFormFieldName('blocks');
+		$this->getMassactionBlock()->setFormFieldName('locations');
 		$this->getMassactionBlock()->addItem('delete', array(
 			'label' => $this->__('Delete'),
 			'url' => $this->getUrl('*/*/massDelete'),
@@ -100,7 +131,7 @@ class sw_StockLocation_Block_Adminhtml_Blocks_Grid extends Mage_Adminhtml_Block_
 
 
 	public function getRowUrl($model) {
-		return $this->getUrl('*/adminhtml_blocks/edit', array(
+		return $this->getUrl('*/adminhtml_locations/edit', array(
 			'id' => $model->getId(),
 		));
 	}

@@ -40,6 +40,9 @@
 					<table_box>
 						<table>sw_sl_box</table>
 					</table_box>
+					<table_typebox>
+						<table>sw_sl_typebox</table>
+					</table_typebox>
 					<table_location>
 						<table>sw_sl_location</table>
 					</table_location>
@@ -97,31 +100,59 @@
 				<sort_order>33</sort_order>
 				<action>swstocklocation_admin/adminhtml_stocklocation</action>
 				<children>
+					<locations>
+						<title>Locations</title>
+						<sort_order>10</sort_order>
+						<action>swstocklocation_admin/adminhtml_locations</action>
+					</locations>
+					<separ1>
+						<title>--------------------------------------</title>
+						<sort_order>20</sort_order>
+					</separ1>
+					<locationforproduct>
+						<title>Location for product</title>
+						<sort_order>30</sort_order>
+						<action>swstocklocation_admin/adminhtml_stocklocation</action>
+					</locationforproduct>
+					<separ2>
+						<title>======================</title>
+						<sort_order>40</sort_order>
+					</separ2>
 					<zona>
 						<title>Zones</title>
-						<sort_order>10</sort_order>
+						<sort_order>50</sort_order>
 						<action>swstocklocation_admin/adminhtml_zones</action>
 					</zona>
 					<block>
 						<title>Blocks</title>
-						<sort_order>20</sort_order>
+						<sort_order>60</sort_order>
 						<action>swstocklocation_admin/adminhtml_blocks</action>
 					</block>
 					<shelf>
 						<title>Shelfs</title>
-						<sort_order>30</sort_order>
+						<sort_order>70</sort_order>
 						<action>swstocklocation_admin/adminhtml_shelfs</action>
 					</shelf>
 					<shelf>
 						<title>Shelfs</title>
-						<sort_order>30</sort_order>
+						<sort_order>80</sort_order>
 						<action>swstocklocation_admin/adminhtml_shelfs</action>
 					</shelf>
 					<box>
 						<title>Boxes</title>
-						<sort_order>40</sort_order>
+						<sort_order>90</sort_order>
 						<action>swstocklocation_admin/adminhtml_boxes</action>
 					</box>
+					<typebox>
+						<title>Type boxes</title>
+						<sort_order>91</sort_order>
+						<action>swstocklocation_admin/adminhtml_typeboxes</action>
+					</typebox>
+					<section>
+						<title>Sections</title>
+						<sort_order>100</sort_order>
+						<action>swstocklocation_admin/adminhtml_sections</action>
+					</section>
 				</children>
 			</swstocklocation>
 		</menu>

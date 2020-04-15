@@ -16,9 +16,9 @@ class sw_StockLocation_Block_Adminhtml_Zones_Edit extends Mage_Adminhtml_Block_W
 		$model = Mage::registry('current_zones');
 
 		if ($model->getId()) {
-			return $helper->__("Edit zone item '%s'", $this->escapeHtml($model->getName()));
+			return $helper->__("Edit zone '%s'", $this->escapeHtml($model->getName()));
 		} else {
-			return $helper->__("Add zone item");
+			return $helper->__("Add zone");
 		}
 	}
 

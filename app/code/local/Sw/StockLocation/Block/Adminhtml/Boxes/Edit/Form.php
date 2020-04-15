@@ -1,12 +1,12 @@
 <?php
 
 
-class sw_StockLocation_Block_Adminhtml_Shelfs_Edit_Form extends Mage_Adminhtml_Block_Widget_Form {
+class sw_StockLocation_Block_Adminhtml_Boxes_Edit_Form extends Mage_Adminhtml_Block_Widget_Form {
 
 	protected function _prepareForm() {
 
 		$helper = Mage::helper('swstocklocation');
-		$model = Mage::registry('current_shelfs');
+		$model = Mage::registry('current_boxes');
 
 		$form = new Varien_Data_Form(array(
 			'id' => 'edit_form',
@@ -19,18 +19,22 @@ class sw_StockLocation_Block_Adminhtml_Shelfs_Edit_Form extends Mage_Adminhtml_B
 
 		$this->setForm($form);
 
-		$fieldset = $form->addFieldset('shelfs_form', array('legend' => $helper->__('Shelf\'s Information')));
-
-		$fieldset->addField('id_block', 'select', array(
-			'label' => $helper->__('Block'),
-			'name' => 'id_block',
-			'values' => $helper->getObjectOptions('blocks'),
-		));
+		$fieldset = $form->addFieldset('boxes_form', array('legend' => $helper->__('Box\'s Information')));
 
 		$fieldset->addField('name', 'text', array(
 			'label' => $helper->__('Name'),
 			'required' => true,
 			'name' => 'name',
+		));
+		$fieldset->addField('id_shelf', 'select', array(
+			'label' => $helper->__('Shelf'),
+			'name' => 'id_shelf',
+			'values' => $helper->getObjectOptions('shelfs'),
+		));
+		$fieldset->addField('id_typebox', 'select', array(
+			'label' => $helper->__('Type of box'),
+			'name' => 'id_typebox',
+			'values' => $helper->getObjectOptions('typeboxes'),
 		));
 
 		$fieldset->addField('coordinates', 'text', array(

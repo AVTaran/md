@@ -1,12 +1,14 @@
 <?php
 
 
-class Sw_StockLocation_Adminhtml_ZonesController extends Mage_Adminhtml_Controller_Action {
+class Sw_StockLocation_Adminhtml_BoxesController extends Mage_Adminhtml_Controller_Action {
 
 
 	public function indexAction() {
+		// die('d');
 		$this->loadLayout()->_setActiveMenu('swstocklocation');
-		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_zones'));
+		//print_r('indexAction');
+		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_boxes'));
 		$this->renderLayout();
 	}
 
@@ -15,13 +17,12 @@ class Sw_StockLocation_Adminhtml_ZonesController extends Mage_Adminhtml_Controll
 		$this->_forward('edit');
 	}
 
-
 	public function editAction() { 
 		$id = (int)$this->getRequest()->getParam('id');
-		Mage::register('current_zones', Mage::getModel('swstocklocation/zones')->load($id));
+		Mage::register('current_boxes', Mage::getModel('swstocklocation/boxes')->load($id));
 		$this->loadLayout();
 		$this->_setActiveMenu('swstocklocation');
-		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_zones_edit'));
+		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_boxes_edit'));
 		$this->renderLayout();
 	}
 
@@ -31,14 +32,14 @@ class Sw_StockLocation_Adminhtml_ZonesController extends Mage_Adminhtml_Controll
 
 		if ($data = $this->getRequest()->getPost()) {
 			try {
-				$model = Mage::getModel('swstocklocation/zones');
+				$model = Mage::getModel('swstocklocation/boxes');
 				$model->setData($data)->setId($this->getRequest()->getParam('id'));
 				if(!$model->getCreated()){
 					$model->setCreated(now());
 				}
 				$model->save();
 
-				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Zone was saved successfully'));
+				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Boxes was saved successfully'));
 				Mage::getSingleton('adminhtml/session')->setFormData(false);
 				$this->_redirect('*/*/');
 			} catch (Exception $e) {
@@ -55,12 +56,11 @@ class Sw_StockLocation_Adminhtml_ZonesController extends Mage_Adminhtml_Controll
 	}
 
 
-
 	public function deleteAction() {
 		if ($id = $this->getRequest()->getParam('id')) {
 			try {
-				Mage::getModel('swstocklocation/zones')->setId($id)->delete();
-				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Zone was deleted successfully'));
+				Mage::getModel('swstocklocation/boxes')->setId($id)->delete();
+				Mage::getSingleton('adminhtml/session')->addSuccess($this->__('Boxes was deleted successfully'));
 			} catch (Exception $e) {
 				Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
 				$this->_redirect('*/*/edit', array('id' => $id));
@@ -70,27 +70,26 @@ class Sw_StockLocation_Adminhtml_ZonesController extends Mage_Adminhtml_Controll
 	}
 
 
+
 	public function massDeleteAction() {
 
-		$zones = $this->getRequest()->getParam('zones', null);
+		$boxes = $this->getRequest()->getParam('boxes', null);
 
-		if (is_array($zones) && sizeof($zones) > 0) {
+		if (is_array($boxes) && sizeof($boxes) > 0) {
 			try {
-				foreach ($zones as $id) {
-					Mage::getModel('swstocklocation/zones')->setId($id)->delete();
+				foreach ($boxes as $id) {
+					Mage::getModel('swstocklocation/boxes')->setId($id)->delete();
 				}
-				$this->_getSession()->addSuccess($this->__('Total of %d zones have been deleted', sizeof($zones)));
+				$this->_getSession()->addSuccess($this->__('Total of %d boxes have been deleted', sizeof($boxes)));
 			} catch (Exception $e) {
 				$this->_getSession()->addError($e->getMessage());
 			}
 		} else {
-			$this->_getSession()->addError($this->__('Please select zones'));
+			$this->_getSession()->addError($this->__('Please select boxes'));
 		}
 		$this->_redirect('*/*');
 	}
 
 
 }
-
-/* */
 

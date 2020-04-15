@@ -1,23 +1,27 @@
 <?php
 
 
-class sw_StockLocation_Block_Adminhtml_Zones_Grid extends Mage_Adminhtml_Block_Widget_Grid {
+class sw_StockLocation_Block_Adminhtml_Sections_Grid extends Mage_Adminhtml_Block_Widget_Grid {
 
 	protected function _prepareCollection() {
-		$collection = Mage::getModel('swstocklocation/zones')->getCollection();
+		$collection = Mage::getModel('swstocklocation/sections')->getCollection();
 		$this->setCollection($collection);
 		return parent::_prepareCollection();
 	}
 
 
-	// https://makandracards.com/magento1/35007-grid-column-options
-	// https://stackoverflow.com/questions/39686057/magento-adding-a-column-in-existing-table
-
 	protected function _prepareColumns() {
 		$helper = Mage::helper('swstocklocation');
 		$this->addColumn('id', array(
-			'header' => $helper->__('Zone ID'),
+			'header' => $helper->__('Sections ID'),
 			'index' => 'id'
+		));
+		$this->addColumn('box', array(
+			'header'	=> $helper->__('Box'),
+			'index'		=> 'id_box',
+			'options'	=> $helper->getObjectList('boxes'),
+			'type'		=> 'options',
+			'width'		=> '50px',
 		));
 		$this->addColumn('Name', array(
 			'header' => $helper->__('Name'),
@@ -40,7 +44,7 @@ class sw_StockLocation_Block_Adminhtml_Zones_Grid extends Mage_Adminhtml_Block_W
 
 	protected function _prepareMassaction() {
 		$this->setMassactionIdField('id');
-		$this->getMassactionBlock()->setFormFieldName('zones');
+		$this->getMassactionBlock()->setFormFieldName('sections');
 		$this->getMassactionBlock()->addItem(
 			'delete', 
 			array(

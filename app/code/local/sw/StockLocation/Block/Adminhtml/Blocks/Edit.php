@@ -11,15 +11,14 @@ class sw_StockLocation_Block_Adminhtml_Blocks_Edit extends Mage_Adminhtml_Block_
 
 
 
-	public function getHeaderText()
-	{
+	public function getHeaderText() {
 		$helper = Mage::helper('swstocklocation');
 		$model = Mage::registry('current_blocks');
 
 		if ($model->getId()) {
-			return $helper->__("Edit News block '%s'", $this->escapeHtml($model->getTitle()));
+			return $helper->__("Edit block '%s'", $this->escapeHtml($model->getName()));
 		} else {
-			return $helper->__("Add News block");
+			return $helper->__("Add block");
 		}
 	}
 

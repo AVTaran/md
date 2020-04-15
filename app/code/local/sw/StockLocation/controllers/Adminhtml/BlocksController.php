@@ -6,27 +6,19 @@ class Sw_StockLocation_Adminhtml_BlocksController extends Mage_Adminhtml_Control
 
 	public function indexAction() {
 		$this->loadLayout()->_setActiveMenu('swstocklocation');
-
 		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_blocks'));
 		$this->renderLayout();
 	}
 
 
 	public function newAction() {
-		// $this->_forward('edit');
-		
-		die ('newAction');
-		$this->_redirect('*/*/edit', array('id' => 0));
+		$this->_forward('edit');
 	}
 
 
 	public function editAction() { 
-		$id = (int) $this->getRequest()->getParam('id');
-		die ($id.' _ ');
-		if ($id>0) {
-			Mage::register('current_blocks', Mage::getModel('swstocklocation/blocks')->load($id));
-		}
-		
+		$id = (int)$this->getRequest()->getParam('id');
+		Mage::register('current_blocks', Mage::getModel('swstocklocation/blocks')->load($id));
 		$this->loadLayout();
 		$this->_setActiveMenu('swstocklocation');
 		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_blocks_edit'));
