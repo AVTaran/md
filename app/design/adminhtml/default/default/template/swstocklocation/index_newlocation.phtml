@@ -1,0 +1,47 @@
+
+
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td><h3 class="head-dashboard"><?php echo $this->__('New location for product') ?></h3></td>
+        </tr>
+    </table>
+</div>
+<div class="dashboard-container">
+    <div class="search-line">
+        <input type="text" placeholder="Start to taiping the SKY, barcode or name of product">
+        <button>Print 1</button>
+        <button>Print 2</button>
+    </div>
+    <?php // echo $this->getChildHtml('store_switcher') ?>
+    <table cellspacing="25" width="100%">
+        <tr>
+            <td width="60%">
+                <div class="product-information" style="background:#fafafa; padding:8px 15px;">
+                     Place for information about product.
+                  <?php // echo $this->getChildHtml('sales') ?>
+                </div>
+            </td>
+            <td width="40%">
+                <div class="filter filter-locations">
+                    Filter
+                    <?php /*echo $this->getChildHtml('diagrams') */?>
+                    <?php//*/ if (is_array($this->getChild('diagrams')->getTabsIds())) : */?>
+                        <div id="diagram_tab_content"></div>
+                    <?php /*//endif; */?>
+                    <div style="margin:20px;">
+                        <?php /*echo $this->getChildHtml('totals') */?>
+                    </div>
+                    <div style="margin:20px;">
+                        <?php /*echo $this->getChildHtml('grids') */?>
+                        <div id="grid_tab_content"></div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+
+

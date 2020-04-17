@@ -69,3 +69,9 @@ atlassian*
 !/generated/.htaccess
 .DS_Store
 /media/*
+/app/code/local/DS/*
+/app/design/frontend/[package]/[theme]/layout/ds_news.xml
+/app/etc/modules/DS_News.xml
+/skin/adminhtml/default/default/ds_news/*
+/app/design/frontend/[package]/[theme]/template/ds_news/*
+/app/design/frontend/[package]/[theme]/layout/ds_news.xml

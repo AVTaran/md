@@ -1,0 +1,13 @@
+#edit_form label {
+	color: #FF0000;
+	font-weight: bold;
+}
+.dashboard-container .search-line {
+	background:#fafafa;
+	padding:8px 15px;
+}
+
+.filter-locations {
+	border:2px dotted #ccc;
+	padding:8px 15px;
+}

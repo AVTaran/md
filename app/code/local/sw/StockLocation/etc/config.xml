@@ -110,9 +110,9 @@
 						<sort_order>20</sort_order>
 					</separ1>
 					<locationforproduct>
-						<title>Location for product</title>
+						<title>New location for product</title>
 						<sort_order>30</sort_order>
-						<action>swstocklocation_admin/adminhtml_stocklocation</action>
+						<action>swstocklocation_admin/adminhtml_newlocation</action>
 					</locationforproduct>
 					<separ2>
 						<title>======================</title>

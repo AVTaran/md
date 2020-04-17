@@ -21,8 +21,17 @@ class Sw_StockLocation_Adminhtml_BlocksController extends Mage_Adminhtml_Control
 		Mage::register('current_blocks', Mage::getModel('swstocklocation/blocks')->load($id));
 		$this->loadLayout();
 		$this->_setActiveMenu('swstocklocation');
+
+
+//		$this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/scripts.js');
+//		$this->getLayout()->getBlock('head')->addItem('skin_css', 'Sw_StockLocation/adminhtml/styles.css');
+
+
 		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_blocks_edit'));
 		$this->renderLayout();
+		
+
+
 	}
 
 
@@ -94,5 +103,5 @@ class Sw_StockLocation_Adminhtml_BlocksController extends Mage_Adminhtml_Control
 
 }
 
-/* */
+
 

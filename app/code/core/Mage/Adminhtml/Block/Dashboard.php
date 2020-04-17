@@ -44,7 +44,7 @@ class Mage_Adminhtml_Block_Dashboard extends Mage_Adminhtml_Block_Template
     {
         $this->setChild('lastOrders',
                 $this->getLayout()->createBlock('adminhtml/dashboard_orders_grid')
-        );
+         );
 
         $this->setChild('totals',
                 $this->getLayout()->createBlock('adminhtml/dashboard_totals')
