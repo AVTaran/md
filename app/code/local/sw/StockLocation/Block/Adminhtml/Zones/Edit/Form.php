@@ -27,25 +27,38 @@ class sw_StockLocation_Block_Adminhtml_Zones_Edit_Form extends Mage_Adminhtml_Bl
 			'name' => 'name',
 		));
 
-		$fieldset->addField('coordinates', 'text', array(
-			'label' => $helper->__('Coordinates'),
-			'required' => false,
-			'name' => 'coordinates',
-		));
+        $fieldset->addField('length', 'text', array(
+            'label' => $helper->__('Length'),
+            'required' => true,
+            'name' => 'length',
+        ));
+        $fieldset->addField('width', 'text', array(
+            'label' => $helper->__('Width'),
+            'required' => true,
+            'name' => 'width',
+        ));
+        $fieldset->addField('height', 'text', array(
+            'label' => $helper->__('Height'),
+            'required' => true,
+            'name' => 'height',
+        ));
 
-		$fieldset->addField('dimensions', 'text', array(
-			'label' => $helper->__('Dimensions'),
-			'required' => false,
-			'name' => 'dimensions',
-		));
+        $fieldset->addField('sp_x', 'text', array(
+            'label' => $helper->__('sp_x'),
+            'required' => true,
+            'name' => 'sp_x',
+        ));
+        $fieldset->addField('sp_y', 'text', array(
+            'label' => $helper->__('sp_y'),
+            'required' => true,
+            'name' => 'sp_y',
+        ));
+        $fieldset->addField('sp_z', 'text', array(
+            'label' => $helper->__('sp_z'),
+            'required' => true,
+            'name' => 'sp_z',
+        ));
 
-
-		//$fieldset->addField('created', 'date', array(
-			//'format' => Mage::app()->getLocale()->getDateFormat(Mage_Core_Model_Locale::FORMAT_TYPE_SHORT),
-			//'image' => $this->getSkinUrl('images/grid-cal.gif'),
-			//'label' => $helper->__('Created'),
-			//'name' => 'created'
-		//));
 
 		$form->setUseContainer(true);
 

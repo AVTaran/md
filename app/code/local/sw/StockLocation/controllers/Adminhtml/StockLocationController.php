@@ -12,13 +12,8 @@ class Sw_StockLocation_Adminhtml_StockLocationController extends Mage_Adminhtml_
 
 		// echo '<h1>StockLocation: Admin section</h1>';
 
-		$this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/scripts.js');
-		$this->getLayout()->getBlock('head')->addItem('skin_css', 'Sw_StockLocation/adminhtml/styles.css');
-
         $contentBlock = $this->getLayout()->createBlock('swstocklocation/adminhtml_stocklocation');
         $this->_addContent($contentBlock);
-
-
 
 		$this->renderLayout();
 	}
