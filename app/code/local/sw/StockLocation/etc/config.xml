@@ -80,7 +80,6 @@
 		</resources>
 	</global>
 
-
 	<admin>
 		<routers>
 			<swstocklocation_admin>
@@ -158,6 +157,15 @@
 		</menu>
 	</adminhtml>
 
+	<default>
+		<stocklocation>
+			<general>
+				<spx>0</spx>
+				<spy>0</spy>
+				<spz>0</spz>
+			</general>
+		</stocklocation>
+	</default>
 
 </config>
 

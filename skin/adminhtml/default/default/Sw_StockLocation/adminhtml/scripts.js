@@ -1,1 +1,0 @@
-console.log('Sw StockLocation Newlocation scripts.jsadmin');

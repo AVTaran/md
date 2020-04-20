@@ -2,36 +2,10 @@
 
 class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 
-
-	//	------------
-	//	Zones 
-	//	
-	/*
-	public function getZonesList() {
-		$zones = Mage::getModel('swstocklocation/zones')->getCollection()->load();
-		$output = array();
-		foreach($zones as $zone){
-			$output[$zone->getId()] = $zone->getName();
-		}
-		return $output;
-	}
-
-	public function getZonesOptions() {
-		$zones = Mage::getModel('swstocklocation/zones')->getCollection()->load();
-		$options = array();
-		$options[] = array(
-			'label' => '',
-			'value' => '0'
-		);
-		foreach ($zones as $zone) {
-			$options[] = array(
-				'label' => $zone->getName(),
-				'value' => $zone->getId(),
-			);
-		}
-		return $options;
-	}
-	*/
+	//	public function includeJS($nameJS) {
+	//		$this->loadLayout();
+	//		$this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/applySelect.js');
+	//	}
 
 
 	public function getObjectList($obj, $fieldId = 'Id', $fieldName = 'Name') {

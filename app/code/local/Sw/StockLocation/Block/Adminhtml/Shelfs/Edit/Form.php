@@ -21,17 +21,36 @@ class sw_StockLocation_Block_Adminhtml_Shelfs_Edit_Form extends Mage_Adminhtml_B
 
 		$fieldset = $form->addFieldset('shelfs_form', array('legend' => $helper->__('Shelf\'s Information')));
 
+
 		$fieldset->addField('id_block', 'select', array(
 			'label' => $helper->__('Block'),
 			'name' => 'id_block',
 			'values' => $helper->getObjectOptions('blocks'),
 		));
 
-		$fieldset->addField('name', 'text', array(
-			'label' => $helper->__('Name'),
-			'required' => true,
-			'name' => 'name',
-		));
+		//		$zones1 = array(
+		//			array('value'=>'cms','label'=>'Show in CMS Pages'),
+		//			array('value'=>'category','label'=>'Show in All Category pages'),
+		//			array('value'=>'product','label'=>'Show in All Product pages'),
+		//			array('value'=>'other','label'=>'Show in other pages (cart, checkout, myaccount)'),
+		//		);
+		//		$zones = $helper->getObjectOptions('zones');
+		//		$fieldset->addType('apply','Sw_Stocklocation_Lib_Varien_Data_Form_Element_Apply');
+		//		$fieldset->addField('apply_to', 'apply', array(
+		//			'name'        => 'apply_to[]',
+		//			'label'       => $helper->__('Block'),
+		//			'values' 	  => $zones1,
+		//			'mode_labels' => array(
+		//				'all'     => $helper->__('All Pages'),
+		//				'custom'  => $helper->__('Selected Pages')
+		//			),
+		//			'required'    => true
+		//		), 'frontend_class');
+		//		$fieldset->addField('name', 'text', array(
+		//			'label' => $helper->__('Name'),
+		//			'required' => true,
+		//			'name' => 'name',
+		//		));
 
 
         $fieldset->addField('length', 'text', array(

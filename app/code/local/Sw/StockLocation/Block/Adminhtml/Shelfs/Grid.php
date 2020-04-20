@@ -69,16 +69,16 @@ class sw_StockLocation_Block_Adminhtml_Shelfs_Grid extends Mage_Adminhtml_Block_
 			'width'		=> '50px',
 		));
 
-		$this->addColumn('coordinates', array(
-			'header' => $helper->__('coordinates'),
-			'index' => 'coordinates',
-			'type' => 'text',
-		));
-		$this->addColumn('dimensions', array(
-			'header' => $helper->__('dimensions'),
-			'index' => 'dimensions',
-			'type' => 'text',
-		));
+//		$this->addColumn('coordinates', array(
+//			'header' => $helper->__('coordinates'),
+//			'index' => 'coordinates',
+//			'type' => 'text',
+//		));
+//		$this->addColumn('dimensions', array(
+//			'header' => $helper->__('dimensions'),
+//			'index' => 'dimensions',
+//			'type' => 'text',
+//		));
 		return parent::_prepareColumns();
 	}
 
