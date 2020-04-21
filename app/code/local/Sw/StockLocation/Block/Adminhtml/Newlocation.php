@@ -5,34 +5,30 @@ class sw_StockLocation_Block_Adminhtml_Newlocation extends Mage_Adminhtml_Block_
 
     public function __construct() {
         parent::__construct();
-        $this->setTemplate('swstocklocation/index_newlocation.phtml');
+        $this->setTemplate('swstocklocation/newlocation.phtml');
     }
 
 
     protected function _prepareLayout() {
-        // $this->setChild('lastOrders',
-        //       $this->getLayout()->createBlock('adminhtml/dashboard_orders_grid')
-        // );
 
-        $this->setChild('totals',
-            $this->getLayout()->createBlock('adminhtml/dashboard_totals')
+        $this->setChild('filter',
+            $this->getLayout()->createBlock('swstocklocation/adminhtml_newlocation_filter')
         );
 
-        $this->setChild('sales',
-            $this->getLayout()->createBlock('adminhtml/dashboard_sales')
-        );
-
-        $this->setChild('lastSearches',
-            $this->getLayout()->createBlock('adminhtml/dashboard_searches_last')
-        );
-
-        $this->setChild('topSearches',
-            $this->getLayout()->createBlock('adminhtml/dashboard_searches_top')
-        );
 
         parent::_prepareLayout();
     }
 
+/*	public function ajaxBlockAction()
+	{
+		$output   = '';
+		$blockTab = $this->getRequest()->getParam('block');
+		if (in_array($blockTab, array('tab_orders', 'tab_amounts', 'totals'))) {
+			$output = $this->getLayout()->createBlock('adminhtml/dashboard_' . $blockTab)->toHtml();
+		}
+		$this->getResponse()->setBody($output);
+		return;
+	}*/
 
 }
 

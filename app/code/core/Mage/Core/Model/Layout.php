@@ -443,17 +443,6 @@ class Mage_Core_Model_Layout extends Varien_Simplexml_Config
 
         } catch (Exception $e) {
 
-
-		//if ($type == 'stocklocation/zones') {
-			//echo '<pre>'; print_r($name); echo '</pre>';
-			//echo '<pre>'; print_r($attributes); echo '</pre>';
-			//echo '<pre>';
-			//print_r($e);
-			//echo '</pre>';
-			//die(' 3 ------------');
-		//}
-
-
             Mage::logException($e);
             return false;
         }
