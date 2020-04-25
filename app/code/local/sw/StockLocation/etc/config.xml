@@ -55,6 +55,9 @@
 					<table_zone>
 						<table>sw_sl_zone</table>
 					</table_zone>
+					<table_locsize>
+						<table>sw_sl_location_size</table>
+					</table_locsize>
 				</entities>
 			</swstocklocation_resource>
 		</models>
@@ -147,6 +150,11 @@
 						<sort_order>91</sort_order>
 						<action>swstocklocation_admin/adminhtml_typeboxes</action>
 					</typebox>
+					<sizelocation>
+						<title>Size location</title>
+						<sort_order>92</sort_order>
+						<action>swstocklocation_admin/adminhtml_sizelocation</action>
+					</sizelocation>
 					<section>
 						<title>Sections</title>
 						<sort_order>100</sort_order>
