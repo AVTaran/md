@@ -1,9 +1,47 @@
 
 <h3>Filter</h3>
-<div class="filer">
-    Check box set:
-    Size of box:
-    <checkbox>Any</checkbox>
+
+<?php echo $this->getChildHtml('add_address_button') ?>
+<div class="filterBlock">
+    <div class="checkboxSet">
+        <h4>Size of box:</h4>
+        <span>
+            <input type="checkbox" name="sizeAny" id="sizeAny" />
+            <label for="sizeAny">Any</label>
+        </span>
+		<?php foreach ($this->getBoxesSizes() AS $_id => $_size) { ?>
+            <span>
+                <input type="checkbox" name="size<?=$_size['name']?>" id="size<?=$_size['name']?>" />
+                <label for="size<?=$_size['name']?>"><?=$_size['name']?></label>
+            </span>
+		<?php } ?>
+    </div>
+    <div class="checkboxSet">
+        <h4>Zones:</h4>
+        <span>
+            <input type="checkbox" name="zonesAny" id="zonesAny" />
+            <label for="zonesAny">Any</label>
+        </span>
+		<?php foreach ($this->getZones() AS $_id => $_zone) { ?>
+            <span>
+                <input type="checkbox" name="size<?=$_zone['name']?>" id="size<?=$_zone['name']?>" />
+                <label for="size<?=$_zone['name']?>"><?=$_zone['name']?></label>
+            </span>
+		<?php } ?>
+    </div>
+    <div class="checkboxSet">
+        <h4>Type of box:</h4>
+        <span>
+           <input type="checkbox" name="typeAny" id="typeAny" />
+           <label for="typeAny">Any</label>
+        </span>
+		<?php foreach ($this->getTypeBoxes() AS $_id => $_zone) { ?>
+            <span>
+                <input type="checkbox" name="size<?=$_zone['name']?>" id="size<?=$_zone['name']?>" />
+                <label for="size<?=$_zone['name']?>"><?=$_zone['name']?></label>
+            </span>
+		<?php } ?>
+    </div>
 
 </div>
 

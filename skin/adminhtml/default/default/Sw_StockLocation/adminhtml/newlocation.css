@@ -4,7 +4,7 @@
 	padding:8px 15px;
 }
 .search-line input {
-	width: 70%;
+	width: 80%;
 	padding: 5px 10px;
 	border:1px solid #555;
 }
@@ -12,7 +12,20 @@
 	background: #fafafa;
 	padding: 8px 15px;
 }
-.filter-locations {
+.filter-newlocations {
 	border:2px dotted #ccc;
 	padding:8px 15px;
 }
+
+
+.dashboard-container .filter-newlocations .checkboxSet {
+	margin:0px 0px 35px 0px;
+}
+.dashboard-container .filter-newlocations .checkboxSet span {
+	margin:0px 15px 0px 0px;
+	border-bottom: 1px dotted #ddd;
+}
+.dashboard-container .filter-newlocations .checkboxSet span label{
+	margin:0px 3px 0px 3px;
+}
+

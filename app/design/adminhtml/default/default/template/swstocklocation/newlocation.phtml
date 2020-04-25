@@ -1,5 +1,4 @@
 
-
 <div class="content-header">
     <table cellspacing="0">
         <tr>
@@ -10,7 +9,7 @@
 <div class="dashboard-container">
     <div class="search-line">
         <input type="text" placeholder="Start to taiping the SKY, barcode or name of product">
-        <button>Print 1</button>
+		<?php echo $this->getChildHtml('print1_button') ?>
         <button>Print 2</button>
     </div>
     <table cellspacing="25" width="100%">
@@ -21,7 +20,7 @@
                 </div>
             </td>
             <td width="40%">
-                <div class="filter filter-locations">
+                <div class="filter-newlocations">
                     <?php echo $this->getChildHtml('filter') ?>
                 </div>
             </td>

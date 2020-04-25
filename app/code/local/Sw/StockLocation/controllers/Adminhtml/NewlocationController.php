@@ -15,7 +15,16 @@ class Sw_StockLocation_Adminhtml_NewlocationController extends Mage_Adminhtml_Co
 		$this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/newlocation.js');
 		$this->getLayout()->getBlock('head')->addItem('skin_css', 'Sw_StockLocation/adminhtml/newlocation.css');
 
-        $contentBlock = $this->getLayout()->createBlock('swstocklocation/adminhtml_newlocation');
+        $contentBlock = $this->getLayout()->createBlock(
+        	'swstocklocation/adminhtml_newlocation'
+			//			'',
+			//			array(
+			//				'editor_element_id' => '$elementId',
+			//				'store_id'          => '$storeId',
+			//				'store_media_url'   => '$storeMediaUrl',
+			//			)
+		);
+
         $this->_addContent($contentBlock);
 
 		$this->renderLayout();
