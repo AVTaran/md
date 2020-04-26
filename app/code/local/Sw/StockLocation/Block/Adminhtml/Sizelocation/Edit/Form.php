@@ -19,17 +19,25 @@ class sw_StockLocation_Block_Adminhtml_Sizelocation_Edit_Form extends Mage_Admin
 
 		$this->setForm($form);
 
-		$fieldset = $form->addFieldset('sizelocation_form', array('legend' => $helper->__('Type of box information')));
+		$fieldset = $form->addFieldset(
+			'sizelocation_form',
+			array('legend' => $helper->__('Size of location information'))
+		);
 
 		$fieldset->addField('name', 'text', array(
 			'label' => $helper->__('Name'),
 			'required' => true,
 			'name' => 'name',
 		));
-		$fieldset->addField('volume', 'text', array(
-			'label' => $helper->__('Volume'),
+		$fieldset->addField('volumeMin', 'text', array(
+			'label' => $helper->__('Volume min'),
 			'required' => true,
-			'name' => 'volume',
+			'name' => 'volumeMin',
+		));
+		$fieldset->addField('volumeMax', 'text', array(
+			'label' => $helper->__('Volume max'),
+			'required' => true,
+			'name' => 'volumeMax',
 		));
 		$fieldset->addField('description', 'text', array(
 			'label' => $helper->__('Description'),

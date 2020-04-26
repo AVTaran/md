@@ -5,11 +5,9 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Filter extends  Mage_Adminhtm
 	// Mage_Core_Block_Template //
 	// Mage_Adminhtml_Block_Dashboard_Bar
 {
-    protected function _construct()
-    {
+    protected function _construct() {
         parent::_construct();
 		$this->setTemplate('swstocklocation/newlocation_filter.phtml');
-
     }
 
 	public function getBoxesSizes () {

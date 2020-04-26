@@ -16,19 +16,25 @@ class sw_StockLocation_Block_Adminhtml_Sizelocation_Grid extends Mage_Adminhtml_
 		$this->addColumn('id', array(
 			'header'	=> $helper->__('Type of box ID'),
 			'index'		=> 'id',
-			'width'		=> '50px',
+			'width'		=> '20px',
 		));
 		$this->addColumn('name', array(
 			'header'	=> $helper->__('Name'),
 			'index'		=> 'name',
 			'type'		=> 'text',
-			'width'		=> '100px',
+			// 'width'		=> '100px',
 			// 'filter'	=> true,
 			// 'sort'		=> true,
 		));
-		$this->addColumn('volume', array(
-			'header'	=> $helper->__('Volume'),
-			'index'		=> 'volume',
+		$this->addColumn('volumeMin', array(
+			'header'	=> $helper->__('Volume min'),
+			'index'		=> 'volumeMin',
+			'type'		=> 'text',
+			'width'		=> '100px',
+		));
+		$this->addColumn('volumeMax', array(
+			'header'	=> $helper->__('Volume max'),
+			'index'		=> 'volumeMax',
 			'type'		=> 'text',
 			'width'		=> '100px',
 		));

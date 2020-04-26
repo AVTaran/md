@@ -1,17 +1,16 @@
 
 <h3>Filter</h3>
-
 <?php echo $this->getChildHtml('add_address_button') ?>
 <div class="filterBlock">
     <div class="checkboxSet">
         <h4>Size of box:</h4>
         <span>
-            <input type="checkbox" name="sizeAny" id="sizeAny" />
+            <input type="checkbox" class="sizeOfBox" name="size[Any]" id="sizeAny" checked/>
             <label for="sizeAny">Any</label>
         </span>
 		<?php foreach ($this->getBoxesSizes() AS $_id => $_size) { ?>
             <span>
-                <input type="checkbox" name="size<?=$_size['name']?>" id="size<?=$_size['name']?>" />
+                <input type="checkbox" class="sizeOfBox" name="size[<?=$_id?>]" id="size<?=$_size['name']?>" />
                 <label for="size<?=$_size['name']?>"><?=$_size['name']?></label>
             </span>
 		<?php } ?>
@@ -19,30 +18,33 @@
     <div class="checkboxSet">
         <h4>Zones:</h4>
         <span>
-            <input type="checkbox" name="zonesAny" id="zonesAny" />
+            <input type="checkbox" class="zoneCheck" name="zone[Any]" id="zonesAny" checked/>
             <label for="zonesAny">Any</label>
         </span>
 		<?php foreach ($this->getZones() AS $_id => $_zone) { ?>
             <span>
-                <input type="checkbox" name="size<?=$_zone['name']?>" id="size<?=$_zone['name']?>" />
-                <label for="size<?=$_zone['name']?>"><?=$_zone['name']?></label>
+                <input type="checkbox" class="zoneCheck" name="zone[<?=$_id?>]" id="zone<?=$_zone['name']?>" />
+                <label for="zone<?=$_zone['name']?>"><?=$_zone['name']?></label>
             </span>
 		<?php } ?>
     </div>
     <div class="checkboxSet">
         <h4>Type of box:</h4>
         <span>
-           <input type="checkbox" name="typeAny" id="typeAny" />
+           <input type="checkbox" class="typeOfBox" name="type[Any]" id="typeAny" checked/>
            <label for="typeAny">Any</label>
         </span>
 		<?php foreach ($this->getTypeBoxes() AS $_id => $_zone) { ?>
             <span>
-                <input type="checkbox" name="size<?=$_zone['name']?>" id="size<?=$_zone['name']?>" />
-                <label for="size<?=$_zone['name']?>"><?=$_zone['name']?></label>
+                <input type="checkbox" class="typeOfBox" name="type[<?=$_id?>]" id="type<?=$_zone['name']?>" />
+                <label for="type<?=$_zone['name']?>"><?=$_zone['name']?></label>
             </span>
 		<?php } ?>
     </div>
+    <button onclick="newLocation.checkAjax();">GO!</button>
+</div>
 
+<div calss="availableLocations" id="availableLocations">
 </div>
 
 

@@ -29,3 +29,21 @@
 	margin:0px 3px 0px 3px;
 }
 
+#availableLocations {
+	margin:20px 0px 10px 0px;
+}
+#availableLocations > table {
+	width: 100%;
+	border: 1px solid #cccccc;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+#availableLocations > table thead {
+	font-weight: bold;
+}
+#availableLocations > table td {
+	border: 1px solid #cccccc;
+	padding: 2px 5px;
+	margin: 0px;
+}
+

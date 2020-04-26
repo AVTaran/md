@@ -10,13 +10,17 @@
     <div class="search-line">
         <input type="text" placeholder="Start to taiping the SKY, barcode or name of product">
 		<?php echo $this->getChildHtml('print1_button') ?>
-        <button>Print 2</button>
+		<?php echo $this->getChildHtml('print2_button') ?>
     </div>
     <table cellspacing="25" width="100%">
         <tr>
             <td width="60%">
                 <div class="product-information" style="background:#fafafa; padding:8px 15px;">
-                     Place for information about product.
+                     Place for information about product.<br/>
+<!--                    <br/>-->
+<!--					<a href="--><?//=$this->getUrlControllerAdmin();?><!--">-->
+<!--                        --><?//=$this->getUrlControllerAdmin();?>
+<!--                    </a>-->
                 </div>
             </td>
             <td width="40%">
@@ -27,6 +31,13 @@
         </tr>
     </table>
 </div>
+
+<script type="text/javascript">
+    <?php echo $this->getId() ?>
+    newLocation = new newLocationModel('<?=$this->getUrlControllerAdmin();?>');
+</script>
+
+
 
 
 
