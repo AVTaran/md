@@ -11,31 +11,20 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 		$this->setTemplate('swstocklocation/newlocation_ajax.phtml');
     }
 
-
 	public function getAjaxContent() {
-		$content = '';
 		$params = $this->getRequest()->getParams();
 
 		switch ($params['operation']) {
 			case 'getAvailableLocation':
 				$content = $this->getAjaxAvailableLocation($params['param']);
 				break;
+			case 'getProduct':
+				$content = $this->getAjaxProduct($params['param']);
+				break;
 			default:
 				$content = $this->getAjaxDefault();
 			break;
 		}
-
-
-		//	$output   = '';
-		//	$blockTab = $this->getRequest()->getParam('block');
-		//
-		//	if (in_array($blockTab, array('tab_orders', 'tab_amounts', 'totals'))) {
-		//		$output = $this->getLayout()->createBlock('adminhtml/dashboard_' . $blockTab)->toHtml();
-		//	}
-		//
-		//	$this->getResponse()->setBody($output);
-
-		//	return;
 
 		$content = json_encode($content, 0, 512);
 		return $content;
@@ -44,35 +33,14 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 	public function getAjaxAvailableLocation($params) {
 		$ret = array();
 
-//		$arZones = array();
-//		$collectionOfZones =  Mage::getModel('swstocklocation/zones')->getCollection()->load();
-//
-//		foreach($collectionOfZones AS $Obj) {
-//			$arZones[$Obj->getId()] = array (
-//				'name' => $Obj->getName(),
-//				'volume' => $Obj->getVolume(),
-//				'description' => $Obj->getDescription(),
-//			);
-//		}
-		// return $arZones;
-
 
 		$resource = Mage::getSingleton('core/resource');
 		$write = $resource->getConnection('core_write');
 
-		// $read= Mage::getSingleton('core/resource')->getConnection('core_read');
-
-		// $connection = Mage::getSingleton('core/resource')->getConnection('core_read');
-		// $connection->
-
-		//		$collection -> getSelect() -> joinLeft(array("oauth"=>'customer_entity_varchar'),
-		//			'main_table.customer_id=oauth.entity_id and oauth.attribute_id = 156',
-		//			array('OauthProvider' => "value"));
-
-
-
+		// $installer = $this;
 		// $tableL  = $resource->getTableName('swstocklocation/locations');
 		$tableL  = 'sw_sl_location';
+		// $tableL = $this->getTable('swstocklocation/table_location');
 
 		// $tableZ  = $resource->getTableName('swstocklocation/zones');
 		$tableZ  = 'sw_sl_zone';
@@ -113,16 +81,17 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 			);
 		}
 		if (!in_array('Any', $params['filter']['size']) AND count($params['filter']['size'])>0) {
-			//			$select->where(
-			//				'l.id_zone IN ('. implode(',',$params['filter']['size']).')'
-			//			);
+
+			// $select->where(
+			// 	'l.id_zone IN ('. implode(',',$params['filter']['size']).')'
+			// );
 		}
 
 		$arLocation = $write->fetchAll($select);
 
 
 		$locationsTable = '
-			<h3>We have not locations which match filter\'s criteria.</h3> 
+			<h3>We have not locations which match filter\'s criteria. :-(</h3> 
 			<p>Please, try to change the filter.</p>
 		';
 
@@ -182,6 +151,55 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 		return $ret;
 	}
 
+	public function getAjaxProduct ($params) {
+		$ret = array();
+
+    	$product = $productInformation = null;
+
+		$productModel = Mage::getModel('catalog/product')
+			->getCollection()
+			->addAttributeToSelect('name', 'entity_id', 'price')
+			->addAttributeToFilter(
+				'sku',
+				array (
+					'like' => '%'.$queryName.'%'
+				)
+			)
+			// ->addAttributeToFilter('name', array('like' => '%'.$queryName.'%'))
+			->getFirstItem()
+		;
+
+		$productId = $productModel->getID();
+		if ($productId) {
+			$product = Mage::getModel('catalog/product')->load($productId);
+
+			$productInformation = $this->getLayout()->createBlock('swstocklocation/adminhtml_newlocation_ajaxproductinfo')
+				->toHtml();
+
+		}
+
+		/*
+		$sAttributeName = 'size';
+		$mOptionValue = 'medium';
+		$collection = Mage::getModel('catalog/product')->getCollection()
+			->addAttributeToSelect('*')
+			->addFieldToFilter(
+				$sAttributeName,
+				array (
+					'eq' => Mage::getResourceModel('catalog/product')
+						->getAttribute($sAttributeName)
+						->getSource()
+						->getOptionId($mOptionValue)
+				)
+			);
+		*/
+
+
+		$ret['productInformation'] = $productInformation;
+		//$ret['product'] = $product;
+		return $ret;
+	}
+
 	public function getLocationName ($rawLocationData) {
 		$location = '';
 
@@ -207,4 +225,5 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 	public function getAjaxDefault () {
     	return 'unknown request';
 	}
+
 }

@@ -37,6 +37,7 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Filter extends  Mage_Adminhtm
 		return $arZones;
 	}
 
+
 	public function getTypeBoxes () {
 		$arTypeBoxes = array();
 		$collectionOfTypeBoxes =  Mage::getModel('swstocklocation/typeboxes')->getCollection()->load();

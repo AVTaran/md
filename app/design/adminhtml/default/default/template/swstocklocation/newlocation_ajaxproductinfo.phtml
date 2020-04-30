@@ -1,0 +1,30 @@
+<div class="short-product-info">
+    <img src="#">
+    Name: <br/>
+    SKY: <br/>
+    BC: <br/>
+</div>
+
+<?  $arLocations = $this->getLocationsOfProduct(5);
+    if (count($arLocations)>0) { ?>
+        <table>
+            <thead>
+            <tr>
+                <th>Location</th>
+                <th>QTY</th>
+                <th>Correction of qty</th>
+            </tr>
+            </thead>
+            <tbody>
+            <? foreach ($arLocations AS $k => $location) { ?>
+                <tr>
+                    <td><?=$location['name']?></td>
+                    <td><?=$location['qty']?></td>
+                    <td></td>
+                </tr>
+            <? } ?>
+            </tbody>
+        </table>
+<? } ?>
+
+

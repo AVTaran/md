@@ -8,19 +8,16 @@
 </div>
 <div class="dashboard-container">
     <div class="search-line">
-        <input type="text" placeholder="Start to taiping the SKY, barcode or name of product">
-		<?php echo $this->getChildHtml('print1_button') ?>
+        <input type="text" placeholder="Start to taiping the SKY, barcode or name of product" id="searchLine">
+		<?php echo $this->getChildHtml('search_button') ?>
+        <?php echo $this->getChildHtml('print1_button') ?>
 		<?php echo $this->getChildHtml('print2_button') ?>
     </div>
     <table cellspacing="25" width="100%">
         <tr>
             <td width="60%">
-                <div class="product-information" style="background:#fafafa; padding:8px 15px;">
+                <div class="product-information" id="productInformation">
                      Place for information about product.<br/>
-<!--                    <br/>-->
-<!--					<a href="--><?//=$this->getUrlControllerAdmin();?><!--">-->
-<!--                        --><?//=$this->getUrlControllerAdmin();?>
-<!--                    </a>-->
                 </div>
             </td>
             <td width="40%">

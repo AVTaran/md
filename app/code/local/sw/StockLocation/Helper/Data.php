@@ -2,12 +2,6 @@
 
 class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 
-	//	public function includeJS($nameJS) {
-	//		$this->loadLayout();
-	//		$this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/applySelect.js');
-	//	}
-
-
 	public function getObjectList($obj, $fieldId = 'Id', $fieldName = 'Name') {
 		$ObjList = Mage::getModel('swstocklocation/'.$obj)->getCollection()->load();
 		$output = array();
@@ -22,7 +16,7 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 		$ObjList = Mage::getModel('swstocklocation/'.$obj)->getCollection()->load();
 		$options = $anOption = array();
 
-		// default
+		// a default option
 		foreach ($fields AS $par => $var) {
 			$anOption[$par] = '';
 		}

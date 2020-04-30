@@ -41,8 +41,10 @@
             </span>
 		<?php } ?>
     </div>
-    <button onclick="newLocation.checkAjax();">GO!</button>
 </div>
+<?php echo $this->getChildHtml('filter_button') ?>
+
+<button onclick="newLocation.checkAjax();">GO!</button>
 
 <div calss="availableLocations" id="availableLocations">
 </div>
