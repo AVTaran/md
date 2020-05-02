@@ -4,12 +4,17 @@
 class sw_StockLocation_Block_Adminhtml_Locations_Grid extends Mage_Adminhtml_Block_Widget_Grid {
 
 	protected function _prepareCollection() {
+		$collection = Mage::getModel('swstocklocation/locations')
+			->getCollection()
 
-		$collection = Mage::getModel('swstocklocation/locations')->getCollection();
+			// ->addAttributeToSelect('*')
+			// ->addAttributeToSelect('*', 'name')
+		;
+
 		$this->setCollection($collection);
+
 		return parent::_prepareCollection();
 	}
-
 
 	protected function _prepareColumns() {
 		$helper = Mage::helper('swstocklocation');
@@ -19,11 +24,12 @@ class sw_StockLocation_Block_Adminhtml_Locations_Grid extends Mage_Adminhtml_Blo
 			'width'		=> '50px',
 		));
 		$this->addColumn('name', array(
-			'header'	=> $helper->__('Name'),
-			'index'		=> 'name',
-			'type'		=> 'text',
-			'width'		=> '100px',
-			// 'filter'	=> true,
+			'header'	=> $helper->__('Location name'),
+			// 'index'		=> 'Locationname',
+			// 'type'		=> 'text',
+			// 'width'		=> '100px',
+			'renderer'	=> 'Sw_StockLocation_Block_Adminhtml_Locations_Grid_Renderer_Locationname',
+			'filter'	=> false,
 			// 'sort'		=> true,
 		));
 

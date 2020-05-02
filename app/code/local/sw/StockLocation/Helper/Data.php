@@ -33,4 +33,50 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 		return $options;
 	}
 
+
+	public function getLocationName ($idLocation) {
+		$locationName = '';
+
+		$ObjLocation = Mage::getModel('swstocklocation/locations')->load($idLocation);
+		$rawLocationData = $ObjLocation->toArray();
+
+		if (!is_null($rawLocationData['id_zone']) AND $rawLocationData['id_zone']>0) {
+			$zoneName = Mage::getModel('swstocklocation/zones')
+				->load($rawLocationData['id_zone'])
+				->getName()
+			;
+			$locationName .= $zoneName;
+		}
+		if (!is_null($rawLocationData['id_block']) AND $rawLocationData['id_block']>0) {
+			$blockName = Mage::getModel('swstocklocation/blocks')
+				->load($rawLocationData['id_block'])
+				->getName()
+			;
+			$locationName .= $blockName;
+		}
+		if (!is_null($rawLocationData['id_shelf']) AND $rawLocationData['id_shelf']>0) {
+			$shelfName = Mage::getModel('swstocklocation/shelfs')
+				->load($rawLocationData['id_shelf'])
+				->getName()
+			;
+			$locationName .= '-'.$shelfName;
+		}
+		if (!is_null($rawLocationData['id_box']) AND $rawLocationData['id_box']>0) {
+			$boxName = Mage::getModel('swstocklocation/boxes')
+				->load($rawLocationData['id_box'])
+				->getName()
+			;
+			$locationName .= '/'.$boxName;
+		}
+		if (!is_null($rawLocationData['id_section']) AND $rawLocationData['id_section']>0) {
+			$sectionName = Mage::getModel('swstocklocation/sections')
+				->load($rawLocationData['id_section'])
+				->getName()
+			;
+			$locationName .= $sectionName;
+		}
+
+		return $locationName;
+	}
+
 }
