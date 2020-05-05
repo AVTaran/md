@@ -21,38 +21,75 @@ class sw_StockLocation_Block_Adminhtml_Shelfs_Edit_Form extends Mage_Adminhtml_B
 
 		$fieldset = $form->addFieldset('shelfs_form', array('legend' => $helper->__('Shelf\'s Information')));
 
-
-		$fieldset->addField('id_block', 'select', array(
-			'label' => $helper->__('Block'),
-			'name' => 'id_block',
-			'values' => $helper->getObjectOptions('blocks'),
+		$fieldset->addType('hidden','Sw_Stocklocation_Lib_Varien_Data_Form_Element_Hidden');
+		$urlAjax = Mage::helper('adminhtml')->getUrl('/adminhtml_stocklocation/ajax', ['_secure' => true]);
+		$fieldset->addField('urlAjax', 'hidden', array(
+			'name' 				=> 'urlAjax',
+			'value'				=> $urlAjax
 		));
 
-		//		$zones1 = array(
-		//			array('value'=>'cms','label'=>'Show in CMS Pages'),
-		//			array('value'=>'category','label'=>'Show in All Category pages'),
-		//			array('value'=>'product','label'=>'Show in All Product pages'),
-		//			array('value'=>'other','label'=>'Show in other pages (cart, checkout, myaccount)'),
-		//		);
-		//		$zones = $helper->getObjectOptions('zones');
-		//		$fieldset->addType('apply','Sw_Stocklocation_Lib_Varien_Data_Form_Element_Apply');
-		//		$fieldset->addField('apply_to', 'apply', array(
-		//			'name'        => 'apply_to[]',
-		//			'label'       => $helper->__('Block'),
-		//			'values' 	  => $zones1,
-		//			'mode_labels' => array(
-		//				'all'     => $helper->__('All Pages'),
-		//				'custom'  => $helper->__('Selected Pages')
-		//			),
-		//			'required'    => true
-		//		), 'frontend_class');
-		//		$fieldset->addField('name', 'text', array(
-		//			'label' => $helper->__('Name'),
-		//			'required' => true,
-		//			'name' => 'name',
-		//		));
+		$fieldset->addField('id_zone', 'select', array(
+			'label' 			=> $helper->__('Zone'),
+			'name'				=> 'id_zone',
+			'required'			=> true,
+			'value'				=> '0',
+			'values' 			=> $helper->getObjectOptions('zones'),
+			// 'onclick'		=> '',
+			'onchange'			=> 'newStockLocation.tackeOptionsForSelect(\'id_zone\',\'id_block\');',
+			'tabindex' 			=> 1,
+			// 'after_element_html'=>'<a href="'.$urlAjax.'" target="_blank">'.$urlA.'</a>',
+		));
 
+		$fieldset->addField('id_block', 'select', array(
+			'label' 			=> $helper->__('Block'),
+			'name' 				=> 'id_block',
+			'required'  		=> true,
+			'value'				=> '-1',
+			'values' 			=> array('-1'=>'Please select a previous element'), // $helper->getObjectOptions
+			//('blocks'),
+			// 'after_element_html' => '<small>Comments</small>',
+			'disabled' 			=> true,
+		));
 
+//		$fieldset->addField('select', 'select', array(
+//			'label'     => Mage::helper('form')->__('Select'),
+//			'class'     => 'required-entry',
+//			'required'  => true,
+//			'name'      => 'title',
+//			'onclick' => "",
+//			'onchange' => "",
+//			'value'  => '1',
+//			'values' => array('-1'=>'Please Select..','1' => 'Option1','2' => 'Option2', '3' => 'Option3'),
+//			'disabled' => false,
+//			'readonly' => false,
+//			'after_element_html' => '<small>Comments</small>',
+//			'tabindex' => 1
+//		));
+//
+//		$zones1 = array(
+//			array('value'=>'cms','label'=>'Show in CMS Pages'),
+//			array('value'=>'category','label'=>'Show in All Category pages'),
+//			array('value'=>'product','label'=>'Show in All Product pages'),
+//			array('value'=>'other','label'=>'Show in other pages (cart, checkout, myaccount)'),
+//		);
+//		$zones = $helper->getObjectOptions('zones');
+//		$fieldset->addType('apply','Sw_Stocklocation_Lib_Varien_Data_Form_Element_Apply');
+//		$fieldset->addField('apply_to', 'apply', array(
+//			'name'        => 'apply_to[]',
+//			'label'       => $helper->__('Block'),
+//			'values' 	  => $helper->getObjectOptions('blocks'),
+//			'mode_labels' => array(
+//				'all'     => $helper->__('All Pages'),
+//				'custom'  => $helper->__('Selected Pages')
+//			),
+//			'required'    => true
+//		), 'frontend_class');
+
+		$fieldset->addField('name', 'text', array(
+			'label' => $helper->__('Name'),
+			'required' => true,
+			'name' => 'name',
+		));
         $fieldset->addField('length', 'text', array(
             'label' => $helper->__('Length'),
             'required' => true,

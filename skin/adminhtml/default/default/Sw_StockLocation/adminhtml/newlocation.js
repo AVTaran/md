@@ -1,5 +1,5 @@
 
-// console.log('Sw StockLocation New location admin --- ');
+console.log('Sw StockLocation New location admin --- ');
 // BASE_URL+'swstocklocation_admin/adminhtml_newlocation',
 
 
@@ -7,7 +7,7 @@ var newLocationModel = Class.create();
 newLocationModel.prototype = {
     // printAdaptor: null,
     urlNewLocationController : null,
-    initialize: function (urlNewLocationController) {
+    initialize: function (urlNewLocationController='/') {
         // this.printAdaptor = printAdaptor;
         this.urlNewLocationController = urlNewLocationController;
     },
@@ -201,82 +201,8 @@ newLocationModel.prototype = {
     },
 
 
-
-
-    // the lazy show tab method
-    showTabContent : function(tab) {
-        var tabContentElement = $(this.getTabContentElementId(tab));
-        if (tabContentElement) {
-            if (this.activeTab != tab) {
-                if (varienGlobalEvents) {
-                    if (varienGlobalEvents.fireEvent('tabChangeBefore', $(this.getTabContentElementId(this.activeTab))).indexOf('cannotchange') != -1) {
-                        return;
-                    };
-                }
-            }
-            // wait for ajax request, if defined
-            var isAjax = Element.hasClassName(tab, 'ajax');
-            var isEmpty = tabContentElement.innerHTML=='' && tab.href.indexOf('#')!=tab.href.length-1;
-            var isNotLoaded = Element.hasClassName(tab, 'notloaded');
-
-            if ( isAjax && (isEmpty || isNotLoaded) )
-            {
-                new Ajax.Request(tab.href, {
-                    parameters: {form_key: FORM_KEY},
-                    evalScripts: true,
-                    onSuccess: function(transport) {
-                        try {
-                            if (transport.responseText.isJSON()) {
-                                var response = transport.responseText.evalJSON();
-                                if (response.error) {
-                                    alert(response.message);
-                                }
-                                if(response.ajaxExpired && response.ajaxRedirect) {
-                                    setLocation(response.ajaxRedirect);
-                                }
-                            } else {
-                                $(tabContentElement.id).update(transport.responseText);
-                                this.showTabContentImmediately(tab);
-                            }
-                        }
-                        catch (e) {
-                            $(tabContentElement.id).update(transport.responseText);
-                            this.showTabContentImmediately(tab);
-                        }
-                    }.bind(this)
-                });
-            }
-            else {
-                this.showTabContentImmediately(tab);
-            }
-        }
-    },
-
 }
 
+// newLocation = new newLocationModel();
 
-
-
-// Event.observe("product_info_tabs", "click", function (){
-//     alert(1);
-// });
-//
-
-// require([ 'jquery', 'jquery/ui'], function($){
-//     $(document).on("click","#checkoutnext", function() {
-//         alert("Test!");
-//     });
-// });
-
-
-// $(".checkboxSet input:checkbox").observe('click', function(event) {
-//     // $(id).setStyle({display: 'none'});
-//     alert('click');
-// });
-
-
-
-
-// sizeOfBox
-// typeOfBox
 

@@ -76,7 +76,60 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 			$locationName .= $sectionName;
 		}
 
+		$locationName .= ' ('.implode('x', $this->getLocationSize($idLocation)).')';
+
 		return $locationName;
 	}
 
+
+	public function getLocationSize ($idLocation, $approx=true) {
+		$length = $width = $height = $dimensions = null;
+
+		$ObjLocation = Mage::getModel('swstocklocation/locations')->load($idLocation);
+		$rawLocationData = $ObjLocation->toArray();
+
+		if (!is_null($rawLocationData['id_zone']) AND $rawLocationData['id_zone']>0) {
+			$objZone = Mage::getModel('swstocklocation/zones')->load($rawLocationData['id_zone']);
+			$length 	= $objZone->getLength();
+			$width 		= $objZone->getWidth();
+			$height 	= $objZone->getHeight();
+			$dimensions = $objZone->getDimensions();
+		}
+		if (!is_null($rawLocationData['id_block']) AND $rawLocationData['id_block']>0) {
+			$objBlock = Mage::getModel('swstocklocation/blocks')->load($rawLocationData['id_block']);
+			$length 	= $objBlock->getLength();
+			$width 		= $objBlock->getWidth();
+			$height 	= $objBlock->getHeight();
+			$dimensions = $objBlock->getDimensions();
+		}
+		if (!is_null($rawLocationData['id_shelf']) AND $rawLocationData['id_shelf']>0) {
+			$objShelf = Mage::getModel('swstocklocation/shelfs')->load($rawLocationData['id_shelf']);
+			$length 	= $objShelf->getLength();
+			$width 		= $objShelf->getWidth();
+			$height 	= $objShelf->getHeight();
+			$dimensions = $objShelf->getDimensions();
+		}
+		if (!is_null($rawLocationData['id_box']) AND $rawLocationData['id_box']>0) {
+			$objBox = Mage::getModel('swstocklocation/boxes')->load($rawLocationData['id_box']);
+			$length 	= $objBox->getLength();
+			$width 		= $objBox->getWidth();
+			$height 	= $objBox->getHeight();
+			$dimensions = $objBox->getDimensions();
+		}
+		if (!is_null($rawLocationData['id_section']) AND $rawLocationData['id_section']>0) {
+			$objSection = Mage::getModel('swstocklocation/sections')->load($rawLocationData['id_section']);
+			$length 	= $objSection->getLength();
+			$width 		= $objSection->getWidth();
+			$height 	= $objSection->getHeight();
+			$dimensions = $objSection->getDimensions();
+		}
+
+		$locationSize = array (
+			'length'		=> $length,
+			'width'			=> $width,
+			'height'		=> $height,
+			'dimensions' 	=> $dimensions,
+		);
+		return $locationSize;
+	}
 }

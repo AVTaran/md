@@ -81,7 +81,6 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 			);
 		}
 		if (!in_array('Any', $params['filter']['size']) AND count($params['filter']['size'])>0) {
-
 			// $select->where(
 			// 	'l.id_zone IN ('. implode(',',$params['filter']['size']).')'
 			// );

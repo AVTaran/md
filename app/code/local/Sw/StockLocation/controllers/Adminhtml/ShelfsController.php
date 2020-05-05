@@ -5,10 +5,10 @@ class Sw_StockLocation_Adminhtml_ShelfsController extends Mage_Adminhtml_Control
 
 
 	public function indexAction() {
-		// die('d');
 		$this->loadLayout()->_setActiveMenu('swstocklocation');
-		//print_r('indexAction');
+
 		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_shelfs'));
+
 		$this->renderLayout();
 	}
 
@@ -23,7 +23,18 @@ class Sw_StockLocation_Adminhtml_ShelfsController extends Mage_Adminhtml_Control
 		$this->loadLayout();
 		$this->_setActiveMenu('swstocklocation');
 
-		$this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/applySelect.js');
+		// $this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/applySelect.js');
+		// $this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/shelf.js');
+
+		$this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/stocklocation.js');
+
+
+//		$this->getLayout()->getBlock('head')->
+//
+//		<script type="text/javascript">
+/*    		newLocation = new newLocationModel('<?=$this->getUrlControllerAdmin();?>');*/
+//		</script>
+
 
 		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_shelfs_edit'));
 		$this->renderLayout();
@@ -96,6 +107,4 @@ class Sw_StockLocation_Adminhtml_ShelfsController extends Mage_Adminhtml_Control
 
 }
 
-/*Shelfs
-shelfs */
 
