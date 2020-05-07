@@ -1,30 +1,89 @@
-<div class="short-product-info">
-    <img src="#">
-    Name: <br/>
-    SKY: <br/>
-    BC: <br/>
+<?php
+    $p = $this->getProduct();
+    $h = Mage::helper('swstocklocation');
+
+    /*echo '<pre>';
+    print_r($p->getId());
+    echo '</pre>';
+    */
+?>
+
+<table>
+    <tr>
+        <td width="50%">
+            <div class="short-product-info">
+                <img src="http://magento.loc/media/catalog/product/<?=$p->getThumbnail();?>" >
+                <ul>
+                    <li>ID: <?=$p->getId();?></li>
+                    <li>Name: <b><?=$p->getName();?></b></li>
+                    <li>SKY: <b><?=$p->getSku();?></b></li>
+                    <li>BC: <b> - <?=$p->getBarcode();?></b></li>
+                </ul>
+            </div>
+        </td>
+        <td width="50%">
+			<? $arLocations = $this->getLocationsOfProduct($p->getID());
+			if (count($arLocations)>0) { ?>
+                <table class="listLocations">
+                    <thead>
+                        <tr>
+                            <td>Location</td>
+                            <td>QTY</td>
+                            <td>Correction of qty</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+					<? foreach ($arLocations AS $k => $location) { ?>
+                        <tr>
+                            <td><?=$h->getLocationName($location['id'])?></td>
+                            <td><?=$location['qty']?></td>
+                            <td></td>
+                        </tr>
+					<? } ?>
+                    </tbody>
+                </table>
+			<? } ?>
+
+        </td>
+    </tr>
+</table>
+<div class="history-movement">
+    <h3>History of movement</h3>
+    <ul>
+        <li></li>
+        <li></li>
+    </ul>
 </div>
 
-<?  $arLocations = $this->getLocationsOfProduct(5);
-    if (count($arLocations)>0) { ?>
-        <table>
-            <thead>
-            <tr>
-                <th>Location</th>
-                <th>QTY</th>
-                <th>Correction of qty</th>
-            </tr>
-            </thead>
-            <tbody>
-            <? foreach ($arLocations AS $k => $location) { ?>
-                <tr>
-                    <td><?=$location['name']?></td>
-                    <td><?=$location['qty']?></td>
-                    <td></td>
-                </tr>
-            <? } ?>
-            </tbody>
-        </table>
-<? } ?>
+
+
+<style>
+    #productInformation table {
+        width: 100%;
+    }
+    #productInformation .short-product-info {
+        margin:0px 20px 0px 0px;
+    }
+    #productInformation .short-product-info img {
+        margin: 0px 10px 0px 0px;
+        height: 100px;
+        width: auto;
+        float: left;
+    }
+    #productInformation .short-product-info ul {
+
+    }
+    #productInformation .short-product-info ul li {
+        margin:0px 0px 5px;
+    }
+    #productInformation table.listLocations {
+        margin:0px 0px 20px 0px;
+    }
+
+    #productInformation .history-movement {
+        margin: 20px 0px 0px 0px;
+    }
+
+</style>
 
 

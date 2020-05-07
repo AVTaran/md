@@ -153,7 +153,9 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 	public function getAjaxProduct ($params) {
 		$ret = array();
 
-    	$product = $productInformation = null;
+		$product = $productInformation = null;
+
+		$queryName = $params['searchLine'];
 
 		$productModel = Mage::getModel('catalog/product')
 			->getCollection()
@@ -171,10 +173,14 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 		$productId = $productModel->getID();
 		if ($productId) {
 			$product = Mage::getModel('catalog/product')->load($productId);
+			$helper = Mage::helper('swstocklocation');
 
-			$productInformation = $this->getLayout()->createBlock('swstocklocation/adminhtml_newlocation_ajaxproductinfo')
-				->toHtml();
-
+			$productInformation = $this->getLayout()
+				->createBlock('swstocklocation/adminhtml_newlocation_ajaxproductinfo')
+				->setProduct($product)
+				// ->setHelper($helper)
+				->toHtml()
+			;
 		}
 
 		/*

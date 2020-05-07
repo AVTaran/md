@@ -9,8 +9,8 @@
 	border:1px solid #555;
 }
 .product-information {
-	background: #fafafa;
-	padding: 8px 15px;
+	/*background: #fafafa;*/
+	padding: 0px 15px;
 }
 .filter-newlocations {
 	border:2px dotted #ccc;
@@ -32,18 +32,24 @@
 #availableLocations {
 	margin:20px 0px 10px 0px;
 }
-#availableLocations > table {
+#availableLocations > table,
+#productInformation table.listLocations {
 	width: 100%;
 	border: 1px solid #cccccc;
 	border-collapse: collapse;
 	border-spacing: 0px;
 }
-#availableLocations > table thead {
+#availableLocations > table thead,
+#productInformation table.listLocations thead {
 	font-weight: bold;
 }
-#availableLocations > table td {
+#availableLocations > table td,
+#productInformation table.listLocations td {
 	border: 1px solid #cccccc;
 	padding: 2px 5px;
 	margin: 0px;
 }
+
+
+
 

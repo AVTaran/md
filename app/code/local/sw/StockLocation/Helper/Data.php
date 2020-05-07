@@ -47,6 +47,10 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 			;
 			$locationName .= $zoneName;
 		}
+		if($zoneName=='S'){
+			$locationName .= '-';
+		}
+
 		if (!is_null($rawLocationData['id_block']) AND $rawLocationData['id_block']>0) {
 			$blockName = Mage::getModel('swstocklocation/blocks')
 				->load($rawLocationData['id_block'])

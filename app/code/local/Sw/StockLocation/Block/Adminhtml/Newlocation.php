@@ -1,12 +1,11 @@
 <?php
 
 
-class Sw_StockLocation_Block_Adminhtml_Newlocation extends Mage_Adminhtml_Block_Abstract // Mage_Adminhtml_Block_Template
+class Sw_StockLocation_Block_Adminhtml_Newlocation extends Mage_Adminhtml_Block_Abstract
 {
 
     public function __construct() {
         parent::__construct();
-
 		$this->setTemplate('swstocklocation/newlocation.phtml');
 	}
 

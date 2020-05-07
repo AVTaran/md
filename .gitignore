@@ -75,3 +75,4 @@ atlassian*
 /skin/adminhtml/default/default/ds_news/*
 /app/design/frontend/[package]/[theme]/template/ds_news/*
 /app/design/frontend/[package]/[theme]/layout/ds_news.xml
+/integration/lib/*

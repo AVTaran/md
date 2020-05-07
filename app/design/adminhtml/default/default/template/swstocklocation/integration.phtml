@@ -1,0 +1,27 @@
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td><h3 class="head-dashboard"><?php echo $this->__('Integration the module') ?></h3></td>
+        </tr>
+    </table>
+</div>
+<div class="integration-container">
+	<?php echo $this->getChildHtml('offwego_button') ?>
+    <div id="resultOfIntegration">
+    </div>
+</div>
+
+<script type="text/javascript">
+    integration = new integrationModel('<?=$this->getUrlControllerAdmin();?>');
+</script>
+
+<style>
+    #resultOfIntegration {
+        margin: 20px 0px 0px 0px;
+    }
+</style>
+
+
+
+
+
