@@ -250,13 +250,29 @@ class Sw_StockLocation_Block_Adminhtml_Integration_Ajax extends  Mage_Adminhtml_
 	public function addSlObject($model, $data, $additionData=array()) {
 		$objList = Mage::getModel('swstocklocation/'.$model)->getCollection();
 		foreach ($data AS $field => $val) {
-			$objList->addFieldToFilter($field, $val);
+			if (is_null($val)){
+				$objList->addFieldToFilter($field, array('null' => true));
+			} else {
+				$objList->addFieldToFilter($field, array('eq' => $val));
+			}
 		}
+
 		$objList->load();
 		$arObjList = $objList->toArray();
 
 		if ($arObjList['totalRecords']>0) {
 			$idObj = $arObjList['items'][0]['id'];
+
+			if($model=='locations' AND $data['id_block']==186  AND $data['id_shelf']==1428  AND $data['id_box']==3812
+			) {
+//				echo '<pre>';
+//				print_r($data);
+//				print_r($arObjList);
+//				echo '</pre>';
+
+				// echo $model.' - '.$data['name'].' - '.$idObj.'<br>'."\n";
+			}
+
 		} elseif ($arObjList['totalRecords']==0) {
 			try {
 				$data = array_merge($data, $additionData);

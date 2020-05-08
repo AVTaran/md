@@ -12,28 +12,26 @@ integrationModel.prototype = {
     },
 
     OffWeGo: function(counter=0) {
+        document.getElementById('offwego_button').disabled = true;
         this.ShiftExistingLocations(counter, this.urlIntegrationController);
         // this.Change...();
     },
 
-    ShiftExistingLocations: function (counter=0, urlI='') {
+    ShiftExistingLocations: function (counter=0, urlI='', obj=this) {
         if (urlI=='') {
             // this.urlIntegrationController = $('urlAjax').value;
            console.log ('I need the url ');
            return;
         }
 
-        var timeout    = 100000;
-        var numberRow  = 20000;
+        var timeout    = 100000; // 100000;
+        var numberRow  = 10000;
 
-        if(counter < 10) {
+        if(counter < 15) {
             counter++;
 
             setTimeout(function(){
-                // console.log(counter, urlI);
-
-                integrat = new integrationModel(urlI);
-                integrat.ShiftExistingLocations(counter, urlI);
+                console.log(counter);
 
                 //*
                 new Ajax.Request(
@@ -58,7 +56,7 @@ integrationModel.prototype = {
                                         'Total: <b>'+ response.totalRows + '</b> records. '+
                                         'Copleted: <b>'+response.completeRows + '</b>';
 
-                                    if (response.completeRows==response.totalRows) {
+                                    if (response.completeRows >= response.totalRows) {
                                         counter = counter+10000;
                                     }
 
@@ -80,11 +78,16 @@ integrationModel.prototype = {
                         }.bind(this)
                     }
                 );
+
+                // integrat = new integrationModel(urlI);
+                obj.ShiftExistingLocations(counter, urlI);
+
                 /* */
             }, timeout);
         } else{
             console.log('Locations is Shifted');
             alert('Locations is Shifted');
+            document.getElementById('offwego_button').disabled = false;
         }
 
     },

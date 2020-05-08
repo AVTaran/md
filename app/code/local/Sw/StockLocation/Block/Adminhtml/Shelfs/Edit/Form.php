@@ -23,6 +23,7 @@ class sw_StockLocation_Block_Adminhtml_Shelfs_Edit_Form extends Mage_Adminhtml_B
 
 		$fieldset->addType('hidden','Sw_Stocklocation_Lib_Varien_Data_Form_Element_Hidden');
 		$urlAjax = Mage::helper('adminhtml')->getUrl('/adminhtml_stocklocation/ajax', ['_secure' => true]);
+
 		$fieldset->addField('urlAjax', 'hidden', array(
 			'name' 				=> 'urlAjax',
 			'value'				=> $urlAjax

@@ -11,7 +11,7 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajaxproductinfo extends  Mage
 	public function getLocationsOfProduct ($idProd)
 	{
 		// TODO: just for test
-		$idProd = 231;
+		// $idProd = 231;
 
 		$resource = Mage::getSingleton('core/resource');
 		$connection = $resource->getConnection('core_read');
