@@ -124,7 +124,7 @@ integrationModel.prototype = {
     },
 
     updateResultDivSize: function (res){
-
+        console.log(res);
     },
 
 }

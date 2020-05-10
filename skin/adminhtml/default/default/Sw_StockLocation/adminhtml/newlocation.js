@@ -1,7 +1,6 @@
 console.log('Sw StockLocation New location admin --- ');
 // BASE_URL+'swstocklocation_admin/adminhtml_newlocation',
 
-
 var newLocationModel = Class.create();
 newLocationModel.prototype = {
     // printAdaptor: null,
@@ -24,10 +23,6 @@ newLocationModel.prototype = {
     },
 
     checkAjax: function(event) {
-        // console.log('checkJS');
-        // alert('checkJS');
-        // console.log(this.urlNewLocationController);
-        // console.log(BASE_URL);
         this.showProduct();
         //  this.showAvailableLocation();
     },
@@ -58,7 +53,7 @@ newLocationModel.prototype = {
                     try {
                         if (transport.responseText.isJSON()) {
                             var response = transport.responseText.evalJSON();
-                            console.log(response);
+                            // console.log(response);
                             if (response.error) {
                                 alert(response.message);
                             }
@@ -91,14 +86,14 @@ newLocationModel.prototype = {
             this.urlNewLocationController,
             {
                 parameters: {
-                    form_key: FORM_KEY,
-                    ajax : '1',
-                    operation : 'getProduct',
-                    'param[searchLine]': $('searchLine').value,
+                    form_key            : FORM_KEY,
+                    ajax                : '1',
+                    operation           : 'getProduct',
+                    'param[searchLine]' : $('searchLine').value
                 },
                 evalScripts: true,
                 onSuccess: function(transport) {
-                    console.log(transport);
+                    // console.log(transport);
                     try {
                         if (transport.responseText.isJSON()) {
                             var response = transport.responseText.evalJSON();
@@ -125,55 +120,11 @@ newLocationModel.prototype = {
             }
         );
 
-
-        //
-        // new Ajax.Request(
-        //     'https://r0pmf9m3ro-dsn.algolia.net/1/indexes/md_magento_default_products/query?x-algolia-agent=Algolia%20for%20vanilla%20JavaScript%20(lite)%203.31.0%3BMagento%20integration%20(1.16.0)&x-algolia-application-id=R0PMF9M3RO&x-algolia-api-key=MzQzMmIwNzViODJiYTJlMjA4NDIxZmFhNjkyMzFhMWIxNmY1NTAxMmY4OTZmNTNmYTM4M2I4Y2MwNDI1ODU2MGZpbHRlcnM9',
-        //     {
-        //         parameters: {
-        //             form_key: FORM_KEY,
-        //             // ajax : '1',
-        //             operation : 'getProduct',
-        //             'param[searchLine]': $('searchLine').value,
-        //             params: 'query='+$('searchLine').value+'&hitsPerPage=6&analyticsTags=sw&clickAnalytics=false&facets=%5B%22categories.level0%22%5D&numericFilters=visibility_search%3D1'
-        //         },
-        //         evalScripts: true,
-        //         onSuccess: function(transport) {
-        //             console.log(transport);
-        //             // try {
-        //             //     if (transport.responseText.isJSON()) {
-        //             //         var response = transport.responseText.evalJSON();
-        //             //         console.log(response);
-        //             //         if (response.error) {
-        //             //             alert(response.message);
-        //             //         }
-        //             //
-        //             //         this.updateProductInformation(response.locationsTable);
-        //             //
-        //             //         // if(response.ajaxExpired && response.ajaxRedirect) {
-        //             //         //     setLocation(response.ajaxRedirect);
-        //             //         // }
-        //             //     } else {
-        //             //         // $(tabContentElement.id).update(transport.responseText);
-        //             //         // this.showTabContentImmediately(tab);
-        //             //     }
-        //             // }
-        //             // catch (e) {
-        //             //     // $(tabContentElement.id).update(transport.responseText);
-        //             //     // this.showTabContentImmediately(tab);
-        //             // }
-        //         }.bind(this)
-        //     }
-        // );
-
-
     },
 
     eventFilterChange : function(event) {
-
         this.updateAvailableLocation('');
         this.showAvailableLocation();
-
     },
 
     updateAvailableLocation: function (html) {
@@ -184,9 +135,106 @@ newLocationModel.prototype = {
         $('productInformation').innerHTML = html;
     },
 
+    updateTableLinksLocationProduct: function(el) {
+        // console.log(el.innerHTML);
+        // console.log(el.getAttribute('locationId'));
+
+        var locId = el.getAttribute('locationId');
+
+        if($('placeForNewLinkProductAndLocation') == undefined) {
+            console.log('Is which one product?');
+            alert('Is which one product? Firstly find a product.');
+        } else {
+
+            var htmlObj =
+                '<table class="listLocations" id="listLocations">' +
+                    '<tr>' +
+                        '<td class="name">' +
+                            el.innerHTML +
+                        '</td>' +
+                        '<td class="qty">' +
+                            '<input id="qty" type="text" value="1">' +
+                        '</td>' +
+                        '<td class="operation">' +
+                            '<input id="updateQty" type="button" value="OK" onclick="newLocation.updateQtyLocationProduct('+locId+');">'+
+                        '</td>' +
+                    '</tr>' +
+                '</table>'
+            ;
+
+            // console.log(htmlObj);
+            $('placeForNewLinkProductAndLocation').innerHTML = htmlObj;
+        }
+        // console.log($('placeForNewLinkProductAndLocation'));
+        // $('placeForNewLinkProductAndLocation').innerHTML = html;
+    },
+
+
+    updateQtyLocationProduct: function(locId) {
+        var Qty     = $$('#placeForNewLinkProductAndLocation .qty input')[0].value;
+        var prodId  = $$('.short-product-info input')[0].value;
+
+        new Ajax.Request(
+            this.urlNewLocationController,
+            {
+                parameters: {
+                    form_key            : FORM_KEY,
+                    ajax                : '1',
+                    operation           : 'updateQtyLocationProduct',
+                    'param[prodId]'     : prodId,
+                    'param[locId]'      : locId,
+                    'param[Qty]'        : Qty
+                },
+                evalScripts: true,
+                onSuccess: function(transport) {
+                    // console.log(transport);
+                    try {
+                        if (transport.responseText.isJSON()) {
+                            var response = transport.responseText.evalJSON();
+                            console.log(response);
+                            if (response.error) {
+                                alert(response.message);
+                            }
+
+                            this.updateProductInformation(response.productInformation);
+
+                            // if(response.ajaxExpired && response.ajaxRedirect) {
+                            //     setLocation(response.ajaxRedirect);
+                            // }
+                        } else {
+                            // $(tabContentElement.id).update(transport.responseText);
+                            // this.showTabContentImmediately(tab);
+                        }
+                    }
+                    catch (e) {
+                        // $(tabContentElement.id).update(transport.responseText);
+                        // this.showTabContentImmediately(tab);
+                    }
+                }.bind(this)
+            }
+        );
+        /* */
+    }
+
 }
 
 
+
+
+// Event.observe(document, 'click', respondToClick);
+// function respondToClick(event) {
+//     var element = event.element();
+//     alert("Tag Name : " + element.tagName );
+// }
+
+
+// $$('#tableLinksLocationProduction td a').each(function(element) {
+//     // var ttt = $j('#tableLinksLocationProduction td a').text();
+//     // console.log(ttt);
+//     // ttt = 'ffff';
+//     // newLocation.updateTableLinksLocationProduction(ttt);
+//     element.observe('click', newLocation.updateTableLinksLocationProduction(element));
+// })
 
 // newLocation = new newLocationModel();
 

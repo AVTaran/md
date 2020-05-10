@@ -80,7 +80,7 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 			$locationName .= $sectionName;
 		}
 
-		$locationName .= ' ('.implode('x', $this->getLocationSize($idLocation)).')';
+		$locationName .= ' <small>('.implode('x', $this->getLocationSize($idLocation)).')</small>';
 
 		return $locationName;
 	}
@@ -323,5 +323,43 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 		return $ret;
 	}
 
+
+
+	public function addSlObject($model, $data, $additionData=array()) {
+		$objList = Mage::getModel('swstocklocation/'.$model)->getCollection();
+		foreach ($data AS $field => $val) {
+			if (is_null($val)){
+				$objList->addFieldToFilter($field, array('null' => true));
+			} else {
+				$objList->addFieldToFilter($field, array('eq' => $val));
+			}
+		}
+
+		$objList->load();
+		$arObjList = $objList->toArray();
+
+		if ($arObjList['totalRecords']>0) {
+			$idObj = $arObjList['items'][0]['id'];
+		} elseif ($arObjList['totalRecords']==0) {
+			try {
+				$data = array_merge($data, $additionData);
+				$model = Mage::getModel('swstocklocation/'.$model)
+					->setData($data)
+					->save()
+				;
+				$idObj = $model->getId();
+			} catch (Exception $e) {
+				$ret['error'][] = $e->getMessage();
+			}
+		} else {
+			$ret['warning'][] = 'Something wrong. Several records of '.$model.' with the same param(s)';
+		}
+		if ($idObj==null) {
+			$ret['error'][] = 'Something wrong. Can\'t catch the ID of '.$model.'.';
+		} else {
+			$ret['id'] = $idObj;
+		}
+		return $ret;
+	}
 
 }

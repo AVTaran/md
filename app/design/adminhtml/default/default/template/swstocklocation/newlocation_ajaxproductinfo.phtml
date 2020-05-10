@@ -2,11 +2,11 @@
     $p = $this->getProduct();
     $h = Mage::helper('swstocklocation');
 ?>
-
 <table>
     <tr>
         <td width="50%">
             <div class="short-product-info">
+                <input type="hidden" name="productId" value="<?=$p->getId();?>">
                 <img src="http://magento.loc/media/catalog/product/<?=$p->getThumbnail();?>" >
                 <ul>
                     <li>ID: <?=$p->getId();?></li>
@@ -19,7 +19,7 @@
         <td width="50%">
 			<? $arLocations = $this->getLocationsOfProduct($p->getID());
 			if (count($arLocations)>0) { ?>
-                <table class="listLocations">
+                <table class="listLocations" id="listLocations">
                     <thead>
                         <tr>
                             <td>Location</td>
@@ -38,7 +38,8 @@
                     </tbody>
                 </table>
 			<? } ?>
-
+            <div id="placeForNewLinkProductAndLocation">
+            </div>
         </td>
     </tr>
 </table>

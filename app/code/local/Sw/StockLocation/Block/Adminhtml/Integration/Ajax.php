@@ -250,7 +250,7 @@ class Sw_StockLocation_Block_Adminhtml_Integration_Ajax extends  Mage_Adminhtml_
 				$ret['error'][] = $e->getMessage();
 			}
 		} else {
-			$ret['warning'][] = 'Something wrong. Several records of '.$model.' with the same param';
+			$ret['warning'][] = 'Something wrong. Several records of '.$model.' with the same param(s)';
 		}
 		if ($idObj==null) {
 			$ret['error'][] = 'Something wrong. Can\'t catch the ID of '.$model.'.';

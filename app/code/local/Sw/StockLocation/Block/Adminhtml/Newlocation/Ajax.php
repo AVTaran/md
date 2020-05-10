@@ -21,6 +21,9 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 			case 'getProduct':
 				$content = $this->getAjaxProduct($params['param']);
 				break;
+			case 'updateQtyLocationProduct':
+				$content = $this->ajaxUpdateQtyLocationProduct($params['param']);
+				break;
 			default:
 				$content = $this->getAjaxDefault();
 			break;
@@ -32,31 +35,18 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 
 	public function getAjaxAvailableLocation($params) {
 		$ret = array();
-
+		$helper = Mage::helper('swstocklocation');
 
 		$resource = Mage::getSingleton('core/resource');
 		$write = $resource->getConnection('core_write');
 
-		// $installer = $this;
-		// $tableL  = $resource->getTableName('swstocklocation/locations');
-		$tableL  = 'sw_sl_location';
-		// $tableL = $this->getTable('swstocklocation/table_location');
-
-		// $tableZ  = $resource->getTableName('swstocklocation/zones');
-		$tableZ  = 'sw_sl_zone';
-
-		// $tableBl = $resource->getTableName('swstocklocation/blocks');
-		$tableBl = 'sw_sl_block';
-
-		// $tableSh = $resource->getTableName('swstocklocation/shelfs');
-		$tableSh = 'sw_sl_shelf';
-
-		// $tableBo = $resource->getTableName('swstocklocation/boxes');
-		$tableBo = 'sw_sl_box';
-
-		// $tableSe = $resource->getTableName('swstocklocation/sections');
-		$tableSe = 'sw_sl_section';
-
+		$tableLp = $resource->getTableName('swstocklocation/table_location_product');
+		$tableL  = $resource->getTableName('swstocklocation/table_location');
+		$tableZ  = $resource->getTableName('swstocklocation/table_zone');
+		$tableBl = $resource->getTableName('swstocklocation/table_block');
+		$tableSh = $resource->getTableName('swstocklocation/table_shelf');
+		$tableBo = $resource->getTableName('swstocklocation/table_box');
+		$tableSe = $resource->getTableName('swstocklocation/table_section');
 
 		$select = $write->select()
 			->from(['l' => $tableL], ['l.id' ])
@@ -81,6 +71,7 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 			);
 		}
 		if (!in_array('Any', $params['filter']['size']) AND count($params['filter']['size'])>0) {
+			// TODO: add filter by  size to query.
 			// $select->where(
 			// 	'l.id_zone IN ('. implode(',',$params['filter']['size']).')'
 			// );
@@ -88,16 +79,14 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 
 		$arLocation = $write->fetchAll($select);
 
-
 		$locationsTable = '
 			<h3>We have not locations which match filter\'s criteria. :-(</h3> 
 			<p>Please, try to change the filter.</p>
 		';
-
 		if (count($arLocation)>0) {
 			$locationsTable ='
 				<h3>'.count($arLocation).' available locations:</h3>
-				<table>
+				<table id="tableLinksLocationProduction">
 					<thead>
 						<tr>
 							<td>First line</td>
@@ -110,7 +99,13 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 			foreach ($arLocation AS $key => $location) {
 				$locationsTable .='
 						<tr>
-							<td>'.$this->getLocationName($location).'</td>
+							<td>
+								<a locationId="'.$location['id'].'" 
+									onclick="newLocation.updateTableLinksLocationProduct(this);"
+								>
+									'.$helper->getLocationName($location['id']).'
+								</a>
+							</td>
 							<td></td>
 							<td></td>
 						</tr>	
@@ -150,30 +145,34 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 		return $ret;
 	}
 
-	public function getAjaxProduct ($params) {
+	public function getAjaxProduct($params) {
 		$ret = array();
 
-		$product = $productInformation = null;
+		$productInformation = null;
 
-		$queryName = $params['searchLine'];
+		if (!isset($params['prodId']) OR $params['prodId']==0) {
+			$queryName = $params['searchLine'];
 
-		$productModel = Mage::getModel('catalog/product')
-			->getCollection()
-			->addAttributeToSelect('name', 'entity_id', 'price')
-			->addAttributeToFilter(
-				'sku',
-				array (
-					'like' => '%'.$queryName.'%'
+			$productModel = Mage::getModel('catalog/product')
+				->getCollection()
+				->addAttributeToSelect('name', 'entity_id', 'price')
+				->addAttributeToFilter(
+					'sku',
+					array (
+						'like' => '%'.$queryName.'%'
+					)
 				)
-			)
-			// ->addAttributeToFilter('name', array('like' => '%'.$queryName.'%'))
-			->getFirstItem()
-		;
+				// ->addAttributeToFilter('name', array('like' => '%'.$queryName.'%'))
+				->getFirstItem()
+			;
+			$productId = $productModel->getID();
+		} else {
+			$productId = $params['prodId'];
+		}
 
-		$productId = $productModel->getID();
+
 		if ($productId) {
 			$product = Mage::getModel('catalog/product')->load($productId);
-			$helper = Mage::helper('swstocklocation');
 
 			$productInformation = $this->getLayout()
 				->createBlock('swstocklocation/adminhtml_newlocation_ajaxproductinfo')
@@ -205,30 +204,73 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 		return $ret;
 	}
 
-	public function getLocationName ($rawLocationData) {
-		$location = '';
-
-		if (!is_null($rawLocationData['zone'])) {
-			$location .= $rawLocationData['zone'];
-		}
-		if (!is_null($rawLocationData['block'])) {
-			$location .= $rawLocationData['block'];
-		}
-		if (!is_null($rawLocationData['shelf'])) {
-			$location .= '-'.$rawLocationData['shelf'];
-		}
-		if (!is_null($rawLocationData['box'])) {
-			$location .= '/'.$rawLocationData['box'];
-		}
-		if (!is_null($rawLocationData['section'])) {
-			$location .= $rawLocationData['section'];
+	public function ajaxUpdateQtyLocationProduct($params) {
+		$ret = array();
+		if (($params['prodId'] + $params['locId'] + $params['Qty'])<3) {
+			$ret['error'][] = 'Not correct parameters: '.$params['prodId'].'; '.$params['locId'].'; '.$params['Qty'].'.';
+			return $ret;
 		}
 
-    	return $location;
+		$lp = Mage::getModel('swstocklocation/locationproduct')->getCollection()
+			->addFieldToFilter('id_product', array('eq' => $params['prodId']))
+			->addFieldToFilter('id_location', array('eq' => $params['locId']))
+			->load()
+			->toArray()
+		;
+
+		// print_r($lp);
+
+		if ($lp['totalRecords']>1) {
+			$ret['error'][] = 'Something wrong. More than one record in the table location_product. IDs: '.$params['prodId'].'; '.$params['locId'].'.';
+			return $ret;
+		} elseif ($lp['totalRecords']==0) {
+			try {
+				$resource = Mage::getSingleton('core/resource');
+				$table = $resource->getTableName('swstocklocation/table_location_product');
+				$writeConnection = Mage::getSingleton('core/resource')->getConnection('core_write');
+				$sql = '
+					INSERT INTO '.$table. ' (`id_product`, `id_location`, `qty`)
+					VALUES ('.(int)$params['prodId'].', '.(int)$params['locId'].', '.(int)$params['Qty'].' ) 
+				';
+				$writeConnection->query( $sql );
+
+				$ret['id_location'] = $params['locId'];
+				$ret['id_product']  = $params['prodId'];
+			} catch (Exception $e) {
+				$ret['error'][] = $e->getMessage();
+			}
+
+		} elseif ($lp['totalRecords']==1) {
+
+			$qty = $lp['items'][0]['qty'] + $params['Qty'];
+			if ($qty>=0) {
+				$resource = Mage::getSingleton('core/resource');
+				$table = $resource->getTableName('swstocklocation/table_location_product');
+				$writeConnection = Mage::getSingleton('core/resource')->getConnection('core_write');
+				$writeConnection->update(
+					$table,
+					array( 'qty' => $qty ),
+					'id_product='.$params['prodId'].' AND id_location='.$params['locId']
+				);
+
+				$ret['id_location'] = $lp['items'][0]['id_location'];
+				$ret['id_product']  = $lp['items'][0]['id_product'];
+			} else {
+				//  TODO if qty after operation will be less than 0 - constrain
+				$ret['error'][] = 'Qty is less than 0. Are you sure?';
+			}
+		}
+
+		if (count($ret['error'])==0) {
+			$ret = $this->getAjaxProduct($params);
+		}
+
+		return $ret;
 	}
 
 	public function getAjaxDefault () {
     	return 'unknown request';
 	}
+
 
 }
