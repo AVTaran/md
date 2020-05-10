@@ -1,4 +1,3 @@
-
 console.log('Sw StockLocation New location admin --- ');
 // BASE_URL+'swstocklocation_admin/adminhtml_newlocation',
 
@@ -174,22 +173,7 @@ newLocationModel.prototype = {
 
         this.updateAvailableLocation('');
         this.showAvailableLocation();
-        // var tab = Event.findElement(event, 'a');
 
-        /*
-        var tab = Event.findElement(event, 'a');
-
-        // go directly to specified url or switch tab
-        if ((tab.href.indexOf('#') != tab.href.length-1)
-            && !(Element.hasClassName(tab, 'ajax'))
-        ) {
-            location.href = tab.href;
-        }
-        else {
-            this.showTabContent(tab);
-        }
-        Event.stop(event);
-        */
     },
 
     updateAvailableLocation: function (html) {
@@ -200,8 +184,9 @@ newLocationModel.prototype = {
         $('productInformation').innerHTML = html;
     },
 
-
 }
+
+
 
 // newLocation = new newLocationModel();
 

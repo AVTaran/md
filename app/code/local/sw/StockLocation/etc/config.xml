@@ -46,6 +46,9 @@
 					<table_location>
 						<table>sw_sl_location</table>
 					</table_location>
+					<table_location_product>
+						<table>sw_sl_location_product</table>
+					</table_location_product>
 					<table_section>
 						<table>sw_sl_section</table>
 					</table_section>

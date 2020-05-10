@@ -25,6 +25,19 @@ class Sw_StockLocation_Block_Adminhtml_Integration extends Mage_Adminhtml_Block_
 				))
 		);
 
+		$this->setChild('size_button',
+			$this->getLayout()->createBlock('adminhtml/widget_button')
+				->setData(array(
+					'label' 		=> Mage::helper('customer')->__('Let\'s count sizes'),
+					'id' 			=> 'size_button',
+					'name' 			=> 'size_button',
+					'element_name' 	=> 'size_button',
+					// 'disabled' 	=> false,
+					'class' 		=> 'size_button',
+					'onclick' 		=> 'integration.countSizeOfLocations()'
+				))
+		);
+
         parent::_prepareLayout();
     }
 

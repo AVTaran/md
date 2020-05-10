@@ -11,10 +11,9 @@ integrationModel.prototype = {
         // console.log(this.urlIntegrationController);
     },
 
-    OffWeGo: function(counter=0) {
+    OffWeGo: function() {
         document.getElementById('offwego_button').disabled = true;
-        this.ShiftExistingLocations(counter, this.urlIntegrationController);
-        // this.Change...();
+        this.ShiftExistingLocations(0, this.urlIntegrationController);
     },
 
     ShiftExistingLocations: function (counter=0, urlI='', obj=this) {
@@ -24,16 +23,12 @@ integrationModel.prototype = {
            return;
         }
 
-        var timeout    = 100000; // 100000;
+        var timeout    = 100000;
         var numberRow  = 10000;
-
         if(counter < 15) {
             counter++;
 
             setTimeout(function(){
-                console.log(counter);
-
-                //*
                 new Ajax.Request(
                     urlI,
                     {
@@ -45,44 +40,34 @@ integrationModel.prototype = {
                             'param[portion]': counter,
                         },
                         evalScripts: true,
-                        onSuccess: function(transport) {
-                            // console.log(transport);
+                        onSuccess: function(transport) {    // console.log(transport);
                             try {
                                 if (transport.responseText.isJSON()) {
-                                    var response = transport.responseText.evalJSON();
-                                    // console.log(response);
+                                    var response = transport.responseText.evalJSON();  // console.log(response);
+                                    if (response.error) { alert(response.message); }
+
+                                    obj.updateResultDiv(response);
 
                                     document.getElementById('resultOfIntegration').innerHTML =
                                         'Total: <b>'+ response.totalRows + '</b> records. '+
-                                        'Copleted: <b>'+response.completeRows + '</b>';
-
+                                        'Copleted: <b>'+response.completeRows + '</b>'
+                                    ;
                                     if (response.completeRows >= response.totalRows) {
                                         counter = counter+10000;
                                     }
 
-                                    // this.updateResultDiv(response);
-
-                                    if (response.error) {
-                                        alert(response.message);
-                                    }
-
                                 } else {
-                                    // $(tabContentElement.id).update(transport.responseText);
-                                    // this.showTabContentImmediately(tab);
+                                    console.log(response);
                                 }
-                            }
-                            catch (e) {
-                                // $(tabContentElement.id).update(transport.responseText);
-                                // this.showTabContentImmediately(tab);
+                            } catch (e) {
+                                console.log(e, transport);
                             }
                         }.bind(this)
                     }
                 );
 
-                // integrat = new integrationModel(urlI);
                 obj.ShiftExistingLocations(counter, urlI);
 
-                /* */
             }, timeout);
         } else{
             console.log('Locations is Shifted');
@@ -95,6 +80,52 @@ integrationModel.prototype = {
     updateResultDiv: function (res) {
         console.log(res);
      },
+
+    countSizeOfLocations: function() {
+        console.log('countSizeOfLocations');
+
+        new Ajax.Request(
+            this.urlIntegrationController,
+            {
+                parameters: {
+                    form_key        : FORM_KEY,
+                    ajax            : '1',
+                    operation       : 'countSizeOfLocations',
+                    'param[obj]'    : 'zones',
+                    'param[objId]'  : '1',
+                },
+                evalScripts: true,
+                onSuccess: function(transport) {    // console.log(transport);
+                    try {
+                        if (transport.responseText.isJSON()) {
+                            var response = transport.responseText.evalJSON();  // console.log(response);
+                            if (response.error) { alert(response.message); }
+
+                            obj.updateResultDivSize(response);
+
+                            document.getElementById('resultOfIntegration').innerHTML =
+                                'Total: <b>'+ response.totalRows + '</b> records. '+
+                                'Copleted: <b>'+response.completeRows + '</b>'
+                            ;
+                            if (response.completeRows >= response.totalRows) {
+                                counter = counter+10000;
+                            }
+
+                        } else {
+                            console.log(response);
+                        }
+                    } catch (e) {
+                        console.log(e, transport);
+                    }
+                }.bind(this)
+            }
+        );
+
+    },
+
+    updateResultDivSize: function (res){
+
+    },
 
 }
 

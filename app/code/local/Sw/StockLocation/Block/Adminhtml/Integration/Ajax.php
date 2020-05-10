@@ -11,11 +11,13 @@ class Sw_StockLocation_Block_Adminhtml_Integration_Ajax extends  Mage_Adminhtml_
 
 	public function getAjaxContent() {
 		$params = $this->getRequest()->getParams();
-		// print_r($params);
 
 		switch ($params['operation']) {
 			case 'ShiftExistingLocations':
 				$content = $this->ajaxShiftExistingLocations($params['param']);
+				break;
+			case 'countSizeOfLocations':
+				$content = $this->ajaxCountSizeOfLocations($params['param']);
 				break;
 			default:
 				$content = $this->getAjaxDefault();
@@ -27,10 +29,8 @@ class Sw_StockLocation_Block_Adminhtml_Integration_Ajax extends  Mage_Adminhtml_
 	}
 
 	public function ajaxShiftExistingLocations($params) {
-		$ret = array();
-		$arLocations = $arUnmatchedRecords = array();
+		$ret = $arLocations = $arUnmatchedRecords = array();
 
-		// require_once (Mage::getBaseDir().DS.'integration'.DS.'lib'.DS.'reader.php');
 		$pathOfDirI = Mage::getBaseDir().DS.'integration'.DS;
 		$pathOfFileLocation = $pathOfDirI.'ShelfLocationExport-04May2020.xlsx';
 		if( !file_exists($pathOfFileLocation)) {
@@ -38,31 +38,18 @@ class Sw_StockLocation_Block_Adminhtml_Integration_Ajax extends  Mage_Adminhtml_
 		}
 
 		require_once ($pathOfDirI.'lib'.DS.'vendor'.DS.'autoload.php');
-
-		// $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Xlsx");
-		// $spreadsheet = $reader->load($pathOfFileLocation);
-
 		$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 		$spreadsheet = $reader->load($pathOfFileLocation);
-
 		$sheetData = $spreadsheet
 			->getActiveSheet()
 			->toArray(null, true, true, true)
 		;
-		// print_r($sheetData);
-
 
 		array_shift($sheetData);
 		$ret['totalRows'] = count($sheetData);
 
-		// $sheetData = array_splice($sheetData, $params['number']);
-		$sheetData = array_slice(
-			$sheetData,
-			($params['number']*($params['portion']-1)),
-			$params['number']
-		);
-
-		// $sheetData = $sheetData[$params['portion']];
+		// Separate the source data by parts and take a portion to manipulate with
+		$sheetData = array_slice( $sheetData, ($params['number']*($params['portion']-1)), $params['number']);
 
 		foreach ($sheetData AS $r => $rowData) {
 			foreach ($rowData AS $c => $cellData) {
@@ -105,9 +92,6 @@ class Sw_StockLocation_Block_Adminhtml_Integration_Ajax extends  Mage_Adminhtml_
 							}
 						}
 						$out = array_pad($out,6,null);
-						// echo '<pre>';
-						// print_r($out);
-						// echo '</pre>';
 						$arLocations[] = $out;
 						array_pop($arUnmatchedRecords);
 						break;
@@ -141,7 +125,6 @@ class Sw_StockLocation_Block_Adminhtml_Integration_Ajax extends  Mage_Adminhtml_
 		return $ret;
 	}
 
-
 	public function addLocationInDB($zone, $block=null, $shelf=null, $box=null, $section=null ) {
     	$ret = false;
     	$locationData = array (
@@ -151,7 +134,6 @@ class Sw_StockLocation_Block_Adminhtml_Integration_Ajax extends  Mage_Adminhtml_
 			'id_box' => null,
 			'id_section' => null
 		);
-		// $idTypeBox = null;
 
 		// ----------------
 		// add zone
@@ -238,14 +220,8 @@ class Sw_StockLocation_Block_Adminhtml_Integration_Ajax extends  Mage_Adminhtml_
 		if (!is_null($locationData['id_zone']) AND !is_null($locationData['id_block'])) {
 			$ret = $this->addSlObject('locations', $locationData);
 		}
-
-//		echo '<pre>';
-//    	print_r($ret);
-//		echo '</pre>';
-
     	return $ret;
 	}
-
 
 	public function addSlObject($model, $data, $additionData=array()) {
 		$objList = Mage::getModel('swstocklocation/'.$model)->getCollection();
@@ -262,17 +238,6 @@ class Sw_StockLocation_Block_Adminhtml_Integration_Ajax extends  Mage_Adminhtml_
 
 		if ($arObjList['totalRecords']>0) {
 			$idObj = $arObjList['items'][0]['id'];
-
-			if($model=='locations' AND $data['id_block']==186  AND $data['id_shelf']==1428  AND $data['id_box']==3812
-			) {
-//				echo '<pre>';
-//				print_r($data);
-//				print_r($arObjList);
-//				echo '</pre>';
-
-				// echo $model.' - '.$data['name'].' - '.$idObj.'<br>'."\n";
-			}
-
 		} elseif ($arObjList['totalRecords']==0) {
 			try {
 				$data = array_merge($data, $additionData);
@@ -295,22 +260,30 @@ class Sw_StockLocation_Block_Adminhtml_Integration_Ajax extends  Mage_Adminhtml_
 		return $ret;
 	}
 
+	public function ajaxCountSizeOfLocations($params) {
+		// Mage::helper('swstocklocation')->reCountSizeLocations('zones', 1);
+		// Mage::helper('swstocklocation')->reCountSizeLocations('blocks', 5);
+		// Mage::helper('swstocklocation')->reCountSizeLocations('shelfs', 2);
+		// Mage::helper('swstocklocation')->reCountSizeLocations('boxes', 3);
+		// Mage::helper('swstocklocation')->reCountSizeLocations('boxes', 2301);
 
-	public function countSizeOfLocations() {
-		$approx_h = $approx_w = $approx_l = null;
+    	if (!isset($params['obj'])) {
+			$params['obj'] = 'zones';
+		}
+		if (!isset($params['objId'])) {
+			$objId = $params['objId'];
+		} else {
+			$objId = null;
+		}
 
-		$data = array (
-			'approx_length'	=> $approx_l,
-			'approx_width'	=> $approx_w,
-			'approx_height'	=> $approx_h
-		);
-		$model = Mage::getModel('swstocklocation/zones')
-			->setData($data)
-			->save()
-		;
-		$idZone = $model->getId();
+		$arObjChildList = Mage::getModel('swstocklocation/zones')->getCollection()->load($objId)->toArray();
+		if ($arObjChildList['totalRecords']>0) {
+			foreach ($arObjChildList['items'] AS $k => $item) {
+				Mage::helper('swstocklocation')->reCountSizeLocations($params['obj'], $item['id']);
+			}
+		}
+
 	}
-
 
 	public function getAjaxDefault () {
     	return 'unknown request';
