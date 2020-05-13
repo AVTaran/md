@@ -32,8 +32,7 @@ class Sw_StockLocation_Block_Adminhtml_Ajax extends  Mage_Adminhtml_Block_Abstra
 		$targetSelect = explode('_', $params['targetSelect']);
 		$targetSelect = $targetSelect[1].'s';
 		$targetSelect = str_replace('box', 'boxe', $targetSelect);
-		// return $targetSelect;
-
+		//		return $targetSelect;
 		//		$objModel = Mage::getModel('swstocklocation/'.$targetSelect)
 		//			->getCollection()
 		//			->addAttributeToSelect('*')
@@ -45,14 +44,21 @@ class Sw_StockLocation_Block_Adminhtml_Ajax extends  Mage_Adminhtml_Block_Abstra
 		//			$OptionsForSelect[$obj->getID()] = $obj->getName();
 		//		}
 
-
+		switch ($targetSelect) {
+			case 'bocks':
+				break;
+				// default
+		}
 		$resource = Mage::getSingleton('core/resource');
 		$connection = $resource->getConnection('core_read');
 
-		// $tableBl = $resource->getTableName('swstocklocation/blocks');
-		$tableBl = 'sw_sl_block';
+		$tableL  = $resource->getTableName('swstocklocation/table_location');
+		$tableZ  = $resource->getTableName('swstocklocation/table_zone');
+		$tableBl = $resource->getTableName('swstocklocation/table_block');
+		$tableSh = $resource->getTableName('swstocklocation/table_shelf');
+		$tableBo = $resource->getTableName('swstocklocation/table_box');
+		$tableSe = $resource->getTableName('swstocklocation/table_section');
 
-		// $params['curObjId'] = 1;
 
 		$select = $connection
 			->select()
@@ -64,6 +70,7 @@ class Sw_StockLocation_Block_Adminhtml_Ajax extends  Mage_Adminhtml_Block_Abstra
 
 		$ret['OptionsForSelect'] 	= $OptionsForSelect;
 		$ret['targetSelect'] 		= $params['targetSelect'];
+
 		return $ret;
 	}
 

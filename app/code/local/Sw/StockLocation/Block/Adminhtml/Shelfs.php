@@ -9,7 +9,6 @@ class sw_StockLocation_Block_Adminhtml_Shelfs extends Mage_Adminhtml_Block_Widge
 		$this->_blockGroup = 'swstocklocation';
 		$this->_controller = 'adminhtml_shelfs';
 
-
 		$this->_headerText = $helper->__('StockLocation Management');
 		$this->_addButtonLabel = $helper->__('Add shelf');
 

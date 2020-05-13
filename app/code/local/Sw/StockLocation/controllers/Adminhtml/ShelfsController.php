@@ -7,11 +7,35 @@ class Sw_StockLocation_Adminhtml_ShelfsController extends Mage_Adminhtml_Control
 	public function indexAction() {
 		$this->loadLayout()->_setActiveMenu('swstocklocation');
 
+		$id_zone = null;
+
+		// echo 'params ';
+		// $param = $this->getRequest()->getParams();
+		// print_r($param);
+		//		$param['filter'] = explode('&',urldecode(base64_decode($param['filter'])));
+		//		Zend_Debug::dump($param['filter'], 'Filter: ');
+		// print_r(urldecode(base64_decode($param['filter'])));
+
+		Mage::register('preparedFilter', array(
+			/*
+			'store_id' => '1',
+			'status' => 'processing',
+			'created_at' => array(
+				'from'=> new Zend_Date($from, null, $locale),
+				'to'=> new Zend_Date($to, null, $locale),
+				'locale' => $locale,
+				'orig_to' => Mage::helper('core')->formatDate($to),
+				'orig_from' => Mage::helper('core')->formatDate($from),
+				'datetime' => true
+			),
+			*/
+			'id_zone' => $id_zone,
+		));
+
 		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_shelfs'));
 
 		$this->renderLayout();
 	}
-
 
 	public function newAction() {
 		$this->_forward('edit');
@@ -28,19 +52,9 @@ class Sw_StockLocation_Adminhtml_ShelfsController extends Mage_Adminhtml_Control
 
 		$this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/stocklocation.js');
 
-
-//		$this->getLayout()->getBlock('head')->
-//
-//		<script type="text/javascript">
-/*    		newLocation = new newLocationModel('<?=$this->getUrlControllerAdmin();?>');*/
-//		</script>
-
-
 		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_shelfs_edit'));
 		$this->renderLayout();
 	}
-
-
 
 	public function saveAction() {
 
@@ -69,7 +83,6 @@ class Sw_StockLocation_Adminhtml_ShelfsController extends Mage_Adminhtml_Control
 		$this->_redirect('*/*/');
 	}
 
-
 	public function deleteAction() {
 		if ($id = $this->getRequest()->getParam('id')) {
 			try {
@@ -82,8 +95,6 @@ class Sw_StockLocation_Adminhtml_ShelfsController extends Mage_Adminhtml_Control
 		}
 		$this->_redirect('*/*/');
 	}
-
-
 
 	public function massDeleteAction() {
 
@@ -103,7 +114,6 @@ class Sw_StockLocation_Adminhtml_ShelfsController extends Mage_Adminhtml_Control
 		}
 		$this->_redirect('*/*');
 	}
-
 
 }
 

@@ -9,6 +9,19 @@ newStockLocationModel.prototype = {
     initialize: function (urlNewLocationController='') {
         // this.printAdaptor = printAdaptor;
         this.urlNewLocationController = urlNewLocationController;
+
+        // this.setDefaultVal('id_zone');
+    },
+
+    setDefaultVal: function(obj){
+        // console.log('defaultVal_'+obj);
+        var defaultVal = $('defaultVal_'+obj).value;
+        for (var i=0; i<document.getElementById(obj).options.length; i++) {
+            document.getElementById(obj).options[i].selected = false;
+            if (document.getElementById(obj).options[i].value==defaultVal) {
+                document.getElementById(obj).options[i].selected = true;
+            }
+        }
     },
 
     checkAjax: function(event) {
@@ -21,7 +34,7 @@ newStockLocationModel.prototype = {
     },
 
 
-    tackeOptionsForSelect: function (curObj, targetSelect) {
+    takeOptionsForSelect: function (curObj, targetSelect) {
         // console.log(curObj);
         // console.log(targetSelect);
         // console.log(this.urlNewLocationController);
@@ -29,8 +42,9 @@ newStockLocationModel.prototype = {
         if (this.urlNewLocationController=='') {
             this.urlNewLocationController = $('urlAjax').value;
         }
+        var defaultVal = $('defaultVal_'+targetSelect).value;
 
-        new Ajax.Request(
+            new Ajax.Request(
             this.urlNewLocationController,
             {
                 parameters: {
@@ -52,7 +66,7 @@ newStockLocationModel.prototype = {
                                 alert(response.message);
                             }
 
-                            this.updateOptions(response.targetSelect, response.OptionsForSelect);
+                            this.updateOptions(response.targetSelect, response.OptionsForSelect, defaultVal);
 
                             // if(response.ajaxExpired && response.ajaxRedirect) {
                             //     setLocation(response.ajaxRedirect);
@@ -72,9 +86,10 @@ newStockLocationModel.prototype = {
 
     },
 
-    updateOptions: function (targetSelect, Options) {
+    updateOptions: function (targetSelect, Options, selectedVal) {
         // console.log($(targetSelect));
-        //console.log(Options);
+        // console.log(Options);
+        // console.log(selectedVal);
 
         document.getElementById(targetSelect).options.length = 0;
 
@@ -84,17 +99,19 @@ newStockLocationModel.prototype = {
                 $(targetSelect).append(new Option(Options[i]['name'], Options[i]['id']));
             }
             document.getElementById(targetSelect).removeAttribute('disabled');
-
         } else {
             // console.log('else');
             $(targetSelect).append(new Option('Please select a previous element', '-1'));
-            for (var i=0; i<document.getElementById(targetSelect).options.length; i++) {
-                if (document.getElementById(targetSelect).options[i].value=='-1') {
-                    document.getElementById(targetSelect).options[i].selected = true;
-                }
-            }
             // console.log('/else');
+            selectedVal = '-1';
         }
+
+        for (var i=0; i<document.getElementById(targetSelect).options.length; i++) {
+            if (document.getElementById(targetSelect).options[i].value==selectedVal) {
+                document.getElementById(targetSelect).options[i].selected = true;
+            }
+        }
+
     },
 
     updateProductInformation: function (html) {
@@ -105,3 +122,7 @@ newStockLocationModel.prototype = {
 
 
 newStockLocation = new newStockLocationModel();
+
+window.onload = function () {
+    newStockLocation.setDefaultVal('id_zone');
+};
