@@ -75,67 +75,74 @@ class sw_StockLocation_Block_Adminhtml_Shelfs_Grid extends Mage_Adminhtml_Block_
 		$filterForObjList = $helper->getFilterForObjList($this->getRequest()->getParam('filter'));
 
 		$this->addColumn('id', array(
-			'header' => $helper->__('Shelfs ID'),
-			'index' => 'id',
-			'width'		=> '50px',
+			'header' 		=> $helper->__('Shelfs ID'),
+			'index' 		=> 'id',
+			'width'			=> '50px',
 		));
-		$this->addColumn('zone', array(
-			'header'	=> $helper->__('Zone'),
-			'index'		=> 'id_zone',
-			'options'	=> $helper->getObjectList('zones'),
-			'type'		=> 'options',
-			'width'		=> '80px',
+		$this->addColumn('zones', array(
+			'header'		=> $helper->__('Zone'),
+			'index'			=> 'id_zone',
+			'options'		=> $helper->getObjectList('zones'),
+			'type'			=> 'options',
+			'width'			=> '80px',
 			// 'filter_condition_callback' => array($this, '_zoneFilter'),
 		));
-		$this->addColumn('block', array(
-			'header'	=> $helper->__('Block'),
-			'index'		=> 'id_block',
-			'options'	=> $helper->getObjectList('blocks', $filterForObjList['block']),
-			'type'		=> 'options',
-			'width'		=> '80px',
+		$this->addColumn('blocks', array(
+			'header'		=> $helper->__('Block'),
+			'index'			=> 'id_block',
+			'options'		=> $helper->getObjectList('blocks', $filterForObjList),
+			'type'			=> 'options',
+			'width'			=> '80px',
 		));
 		$this->addColumn('Name', array(
-			'header' => $helper->__('Name'),
-			'index' => 'name',
-			'type' => 'text',
+			'header'		=> $helper->__('Name'),
+			'index' 		=> 'name',
+			'filter_index'  => 'main_table.name',
+			'type' 			=> 'text',
 		));
 
 		$this->addColumn('length', array(
-			'header'	=> $helper->__('Length'),
-			'index'		=> 'length',
-			'type'		=> 'text',
-			'width'		=> '50px',
+			'header'		=> $helper->__('Length'),
+			'index'			=> 'length',
+			'filter_index'  => 'main_table.length',
+			'type'			=> 'text',
+			'width'			=> '50px',
 		));
 		$this->addColumn('width', array(
-			'header'	=> $helper->__('width'),
-			'index'		=> 'width',
-			'type'		=> 'text',
-			'width'		=> '50px',
+			'header'		=> $helper->__('width'),
+			'index'			=> 'width',
+			'filter_index'  => 'main_table.width',
+			'type'			=> 'text',
+			'width'			=> '50px',
 		));
 		$this->addColumn('height', array(
-			'header'	=> $helper->__('height'),
-			'index'		=> 'height',
-			'type'		=> 'text',
-			'width'		=> '50px',
+			'header'		=> $helper->__('height'),
+			'index'			=> 'height',
+			'filter_index'  => 'main_table.height',
+			'type'			=> 'text',
+			'width'			=> '50px',
 		));
 
 		$this->addColumn('sp_x', array(
-			'header'	=> $helper->__('sp_x'),
-			'index'		=> 'sp_x',
-			'type'		=> 'text',
-			'width'		=> '50px',
+			'header'		=> $helper->__('sp_x'),
+			'index'			=> 'sp_x',
+			'filter_index'  => 'main_table.sp_x',
+			'type'			=> 'text',
+			'width'			=> '50px',
 		));
 		$this->addColumn('sp_y', array(
-			'header'	=> $helper->__('sp_y'),
-			'index'		=> 'sp_y',
-			'type'		=> 'text',
-			'width'		=> '50px',
+			'header'		=> $helper->__('sp_y'),
+			'index'			=> 'sp_y',
+			'filter_index'  => 'main_table.sp_y',
+			'type'			=> 'text',
+			'width'			=> '50px',
 		));
 		$this->addColumn('sp_z', array(
-			'header'	=> $helper->__('sp_z'),
-			'index'		=> 'sp_z',
-			'type'		=> 'text',
-			'width'		=> '50px',
+			'header'		=> $helper->__('sp_z'),
+			'index'			=> 'sp_z',
+			'filter_index'  => 'main_table.sp_z',
+			'type'			=> 'text',
+			'width'			=> '50px',
 		));
 
 		return parent::_prepareColumns();

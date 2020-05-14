@@ -32,26 +32,9 @@ class Sw_StockLocation_Block_Adminhtml_Ajax extends  Mage_Adminhtml_Block_Abstra
 		$targetSelect = explode('_', $params['targetSelect']);
 		$targetSelect = $targetSelect[1].'s';
 		$targetSelect = str_replace('box', 'boxe', $targetSelect);
-		//		return $targetSelect;
-		//		$objModel = Mage::getModel('swstocklocation/'.$targetSelect)
-		//			->getCollection()
-		//			->addAttributeToSelect('*')
-		//			->addAttributeToFilter( $params['curObj'], array('eq' => $params['curObjId']) )
-		//		;
-		//		echo $objModel->getSelect();
-		//
-		//		foreach ($objModel AS $k => $obj) {
-		//			$OptionsForSelect[$obj->getID()] = $obj->getName();
-		//		}
 
-		switch ($targetSelect) {
-			case 'bocks':
-				break;
-				// default
-		}
+
 		$resource = Mage::getSingleton('core/resource');
-		$connection = $resource->getConnection('core_read');
-
 		$tableL  = $resource->getTableName('swstocklocation/table_location');
 		$tableZ  = $resource->getTableName('swstocklocation/table_zone');
 		$tableBl = $resource->getTableName('swstocklocation/table_block');
@@ -59,14 +42,39 @@ class Sw_StockLocation_Block_Adminhtml_Ajax extends  Mage_Adminhtml_Block_Abstra
 		$tableBo = $resource->getTableName('swstocklocation/table_box');
 		$tableSe = $resource->getTableName('swstocklocation/table_section');
 
+		$connection = $resource->getConnection('core_read');
 
-		$select = $connection
-			->select()
-			->from(['t' => $tableBl], ['t.id', 't.name' ])
-			->where('t.'.$params['curObj'].'='.$params['curObjId'])
-		;
+		// echo $targetSelect.'<br>';
+		switch ($targetSelect) {
+			case 'zones':
+				$select = $connection
+					->select()
+					->from(['z' => $tableZ], ['z.id', 'z.name' ])
+					->where('z.'.$params['curObj'].'='.$params['curObjId'])
+				;
+				break;
+			case 'blocks':
+				$select = $connection
+					->select()
+					->from(['bl' => $tableBl], ['bl.id', 'bl.name' ])
+					->where('bl.'.$params['curObj'].'='.$params['curObjId'])
+				;
+				break;
+			case 'shelfs':
+				$select = $connection
+					->select()
+					->from(['sh' => $tableSh], ['sh.id', 'sh.name' ])
+					->where('sh.'.$params['curObj'].'='.$params['curObjId'])
+				;
+				break;
+				// default
+		}
+
+
 		// echo $select;
-		$OptionsForSelect = $connection->fetchAll($select);
+		if ($select!=''){
+			$OptionsForSelect = $connection->fetchAll($select);
+		}
 
 		$ret['OptionsForSelect'] 	= $OptionsForSelect;
 		$ret['targetSelect'] 		= $params['targetSelect'];

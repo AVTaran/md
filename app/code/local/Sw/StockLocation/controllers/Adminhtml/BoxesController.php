@@ -22,6 +22,8 @@ class Sw_StockLocation_Adminhtml_BoxesController extends Mage_Adminhtml_Controll
 		Mage::register('current_boxes', Mage::getModel('swstocklocation/boxes')->load($id));
 		$this->loadLayout();
 		$this->_setActiveMenu('swstocklocation');
+		$this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/stocklocation.js');
+
 		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_boxes_edit'));
 		$this->renderLayout();
 	}

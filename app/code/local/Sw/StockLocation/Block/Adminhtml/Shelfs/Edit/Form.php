@@ -20,7 +20,6 @@ class sw_StockLocation_Block_Adminhtml_Shelfs_Edit_Form extends Mage_Adminhtml_B
 		));
 
 		$this->setForm($form);
-
 		$fieldset = $form->addFieldset('shelfs_form', array('legend' => $helper->__('Shelf\'s Information')));
 
 		$fieldset->addType('hidden','Sw_Stocklocation_Lib_Varien_Data_Form_Element_Hidden');
@@ -29,12 +28,18 @@ class sw_StockLocation_Block_Adminhtml_Shelfs_Edit_Form extends Mage_Adminhtml_B
 			'name' 				=> 'urlAjax',
 			'value'				=> $urlAjax
 		));
-		$value = 	array('idBlock' => '-1', 'idZone' => '0');
+		$value = 	array(
+			'idBlock' => '-1',
+			'idZone' => '0'
+		);
 		$values =	array(
 			'block' => array('-1'=>'Please select a previous element'),
 			'zone'  => array('0' =>'')
 		);
-		$disabled = array('block' => true, 'zone' => false);
+		$disabled = array(
+			'block' => true,
+			'zone' => false
+		);
 		if ($id) {
 			$filterForObjList	= array();
 			$disabled['block'] 	= false;
@@ -43,10 +48,14 @@ class sw_StockLocation_Block_Adminhtml_Shelfs_Edit_Form extends Mage_Adminhtml_B
 			$values['zone'] 	= $helper->getObjectOptions('zones');
 			$value['idZone'] 	= Mage::getModel('swstocklocation/blocks')->load($value['idBlock'])->getId_zone();
 
-			$filterForObjList['block']['id_zone'] 	= array('eq' => $value['idZone']);
+			$filterForObjList['blocks']['id_zone'] 	= array('eq' => $value['idZone']);
 
 			$values['block'] 	= $helper->getObjectOptions('blocks', $filterForObjList['block']);
 		}
+		$fieldset->addField('defaultVal_id_zone', 'hidden', array(
+			'name' 				=> 'defaultVal[id_zone]',
+			'value'				=> $value['idZone']
+		));
 		$fieldset->addField('id_zone', 'select', array(
 			'label' 			=> $helper->__('Zone'),
 			'name'				=> 'id_zone',
@@ -61,10 +70,6 @@ class sw_StockLocation_Block_Adminhtml_Shelfs_Edit_Form extends Mage_Adminhtml_B
 		$fieldset->addField('defaultVal_id_block', 'hidden', array(
 			'name' 				=> 'defaultVal[id_block]',
 			'value'				=> $value['idBlock']
-		));
-		$fieldset->addField('defaultVal_id_zone', 'hidden', array(
-			'name' 				=> 'defaultVal[id_zone]',
-			'value'				=> $value['idZone']
 		));
 		$fieldset->addField('id_block', 'select', array(
 			'label' 			=> $helper->__('Block'),

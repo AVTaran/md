@@ -2,85 +2,105 @@
 
 class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 
-	public function getObjectList($obj, $arFilter=array(), $fieldId = 'Id', $fieldName = 'Name') {
+	public function joinFilter($obj, $ObjList, $arFilter) {
 		// Zend_Debug::dump($arFilter, '$arFilter: ');
-		$ObjList = Mage::getModel('swstocklocation/'.$obj)->getCollection();
-		if (count($arFilter)>0) {
-			Zend_Debug::dump($arFilter, '$arFilter: ');
-			if ($obj=='shelfs') {
+
+//		echo '<br> $Obj: <b>'.$obj.'</b><br>';
+//		echo '<pre>';
+//		print_r($arFilter);
+//		echo '</pre>';
+
+		switch ($obj) {
+			case 'sections':
+
+			break;
+			case 'boxes':
+				$tableSh = Mage::getSingleton('core/resource')->getTableName('swstocklocation/table_shelf');
+				$ObjList->getSelect()->joinLeft(
+					$tableSh,
+					'`main_table`.`id_shelf` = `'.$tableSh.'`.`id`',
+					array('id_block')
+				);
+				$tableBl = Mage::getSingleton('core/resource')->getTableName('swstocklocation/table_block');
+				$ObjList->getSelect()->joinLeft(
+					$tableBl,
+					$tableSh.'.`id_block` = `'.$tableBl.'`.`id`',
+					array('id_zone')
+				);
+				if (count($arFilter['boxes'])>0) {
+					foreach ($arFilter['boxes'] AS $field => $filter) {
+						$ObjList->addFieldToFilter($field, $filter);
+					}
+				}
+				if (count($arFilter['shelfs'])>0) {
+					foreach ($arFilter['shelfs'] AS $field => $filter) {
+						$ObjList->addFieldToFilter($field, $filter);
+					}
+				}
+				if (count($arFilter['blocks'])>0) {
+					foreach ($arFilter['blocks'] as $field => $filter) {
+						$ObjList->addFieldToFilter($field, $filter);
+					}
+				}
+				break;
+			case 'shelfs':
 				$tableBl = Mage::getSingleton('core/resource')->getTableName('swstocklocation/table_block');
 				$ObjList->getSelect()->joinLeft(
 					$tableBl,
 					'`main_table`.`id_block` = `'.$tableBl.'`.`id`',
 					array('id_zone')
 				);
-			}
-			if ($obj=='boxes') {
-//				$ObjList->getSelect()->joinLeft(
-//					'sw_sl_block',
-//					'main_table.id_block = sw_sl_block.id',
-//					array('id_zone')
-//				);
-			}
-			if ($obj=='sections') {
-
-			}
-//			echo '<pre>';
-//			print_r($arFilter);
-//			echo '</pre>';
-			foreach ($arFilter AS $field => $filter) {
-				$ObjList->addFieldToFilter($field, $filter);  // array('eq' => $objId)
-			}
-
-			echo $ObjList->getSelect();
+				if (count($arFilter['shelfs'])>0) {
+					foreach ($arFilter['shelfs'] AS $field => $filter) {
+						$ObjList->addFieldToFilter($field, $filter);
+					}
+				}
+				if (count($arFilter['blocks'])>0) {
+					foreach ($arFilter['blocks'] AS $field => $filter) {
+						$ObjList->addFieldToFilter($field, $filter);
+					}
+				}
+			break;
+			case 'blocks':
+				if (count($arFilter['blocks'])>0) {
+					foreach ($arFilter['blocks'] AS $field => $filter) {
+						$ObjList->addFieldToFilter($field, $filter);
+					}
+				}
+			break;
 		}
+
+		// echo '$ObjList->getSelect(): '.$ObjList->getSelect().'<br><br>';
+
+		return $ObjList;
+	}
+
+
+	public function getObjectList($obj, $arFilter=array(), $fieldId = 'Id', $fieldName = 'Name') {
+		$ObjList = Mage::getModel('swstocklocation/'.$obj)->getCollection();
+
+		$ObjList = $this->joinFilter($obj, $ObjList, $arFilter);
+		
 		$ObjList->setOrder('name', 'ASC');
 		$ObjList->load();
 
 		$output = array();
-		foreach($ObjList as $Obj) {
-			$id				= $Obj->{'get'.$fieldId}();
-			$output[$id]	= $Obj->{'get'.$fieldName}();
+		foreach($ObjList as $Ob) {
+			$id				= $Ob->{'get'.$fieldId}();
+			$output[$id]	= $Ob->{'get'.$fieldName}();
 		}
 		return $output;
 	}
 
 	public function getObjectOptions($obj, $arFilter=array(), $fields = array('value'=>'Id', 'label'=>'Name')) {
 		$ObjList = Mage::getModel('swstocklocation/'.$obj)->getCollection();
-		if (count($arFilter)>0) {
-			// Zend_Debug::dump($arFilter, '$arFilter: ');
-			if ($obj=='shelfs') {
-				$tableBl = Mage::getSingleton('core/resource')->getTableName('swstocklocation/table_block');
-				$ObjList->getSelect()->joinLeft(
-					$tableBl,
-					'`main_table`.`id_block` = `'.$tableBl.'`.`id`',
-					array('id_zone')
-				);
-			}
-			if ($obj=='boxes') {
-				//				$ObjList->getSelect()->joinLeft(
-				//					'sw_sl_block',
-				//					'main_table.id_block = sw_sl_block.id',
-				//					array('id_zone')
-				//				);
-			}
-			if ($obj=='sections') {
 
-			}
-			//			echo '<pre>';
-			//			print_r($arFilter);
-			//			echo '</pre>';
-			foreach ($arFilter AS $field => $filter) {
-				$ObjList->addFieldToFilter($field, $filter);  // array('eq' => $objId)
-			}
+		$ObjList = $this->joinFilter($obj, $ObjList, $arFilter);
 
-			// echo $ObjList->getSelect();
-		}
 		$ObjList->setOrder('name', 'ASC');
 		$ObjList->load();
 
 		$options = $anOption = array();
-
 		// a default option
 		foreach ($fields AS $par => $var) {
 			$anOption[$par] = '';
@@ -88,10 +108,10 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 		$options[] = $anOption;
 
 		// pairs: parametr-value 
-		foreach ($ObjList as $Obj) {
+		foreach ($ObjList as $Ob) {
 			$anOption = array();
 			foreach ($fields AS $par => $var) {
-				$anOption[$par] = $Obj->{'get'.$var}();
+				$anOption[$par] = $Ob->{'get'.$var}();
 			}
 			$options[] = $anOption;
 		}
@@ -312,12 +332,12 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 		$objChildList->load();
 		$arObjChildList = $objChildList->toArray();
 
-//		echo '<pre>$dimensionsParent '."\n";
-//		print_r($dimensionsParent);
-//		echo '</pre>';
-//		echo '<pre>totalRecords: '."\n";
-//		print_r($arObjChildList['totalRecords']);
-//		echo '</pre>';
+		//		echo '<pre>$dimensionsParent '."\n";
+		//		print_r($dimensionsParent);
+		//		echo '</pre>';
+		//		echo '<pre>totalRecords: '."\n";
+		//		print_r($arObjChildList['totalRecords']);
+		//		echo '</pre>';
 
 		if ($arObjChildList['totalRecords']==0) {
 			return $ret;
@@ -431,32 +451,37 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 	public function getFilterForObjList ($paramFilter=false) {
 		$filterForObjList = array(
 			'zones' 	=> array(),
-			'block' 	=> array(),
+			'blocks' 	=> array(),
 			'shelfs' 	=> array(),
 			'boxes' 	=> array(),
-			'section' 	=> array()
+			'sections' 	=> array()
 		);
 		if ($paramFilter) {
-			// print_r($param);
 			$arFilter = explode('&',urldecode(base64_decode($paramFilter)));
 			if (!is_array($arFilter)) {$arFilter = array($arFilter);}
+			// print_r($arFilter);
 			foreach ($arFilter AS $filter) {
 				$filter = explode('=', $filter);
 				// Zend_Debug::dump($filter, 'Fil: ');
-				if ($filter[0]=='zone') {
-					$filterForObjList['block']['id_zone'] 	= array('eq'=>$filter[1]);
+				if ($filter[0]=='zones') {
+					$filterForObjList['blocks']['id_zone'] 	= array('eq'=>$filter[1]);
 				}
-				if ($filter[0]=='block') {
-					$filterForObjList['shelf']['id_block'] 	= array('eq'=>$filter[1]);
+				if ($filter[0]=='blocks') {
+					$filterForObjList['shelfs']['id_block'] 	= array('eq'=>$filter[1]);
 				}
-				if ($filter[0]=='shelf') {
-					$filterForObjList['box']['id_shelf'] 	= array('eq'=>$filter[1]);
+				if ($filter[0]=='shelfs') {
+					$filterForObjList['boxes']['id_shelf'] 	= array('eq'=>$filter[1]);
 				}
-				if ($filter[0]=='box') {
-					$filterForObjList['section']['id_box'] 	= array('eq'=>$filter[1]);
+				if ($filter[0]=='boxes') {
+					$filterForObjList['sections']['id_box'] 	= array('eq'=>$filter[1]);
 				}
 			}
 		}
+		//		echo '<pre>$filterForObjList';
+		//		print_r($filterForObjList);
+		//		echo '</pre>';
+		
 		return $filterForObjList;
 	}
+
 }

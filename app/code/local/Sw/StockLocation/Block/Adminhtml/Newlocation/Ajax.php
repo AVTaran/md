@@ -55,7 +55,9 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 			->joinLeft(['sh' => $tableSh], 'l.id_shelf=sh.id', ['sh.name AS shelf'])
 			->joinLeft(['box' => $tableBo], 'l.id_box=box.id', ['box.name AS box'])
 			->joinLeft(['se' => $tableSe], 'l.id_section=se.id', ['se.name AS section'])
+			->joinLeft(['lp' => $tableLp], 'l.id=lp.id_location')
 			->where('l.id_zone=z.id')
+			->where('lp.id_product IS NULL')
 			->limit($params['limit'])
 		;
 

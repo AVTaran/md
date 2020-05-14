@@ -16,10 +16,11 @@ newStockLocationModel.prototype = {
     setDefaultVal: function(obj){
         // console.log('defaultVal_'+obj);
         var defaultVal = $('defaultVal_'+obj).value;
-        for (var i=0; i<document.getElementById(obj).options.length; i++) {
-            document.getElementById(obj).options[i].selected = false;
-            if (document.getElementById(obj).options[i].value==defaultVal) {
-                document.getElementById(obj).options[i].selected = true;
+        var selector = $(obj);
+        for (var i=0; i<selector.options.length; i++) {
+            selector.options[i].selected = false;
+            if (selector.options[i].value==defaultVal) {
+                selector.options[i].selected = true;
             }
         }
     },
@@ -33,9 +34,24 @@ newStockLocationModel.prototype = {
         //  this.showAvailableLocation();
     },
 
+    changeOptions: function (arTargets) {
+        // console.log(arTargets);
+        // var arTargets = [{obj:'id_zone', target:'id_block'}, {obj:'id_block', target:'id_shelf'}];
+        // console.log(arTargets);
+
+        if (arTargets.length>0) {
+                for (var i = 0; i < arTargets.length; i++) {
+                    console.log(arTargets[i].obj, arTargets[i].target);
+                    // $(targetSelect).append(new Option(Options[i]['name'], Options[i]['id']));
+                    this.takeOptionsForSelect(arTargets[i].obj, arTargets[i].target);
+                }
+            }
+        // this.takeOptionsForSelect('id_zone', 'id_block');
+        // this.takeOptionsForSelect('id_block', 'id_shelf');
+    },
 
     takeOptionsForSelect: function (curObj, targetSelect) {
-        // console.log(curObj);
+        console.log(curObj, targetSelect);
         // console.log(targetSelect);
         // console.log(this.urlNewLocationController);
 
@@ -91,14 +107,16 @@ newStockLocationModel.prototype = {
         // console.log(Options);
         // console.log(selectedVal);
 
-        document.getElementById(targetSelect).options.length = 0;
+        $(targetSelect).options.length = 0;
+        // document.getElementById(targetSelect).options.length = 0;
 
         if (Options.length>0) {
             for (var i=0; i < Options.length; i++) {
                 // console.log(Options[i]);
                 $(targetSelect).append(new Option(Options[i]['name'], Options[i]['id']));
             }
-            document.getElementById(targetSelect).removeAttribute('disabled');
+            $(targetSelect).removeAttribute('disabled');
+            // document.getElementById(targetSelect).removeAttribute('disabled');
         } else {
             // console.log('else');
             $(targetSelect).append(new Option('Please select a previous element', '-1'));
@@ -106,9 +124,9 @@ newStockLocationModel.prototype = {
             selectedVal = '-1';
         }
 
-        for (var i=0; i<document.getElementById(targetSelect).options.length; i++) {
-            if (document.getElementById(targetSelect).options[i].value==selectedVal) {
-                document.getElementById(targetSelect).options[i].selected = true;
+        for (var i=0; i<$(targetSelect).options.length; i++) {
+            if ($(targetSelect).options[i].value==selectedVal) {
+                $(targetSelect).options[i].selected = true;
             }
         }
 
@@ -125,4 +143,5 @@ newStockLocation = new newStockLocationModel();
 
 window.onload = function () {
     newStockLocation.setDefaultVal('id_zone');
+    newStockLocation.setDefaultVal('id_block');
 };

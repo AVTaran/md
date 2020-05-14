@@ -29,11 +29,13 @@
 	margin:0px 3px 0px 3px;
 }
 
-#tableLinksLocationProduction > tbody > a {
+#tableLinksLocationProduction > tbody > tr > td > a {
 	text-decoration: none;
 	cursor: pointer;
 }
-
+#tableLinksLocationProduction > tbody > tr > td:hover {
+	background-color: #F9F9F9;
+}
 
 
 #availableLocations {
