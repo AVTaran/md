@@ -3,9 +3,16 @@
 
 class sw_StockLocation_Block_Adminhtml_Sizelocation_Grid extends Mage_Adminhtml_Block_Widget_Grid {
 
-	protected function _prepareCollection() {
+	public function __construct() {
+		parent::__construct();
+		$this->setDefaultSort('volumeMin');
+		$this->setDefaultDir('ASC');
+		$this->setSaveParametersInSession(true);
+	}
 
+	protected function _prepareCollection() {
 		$collection = Mage::getModel('swstocklocation/sizelocation')->getCollection();
+
 		$this->setCollection($collection);
 		return parent::_prepareCollection();
 	}

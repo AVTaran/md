@@ -38,7 +38,7 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 		$helper = Mage::helper('swstocklocation');
 
 		$resource = Mage::getSingleton('core/resource');
-		$write = $resource->getConnection('core_write');
+		$connection = $resource->getConnection('core_write');
 
 		$tableLp = $resource->getTableName('swstocklocation/table_location_product');
 		$tableL  = $resource->getTableName('swstocklocation/table_location');
@@ -48,8 +48,8 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 		$tableBo = $resource->getTableName('swstocklocation/table_box');
 		$tableSe = $resource->getTableName('swstocklocation/table_section');
 
-		$select = $write->select()
-			->from(['l' => $tableL], ['l.id' ])
+		$select = $connection->select()
+			->from(['l' => $tableL], ['l.id, getVolumeLocation(l.id) AS volumeLocation'])
 			->from(['z' => $tableZ], ['z.name AS zone'])
 			->joinLeft(['bl' => $tableBl], 'l.id_block=bl.id', ['bl.name AS block'])
 			->joinLeft(['sh' => $tableSh], 'l.id_shelf=sh.id', ['sh.name AS shelf'])
@@ -73,13 +73,32 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 			);
 		}
 		if (!in_array('Any', $params['filter']['size']) AND count($params['filter']['size'])>0) {
-			// TODO: add filter by  size to query.
-			// $select->where(
-			// 	'l.id_zone IN ('. implode(',',$params['filter']['size']).')'
-			// );
+
+			$listSize = implode(',',$params['filter']['size']);
+			$tableLS = $resource->getTableName('swstocklocation/table_locsize');
+			$selectMin = $connection->select()
+				->from(['ls' => $tableLS], ['MIN(ls.volumeMin) AS volumeMin'])
+				->where('ls.id IN ('.$listSize.')')
+			;
+			$volumeMin = $connection->fetchOne($selectMin);
+			// $volumeMin = $volumeMin['volumeMin'];
+
+			$selectMax = $connection->select()
+				->from(['ls' => $tableLS], ['MAX(ls.volumeMax) AS volumeMax'])
+				->where('ls.id IN ('.$listSize.')')
+			;
+			// echo $selectMax."\n\n\n";
+			$volumeMax = $connection->fetchOne($selectMax);
+
+			// $volumeMax = $volumeMax['volumeMax'];
+			// print_r($volumeMax);
+
+			$select->where ('getVolumeLocation(l.id) BETWEEN ('.$volumeMin.') AND ('.$volumeMax.')');
 		}
 
-		$arLocation = $write->fetchAll($select);
+		// echo $select;
+
+		$arLocation = $connection->fetchAll($select);
 
 		$locationsTable = '
 			<h3>We have not locations which match filter\'s criteria. :-(</h3> 
@@ -91,9 +110,9 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 				<table id="tableLinksLocationProduction">
 					<thead>
 						<tr>
-							<td>First line</td>
-							<td>Middle</td>
-							<td>Back</td>
+							<td>Location</td>
+							<td>Dimension</td>
+							<td>Volume. liters'."\t\t\t".'(sm<sup>3</sup>)</td>
 						</tr>					
 					</thead>
 					<tbody>
@@ -109,7 +128,10 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 								</a>
 							</td>
 							<td></td>
-							<td></td>
+							<td>
+								'.round($location['volumeLocation']/1000,2)."\t\t\t".
+								'<small>('.$location['volumeLocation'].')</small>
+							</td>
 						</tr>	
 				';
 			}

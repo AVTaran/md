@@ -92,7 +92,7 @@ integrationModel.prototype = {
                     ajax            : '1',
                     operation       : 'countSizeOfLocations',
                     'param[obj]'    : 'zones',
-                    'param[objId]'  : '1',
+                    // 'param[objId]'  : '1',
                 },
                 evalScripts: true,
                 onSuccess: function(transport) {    // console.log(transport);
@@ -102,14 +102,8 @@ integrationModel.prototype = {
                             if (response.error) { alert(response.message); }
 
                             obj.updateResultDivSize(response);
-
-                            document.getElementById('resultOfIntegration').innerHTML =
-                                'Total: <b>'+ response.totalRows + '</b> records. '+
-                                'Copleted: <b>'+response.completeRows + '</b>'
-                            ;
-                            if (response.completeRows >= response.totalRows) {
-                                counter = counter+10000;
-                            }
+                            document.getElementById('resultOfCountingSizes').innerHTML = 'Done.';
+                            $(resultOfCountingSizes).innerHTML = 'Done.';
 
                         } else {
                             console.log(response);

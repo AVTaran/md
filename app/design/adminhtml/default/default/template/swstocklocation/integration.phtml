@@ -6,9 +6,13 @@
     </table>
 </div>
 <div class="integration-container">
-	<?php echo $this->getChildHtml('offwego_button') ?>
+	<h4>1. Shift the data from the .xlsx file (approx. 20 minutes)</h4>
+    <?php echo $this->getChildHtml('offwego_button') ?>
     <div id="resultOfIntegration">
     </div>
+    <br><br>
+
+    <h4>2. Recount location's sizes. (approx. 40 seconds)</h4>
 	<?php echo $this->getChildHtml('size_button') ?>
     <div id="resultOfCountingSizes">
     </div>
