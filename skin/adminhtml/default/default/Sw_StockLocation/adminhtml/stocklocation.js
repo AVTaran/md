@@ -9,8 +9,6 @@ newStockLocationModel.prototype = {
     initialize: function (urlNewLocationController='') {
         // this.printAdaptor = printAdaptor;
         this.urlNewLocationController = urlNewLocationController;
-
-        // this.setDefaultVal('id_zone');
     },
 
     setDefaultVal: function(obj){
@@ -80,9 +78,7 @@ newStockLocationModel.prototype = {
     },
 
     takeOptionsForSelect: function (curObj, targetSelect) {
-        console.log(curObj, targetSelect);
-        // console.log(targetSelect);
-        // console.log(this.urlNewLocationController);
+        // console.log(curObj, targetSelect);
 
         if (this.urlNewLocationController=='') {
             this.urlNewLocationController = $('urlAjax').value;
@@ -113,17 +109,11 @@ newStockLocationModel.prototype = {
 
                             this.updateOptions(response.targetSelect, response.OptionsForSelect, defaultVal);
 
-                            // if(response.ajaxExpired && response.ajaxRedirect) {
-                            //     setLocation(response.ajaxRedirect);
-                            // }
                         } else {
-                            // $(tabContentElement.id).update(transport.responseText);
-                            // this.showTabContentImmediately(tab);
                         }
                     }
                     catch (e) {
-                        // $(tabContentElement.id).update(transport.responseText);
-                        // this.showTabContentImmediately(tab);
+                        console.log(e);
                     }
                 }.bind(this)
             }
@@ -173,4 +163,5 @@ newStockLocation = new newStockLocationModel();
 window.onload = function () {
     newStockLocation.setDefaultVal('id_zone');
     newStockLocation.setDefaultVal('id_block');
+    newStockLocation.setDefaultVal('id_shelf');
 };

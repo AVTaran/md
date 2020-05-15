@@ -46,10 +46,6 @@ class Sw_StockLocation_Adminhtml_ShelfsController extends Mage_Adminhtml_Control
 		Mage::register('current_shelfs', Mage::getModel('swstocklocation/shelfs')->load($id));
 		$this->loadLayout();
 		$this->_setActiveMenu('swstocklocation');
-
-		// $this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/applySelect.js');
-		// $this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/shelf.js');
-
 		$this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/stocklocation.js');
 
 		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_shelfs_edit'));

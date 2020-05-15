@@ -65,8 +65,6 @@ class sw_StockLocation_Block_Adminhtml_Boxes_Edit_Form extends Mage_Adminhtml_Bl
 			'name' 				=> 'defaultVal[id_zone]',
 			'value'				=> $value['idZone']
 		));
-		// $arObjOptions = '[{obj:\'id_zone\', target:\'id_block\'}, {obj:\'id_block\', target:\'id_shelf\'}]';
-		// '[{obj:\'id_zone\', target:\'id_block\'}, {obj:\'id_block\', target:\'id_shelf\'}]';
 		$arObjOptions = array(
 			array('obj'=>'id_zone', 'target'=>'id_block'),
 			array('obj'=>'id_block', 'target'=>'id_shelf'),
@@ -111,48 +109,47 @@ class sw_StockLocation_Block_Adminhtml_Boxes_Edit_Form extends Mage_Adminhtml_Bl
 		));
 
 		$fieldset->addField('name', 'text', array(
-			'label' => $helper->__('Name'),
-			'required' => true,
-			'name' => 'name',
+			'label' 			=> $helper->__('Name'),
+			'required' 			=> true,
+			'name' 				=> 'name',
 		));
 		$fieldset->addField('id_typebox', 'select', array(
-			'label' => $helper->__('Type of box'),
-			'name' => 'id_typebox',
-			'values' => $helper->getObjectOptions('typeboxes'),
+			'label'				=> $helper->__('Type of box'),
+			'name' 				=> 'id_typebox',
+			'values' 			=> $helper->getObjectOptions('typeboxes'),
 		));
 
+		$fieldset->addField('length', 'text', array(
+			'label' 			=> $helper->__('Length'),
+			'required' 			=> false,
+			'name' 				=> 'length',
+		));
+		$fieldset->addField('width', 'text', array(
+			'label' 			=> $helper->__('Width'),
+			'required' 			=> false,
+			'name' 				=> 'width',
+		));
+		$fieldset->addField('height', 'text', array(
+			'label' 			=> $helper->__('Height'),
+			'required' 			=> false,
+			'name' 				=> 'height',
+		));
 
-        $fieldset->addField('length', 'text', array(
-            'label' => $helper->__('Length'),
-            'required' => false,
-            'name' => 'length',
-        ));
-        $fieldset->addField('width', 'text', array(
-            'label' => $helper->__('Width'),
-            'required' => false,
-            'name' => 'width',
-        ));
-        $fieldset->addField('height', 'text', array(
-            'label' => $helper->__('Height'),
-            'required' => false,
-            'name' => 'height',
-        ));
-
-        $fieldset->addField('sp_x', 'text', array(
-            'label' => $helper->__('sp_x'),
-            'required' => false,
-            'name' => 'sp_x',
-        ));
-        $fieldset->addField('sp_y', 'text', array(
-            'label' => $helper->__('sp_y'),
-            'required' => false,
-            'name' => 'sp_y',
-        ));
-        $fieldset->addField('sp_z', 'text', array(
-            'label' => $helper->__('sp_z'),
-            'required' => false,
-            'name' => 'sp_z',
-        ));
+		$fieldset->addField('sp_x', 'text', array(
+			'label' 			=> $helper->__('sp_x'),
+			'required' 			=> false,
+			'name' 				=> 'sp_x',
+		));
+		$fieldset->addField('sp_y', 'text', array(
+			'label' 			=> $helper->__('sp_y'),
+			'required' 			=> false,
+			'name' 				=> 'sp_y',
+		));
+		$fieldset->addField('sp_z', 'text', array(
+			'label' 			=> $helper->__('sp_z'),
+			'required' 			=> false,
+			'name' 				=> 'sp_z',
+		));
 
 
 		$form->setUseContainer(true);

@@ -22,6 +22,7 @@ class Sw_StockLocation_Adminhtml_SectionsController extends Mage_Adminhtml_Contr
 		Mage::register('current_sections', Mage::getModel('swstocklocation/sections')->load($id));
 		$this->loadLayout();
 		$this->_setActiveMenu('swstocklocation');
+		$this->getLayout()->getBlock('head')->addItem('skin_js', 'Sw_StockLocation/adminhtml/stocklocation.js');
 		$this->_addContent($this->getLayout()->createBlock('swstocklocation/adminhtml_sections_edit'));
 		$this->renderLayout();
 	}
