@@ -65,14 +65,21 @@ class sw_StockLocation_Block_Adminhtml_Boxes_Edit_Form extends Mage_Adminhtml_Bl
 			'name' 				=> 'defaultVal[id_zone]',
 			'value'				=> $value['idZone']
 		));
-		$arObjOptions = '[{obj:\'id_zone\', target:\'id_block\'}, {obj:\'id_block\', target:\'id_shelf\'}]';
+		// $arObjOptions = '[{obj:\'id_zone\', target:\'id_block\'}, {obj:\'id_block\', target:\'id_shelf\'}]';
+		// '[{obj:\'id_zone\', target:\'id_block\'}, {obj:\'id_block\', target:\'id_shelf\'}]';
+		$arObjOptions = array(
+			array('obj'=>'id_zone', 'target'=>'id_block'),
+			array('obj'=>'id_block', 'target'=>'id_shelf'),
+		);
+		$arObjOptions = base64_encode(json_encode($arObjOptions));
+
 		$fieldset->addField('id_zone', 'select', array(
 			'label' 			=> $helper->__('Zone'),
 			'name'				=> 'id_zone',
 			'required'			=> true,
 			'value'				=> $value['idZone'],
 			'values' 			=> $values['zone'],
-			'onchange'			=> 'newStockLocation.changeOptions('.$arObjOptions.');',
+			'onchange'			=> 'newStockLocation.changeOptions(\''.$arObjOptions.'\', \'id_zone\');',
 			'tabindex' 			=> 1,
 			'default'		    => $value['idZone'],
 			// 'after_element_html'=>'<a href="'.$urlAjax.'" target="_blank">'.$urlA.'</a>',

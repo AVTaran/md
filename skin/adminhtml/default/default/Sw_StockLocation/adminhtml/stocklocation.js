@@ -34,20 +34,49 @@ newStockLocationModel.prototype = {
         //  this.showAvailableLocation();
     },
 
-    changeOptions: function (arTargets) {
-        // console.log(arTargets);
-        // var arTargets = [{obj:'id_zone', target:'id_block'}, {obj:'id_block', target:'id_shelf'}];
-        // console.log(arTargets);
+    changeOptions: function (arTargets, curObj) {
 
-        if (arTargets.length>0) {
-                for (var i = 0; i < arTargets.length; i++) {
-                    console.log(arTargets[i].obj, arTargets[i].target);
-                    // $(targetSelect).append(new Option(Options[i]['name'], Options[i]['id']));
-                    this.takeOptionsForSelect(arTargets[i].obj, arTargets[i].target);
-                }
+        if (this.urlNewLocationController=='') {
+            this.urlNewLocationController = $('urlAjax').value;
+        }
+
+        new Ajax.Request(
+            this.urlNewLocationController,
+            {
+                parameters: {
+                    form_key: FORM_KEY,
+                    ajax : '1',
+                    operation           : 'getOptionsForSelects',
+                    'param[arTargets]'  : arTargets,
+                    'param[curObjId]'   : $(curObj).value,
+                },
+                evalScripts: true,
+                onSuccess: function(transport) {
+                    // console.log(transport);
+                    try {
+                        if (transport.responseText.isJSON()) {
+                            var response = transport.responseText.evalJSON();
+                            // console.log(response);
+                            if (response.error) {
+                                alert(response.message);
+                            }
+                            if (response.length>0) {
+                                for (var i = 0; i < response.length; i++) {
+                                    var defaultVal = $('defaultVal_'+response[i].targetSelect).value;
+                                    console.log(response[i], defaultVal);
+                                    this.updateOptions(response[i].targetSelect, response[i].OptionsForSelect, defaultVal);
+                                }
+                            }
+                        } else {
+
+                        }
+                    }
+                    catch (e) {
+                        console.log(e);
+                    }
+                }.bind(this)
             }
-        // this.takeOptionsForSelect('id_zone', 'id_block');
-        // this.takeOptionsForSelect('id_block', 'id_shelf');
+        );
     },
 
     takeOptionsForSelect: function (curObj, targetSelect) {

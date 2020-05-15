@@ -16,6 +16,11 @@ class Sw_StockLocation_Block_Adminhtml_Ajax extends  Mage_Adminhtml_Block_Abstra
 			case 'getOptionsForSelect':
 				$content = $this->getAjaxOptionsForSelect($params['param']);
 				break;
+
+			case 'getOptionsForSelects':
+				$content = $this->getAjaxOptionsForSelects($params['param']);
+				break;
+
 			default:
 				$content = $this->getAjaxDefault();
 			break;
@@ -25,8 +30,36 @@ class Sw_StockLocation_Block_Adminhtml_Ajax extends  Mage_Adminhtml_Block_Abstra
 		return $content;
 	}
 
+	public function getAjaxOptionsForSelects ($params) {
+		$ret = array();
+
+		$arTargets = json_decode(base64_decode($params['arTargets']));
+
+//		$arObj = '[{obj:\'id_zone\', target:\'id_block\'}, {obj:\'id_block\', target:\'id_shelf\'}]';
+//		$ret[] = $this->getAjaxOptionsForSelect(array('curObjId'=>'id_zone', 'targetSelect'=>'id_block'));
+//		$ret[] = $this->getAjaxOptionsForSelect(array('curObjId'=>'id_block', 'targetSelect'=>'id_shelf'));
+
+		foreach ($arTargets AS $k => $tar) {
+			$curObjId = array(
+				'curObj' 		=> $tar->obj,
+				'targetSelect'	=> $tar->target
+			);
+			if ($k==0) {
+				$curObjId['curObjId'] = $params['curObjId'];
+			}
+
+			$ret[] = $this->getAjaxOptionsForSelect($curObjId);
+		}
+
+		return $ret;
+	}
+
+
 	public function getAjaxOptionsForSelect ($params) {
 		$ret = $OptionsForSelect = array();
+		if (!isset($params['curObjId'])) {
+			$params['curObjId'] = 0;
+		}
 		$params['curObjId'] = $params['curObjId']+0;
 
 		$targetSelect = explode('_', $params['targetSelect']);
@@ -67,7 +100,7 @@ class Sw_StockLocation_Block_Adminhtml_Ajax extends  Mage_Adminhtml_Block_Abstra
 					->where('sh.'.$params['curObj'].'='.$params['curObjId'])
 				;
 				break;
-				// default
+			// default
 		}
 
 
