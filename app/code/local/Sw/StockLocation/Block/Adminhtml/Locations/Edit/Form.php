@@ -21,7 +21,6 @@ class sw_StockLocation_Block_Adminhtml_Locations_Edit_Form extends Mage_Adminhtm
 
 		$fieldset = $form->addFieldset('locations_form', array('legend' => $helper->__('Locations information')));
 
-
 		$fieldset->addField('id_zone', 'select', array(
 			'label' => $helper->__('Zone'),
 			'name' => 'id_zone',

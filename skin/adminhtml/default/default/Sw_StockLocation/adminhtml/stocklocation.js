@@ -46,7 +46,7 @@ newStockLocationModel.prototype = {
                     ajax : '1',
                     operation           : 'getOptionsForSelects',
                     'param[arTargets]'  : arTargets,
-                    'param[curObjId]'   : $(curObj).value,
+                    'param[curObjId]'   : $(curObj).value
                 },
                 evalScripts: true,
                 onSuccess: function(transport) {
@@ -130,7 +130,7 @@ newStockLocationModel.prototype = {
         // document.getElementById(targetSelect).options.length = 0;
 
         if (Options.length>0) {
-            for (var i=0; i < Options.length; i++) {
+            for (var i=0; i<Options.length; i++) {
                 // console.log(Options[i]);
                 $(targetSelect).append(new Option(Options[i]['name'], Options[i]['id']));
             }

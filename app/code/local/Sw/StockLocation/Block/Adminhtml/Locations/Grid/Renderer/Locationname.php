@@ -7,7 +7,7 @@ class Sw_StockLocation_Block_Adminhtml_Locations_Grid_Renderer_Locationname
 
     public function render(Varien_Object $row) {
 		$helper = Mage::helper('swstocklocation');
-		$html = $helper->getLocationName($row->getData()['id']);
+		$html = $helper->getLocationName($row->getData()['id'], false);
         return $html;
     }
 }

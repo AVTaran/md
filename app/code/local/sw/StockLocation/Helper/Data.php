@@ -75,7 +75,6 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 		return $ObjList;
 	}
 
-
 	public function getObjectList($obj, $arFilter=array(), $fieldId = 'Id', $fieldName = 'Name') {
 		$ObjList = Mage::getModel('swstocklocation/'.$obj)->getCollection();
 
@@ -118,7 +117,7 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 		return $options;
 	}
 
-	public function getLocationName ($idLocation) {
+	public function getLocationName ($idLocation, $size=true) {
 		$locationName = '';
 
 		$ObjLocation = Mage::getModel('swstocklocation/locations')->load($idLocation);
@@ -164,10 +163,12 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 			$locationName .= $sectionName;
 		}
 
-		$dimensions = implode('x', $this->getLocationSize($idLocation));
-		$dimensions = str_replace('xx', '', $dimensions);
-		if ($dimensions!='') {
-			$locationName .= ' <small>('.$dimensions.')</small>';
+		if ($size) {
+			$dimensions = implode('x', $this->getLocationSize($idLocation));
+			$dimensions = str_replace('xx', '', $dimensions);
+			if ($dimensions!='') {
+				$locationName .= ' <small>('.$dimensions.')</small>';
+			}
 		}
 
 		return $locationName;

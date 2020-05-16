@@ -6,13 +6,42 @@ class sw_StockLocation_Block_Adminhtml_Locations_Grid extends Mage_Adminhtml_Blo
 	protected function _prepareCollection() {
 		$collection = Mage::getModel('swstocklocation/locations')
 			->getCollection()
-
 			// ->addAttributeToSelect('*')
-			// ->addAttributeToSelect('*', 'name')
+			// ->addAttributeToSelect('name')
 		;
 
-		$this->setCollection($collection);
+		//join with product
+		$tableLp = Mage::getSingleton('core/resource')->getTableName('swstocklocation/table_location_product');
+		$collection->getSelect()->joinLeft(
+			$tableLp,					// array('table_alias' => 'some_long_table_name'),
+			'`main_table`.`id`=`'.$tableLp .'`.`id_location`',
+			array('qty' => 'qty')
+		);
 
+		$entityProduct = Mage::getSingleton("core/resource")->getTableName('catalog_product_entity');
+		$collection->getSelect()->joinLeft(
+			$entityProduct,
+			'`'.$tableLp .'`.`id_product` = `'.$entityProduct.'`.`entity_id`',
+			array('sku' => 'sku')
+		);
+
+		$productAttributes = array('name', 'price', 'url_key');
+		foreach ($productAttributes as $attributeCode) {
+			$alias     = $attributeCode . '_table';
+			$attribute = Mage::getSingleton('eav/config')
+				->getAttribute(Mage_Catalog_Model_Product::ENTITY, $attributeCode);
+
+			/** Adding eav attribute value */
+			$collection->getSelect()->joinLeft(
+				array($alias => $attribute->getBackendTable()),
+				$tableLp.".id_product = $alias.entity_id AND $alias.attribute_id={$attribute->getId()}",
+				array($alias.'_'.$attributeCode.'' => 'value')
+			);
+		}
+
+		// echo $collection->getSelect();
+
+		$this->setCollection($collection);
 		return parent::_prepareCollection();
 	}
 
@@ -22,15 +51,6 @@ class sw_StockLocation_Block_Adminhtml_Locations_Grid extends Mage_Adminhtml_Blo
 			'header'	=> $helper->__('Location ID'),
 			'index'		=> 'id',
 			'width'		=> '50px',
-		));
-		$this->addColumn('name', array(
-			'header'	=> $helper->__('Location name'),
-			// 'index'		=> 'Locationname',
-			// 'type'		=> 'text',
-			// 'width'		=> '100px',
-			'renderer'	=> 'Sw_StockLocation_Block_Adminhtml_Locations_Grid_Renderer_Locationname',
-			'filter'	=> false,
-			// 'sort'		=> true,
 		));
 
 		$this->addColumn('zone', array(
@@ -69,61 +89,53 @@ class sw_StockLocation_Block_Adminhtml_Locations_Grid extends Mage_Adminhtml_Blo
 			'width'		=> '50px',
 		));
 
-		/*
-		$this->addColumn('length', array(
-			'header'	=> $helper->__('Length'),
-			'index'		=> 'length',
-			'type'		=> 'text',
-			'width'		=> '50px',
-		));
-		$this->addColumn('width', array(
-			'header'	=> $helper->__('width'),
-			'index'		=> 'width',
-			'type'		=> 'text',
-			'width'		=> '50px',
-		));
-		$this->addColumn('height', array(
-			'header'	=> $helper->__('height'),
-			'index'		=> 'height',
-			'type'		=> 'text',
-			'width'		=> '50px',
+		$this->addColumn('name', array(
+			'header'	=> $helper->__('Location name'),
+			// 'index'		=> 'Locationname',
+			// 'type'		=> 'text',
+			'width'		=> '100px',
+			'renderer'	=> 'Sw_StockLocation_Block_Adminhtml_Locations_Grid_Renderer_Locationname',
+			'filter'	=> false,
+			// 'sort'		=> true,
 		));
 
-		$this->addColumn('sp_x', array(
-			'header'	=> $helper->__('sp_x'),
-			'index'		=> 'sp_x',
-			'type'		=> 'text',
-			'width'		=> '50px',
-		));
-		$this->addColumn('sp_y', array(
-			'header'	=> $helper->__('sp_y'),
-			'index'		=> 'sp_y',
-			'type'		=> 'text',
-			'width'		=> '50px',
-		));
-		$this->addColumn('sp_z', array(
-			'header'	=> $helper->__('sp_z'),
-			'index'		=> 'sp_z',
-			'type'		=> 'text',
-			'width'		=> '50px',
+		$this->addColumn('dimensions', array(
+			'header'	=> $helper->__('Location dimension'),
+			// 'index'		=> 'Locationdimensions',
+			// 'type'		=> 'text',
+			'width'		=> '100px',
+			'renderer'	=> 'Sw_StockLocation_Block_Adminhtml_Locations_Grid_Renderer_Locationdimensions',
+			'filter'	=> false,
+			// 'sort'		=> true,
 		));
 
-
-		//$this->addColumn('coordinates', array(
-			//'header' => $helper->__('coordinates'),
-			//'index' => 'coordinates',
-			//'type' => 'text',
-		//));
-		//$this->addColumn('dimensions', array(
-			//'header' => $helper->__('dimensions'),
-			//'index' => 'dimensions',
-			//'type' => 'text',
-		//));
-		*/
+		$this->addColumn('name_table_name', array(
+			'header'	=> $helper->__('Product'),
+			'index'		=> 'name_table_name',
+			'type'		=> 'text',
+			// 'width'		=> '100px',
+			// 'filter'	=> true,
+			// 'sort'		=> true,
+		));
+		$this->addColumn('sku', array(
+			'header'	=> $helper->__('Product sku'),
+			'index'		=> 'sku',
+			'type'		=> 'text',
+			'width'		=> '100px',
+			// 'filter'	=> true,
+			// 'sort'		=> true,
+		));
+		$this->addColumn('qty', array(
+			'header'	=> $helper->__('Quantity'),
+			'index'		=> 'qty',
+			'type'		=> 'text',
+			'width'		=> '50px',
+			// 'filter'	=> true,
+			// 'sort'		=> true,
+		));
 
 		return parent::_prepareColumns();
 	}
-
 
 	protected function _prepareMassaction() {
 		$this->setMassactionIdField('id');
@@ -134,7 +146,6 @@ class sw_StockLocation_Block_Adminhtml_Locations_Grid extends Mage_Adminhtml_Blo
 		));
 		return $this;
 	}
-
 
 	public function getRowUrl($model) {
 		return $this->getUrl('*/adminhtml_locations/edit', array(
