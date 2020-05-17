@@ -47,44 +47,49 @@ class sw_StockLocation_Block_Adminhtml_Locations_Grid extends Mage_Adminhtml_Blo
 
 	protected function _prepareColumns() {
 		$helper = Mage::helper('swstocklocation');
+		$filterForObjList = $helper->getFilterForObjList($this->getRequest()->getParam('filter'));
+		//		echo '<pre>';
+		//		print_r($filterForObjList);
+		//		echo '</pre>';
+
 		$this->addColumn('id', array(
 			'header'	=> $helper->__('Location ID'),
 			'index'		=> 'id',
 			'width'		=> '50px',
 		));
 
-		$this->addColumn('zone', array(
+		$this->addColumn('zones', array(
 			'header'	=> $helper->__('Zone'),
 			'index'		=> 'id_zone',
 			'options'	=> $helper->getObjectList('zones'),
 			'type'		=> 'options',
 			'width'		=> '50px',
 		));
-		$this->addColumn('block', array(
+		$this->addColumn('blocks', array(
 			'header'	=> $helper->__('Block'),
 			'index'		=> 'id_block',
-			'options'	=> $helper->getObjectList('blocks'),
+			'options'	=> $helper->getObjectList('blocks', $filterForObjList),
 			'type'		=> 'options',
 			'width'		=> '50px',
 		));
-		$this->addColumn('shelf', array(
+		$this->addColumn('shelfs', array(
 			'header'	=> $helper->__('Shelf'),
 			'index'		=> 'id_shelf',
-			'options'	=> $helper->getObjectList('shelfs'),
+			'options'	=> $helper->getObjectList('shelfs', $filterForObjList),
 			'type'		=> 'options',
 			'width'		=> '50px',
 		));
-		$this->addColumn('box', array(
+		$this->addColumn('boxes', array(
 			'header'	=> $helper->__('Box'),
 			'index'		=> 'id_box',
-			'options'	=> $helper->getObjectList('boxes'),
+			'options'	=> $helper->getObjectList('boxes', $filterForObjList),
 			'type'		=> 'options',
 			'width'		=> '50px',
 		));
-		$this->addColumn('section', array(
+		$this->addColumn('sections', array(
 			'header'	=> $helper->__('Section'),
 			'index'		=> 'id_section',
-			'options'	=> $helper->getObjectList('sections'),
+			'options'	=> $helper->getObjectList('sections', $filterForObjList),
 			'type'		=> 'options',
 			'width'		=> '50px',
 		));

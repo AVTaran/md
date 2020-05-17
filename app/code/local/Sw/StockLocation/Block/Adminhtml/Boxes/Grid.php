@@ -6,11 +6,12 @@ class sw_StockLocation_Block_Adminhtml_Boxes_Grid extends Mage_Adminhtml_Block_W
 	protected function _prepareCollection() {
 		$collection = Mage::getModel('swstocklocation/boxes')->getCollection();
 
+
 		$tableSh = Mage::getSingleton('core/resource')->getTableName('swstocklocation/table_shelf');
 		$collection->getSelect()->joinLeft(
 			$tableSh,
 			'main_table.id_shelf = '.$tableSh.'.id',
-			array('id_block'),
+			array('id_block')
 		);
 
 		$tableBl = Mage::getSingleton('core/resource')->getTableName('swstocklocation/table_block');
@@ -32,7 +33,7 @@ class sw_StockLocation_Block_Adminhtml_Boxes_Grid extends Mage_Adminhtml_Block_W
 		$this->addColumn('id', array(
 			'header' 		=> $helper->__('Boxes ID'),
 			'index' 		=> 'id',
-			'width'			=> '40px',
+			'width'			=> '40px'
 		));
 
 		$this->addColumn('zones', array(
@@ -50,6 +51,7 @@ class sw_StockLocation_Block_Adminhtml_Boxes_Grid extends Mage_Adminhtml_Block_W
 			'type'			=> 'options',
 			'width'			=> '50px',
 		));
+
 		$this->addColumn('shelfs', array(
 			'header'		=> $helper->__('Shelf'),
 			'index'			=> 'id_shelf',
@@ -64,6 +66,7 @@ class sw_StockLocation_Block_Adminhtml_Boxes_Grid extends Mage_Adminhtml_Block_W
 			'filter_index'  => 'main_table.name',
 			'type' 			=> 'text',
 		));
+
 		$this->addColumn('typeboxes', array(
 			'header'		=> $helper->__('Type of box'),
 			'index'			=> 'id_typebox',

@@ -12,7 +12,44 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 
 		switch ($obj) {
 			case 'sections':
-
+				$tableB = Mage::getSingleton('core/resource')->getTableName('swstocklocation/table_box');
+				$ObjList->getSelect()->joinLeft(
+					$tableB,
+					'`main_table`.`id_box` = `'.$tableB.'`.`id`',
+					array('id_shelf')
+				);
+				$tableSh = Mage::getSingleton('core/resource')->getTableName('swstocklocation/table_shelf');
+				$ObjList->getSelect()->joinLeft(
+					$tableSh,
+					$tableB.'.`id_shelf` = `'.$tableSh.'`.`id`',
+					array('id_block')
+				);
+				$tableBl = Mage::getSingleton('core/resource')->getTableName('swstocklocation/table_block');
+				$ObjList->getSelect()->joinLeft(
+					$tableBl,
+					$tableSh.'.`id_block` = `'.$tableBl.'`.`id`',
+					array('id_zone')
+				);
+				if (count($arFilter['sections'])>0) {
+					foreach ($arFilter['sections'] AS $field => $filter) {
+						$ObjList->addFieldToFilter($field, $filter);
+					}
+				}
+				if (count($arFilter['boxes'])>0) {
+					foreach ($arFilter['boxes'] AS $field => $filter) {
+						$ObjList->addFieldToFilter($field, $filter);
+					}
+				}
+				if (count($arFilter['shelfs'])>0) {
+					foreach ($arFilter['shelfs'] AS $field => $filter) {
+						$ObjList->addFieldToFilter($field, $filter);
+					}
+				}
+				if (count($arFilter['blocks'])>0) {
+					foreach ($arFilter['blocks'] as $field => $filter) {
+						$ObjList->addFieldToFilter($field, $filter);
+					}
+				}
 			break;
 			case 'boxes':
 				$tableSh = Mage::getSingleton('core/resource')->getTableName('swstocklocation/table_shelf');
@@ -478,9 +515,9 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 				}
 			}
 		}
-		//		echo '<pre>$filterForObjList';
-		//		print_r($filterForObjList);
-		//		echo '</pre>';
+		//				echo '<pre>$filterForObjList';
+		//				print_r($filterForObjList);
+		//				echo '</pre>';
 		
 		return $filterForObjList;
 	}
