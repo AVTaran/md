@@ -11,8 +11,6 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajaxproductinfo extends  Mage
 	public function getLocationsOfProduct ($idProd) {
 
 		$resource = Mage::getSingleton('core/resource');
-		$connection = $resource->getConnection('core_read');
-
 		$tableLp = $resource->getTableName('swstocklocation/table_location_product');
 		$tableL  = $resource->getTableName('swstocklocation/table_location');
 		$tableZ  = $resource->getTableName('swstocklocation/table_zone');
@@ -21,6 +19,7 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajaxproductinfo extends  Mage
 		$tableBo = $resource->getTableName('swstocklocation/table_box');
 		$tableSe = $resource->getTableName('swstocklocation/table_section');
 
+		$connection = $resource->getConnection('core_read');
 		$select = $connection->select()
 			->from		(['l'  	=> $tableL],  ['l.id'])
 			->from		(['lp' 	=> $tableLp], ['lp.qty', 'lp.qty_estimated'])

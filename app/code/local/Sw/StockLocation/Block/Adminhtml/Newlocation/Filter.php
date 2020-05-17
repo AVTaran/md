@@ -1,10 +1,8 @@
 <?php
 
 
-class Sw_StockLocation_Block_Adminhtml_Newlocation_Filter extends  Mage_Adminhtml_Block_Abstract //
-	// Mage_Core_Block_Template //
-	// Mage_Adminhtml_Block_Dashboard_Bar
-{
+class Sw_StockLocation_Block_Adminhtml_Newlocation_Filter extends  Mage_Adminhtml_Block_Abstract {
+
     protected function _construct() {
         parent::_construct();
 		$this->setTemplate('swstocklocation/newlocation_filter.phtml');

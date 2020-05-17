@@ -4,11 +4,10 @@ class Sw_StockLocation_Helper_Data extends Mage_Core_Helper_Abstract {
 
 	public function joinFilter($obj, $ObjList, $arFilter) {
 		// Zend_Debug::dump($arFilter, '$arFilter: ');
-
-//		echo '<br> $Obj: <b>'.$obj.'</b><br>';
-//		echo '<pre>';
-//		print_r($arFilter);
-//		echo '</pre>';
+		//		echo '<br> $Obj: <b>'.$obj.'</b><br>';
+		//		echo '<pre>';
+		//		print_r($arFilter);
+		//		echo '</pre>';
 
 		switch ($obj) {
 			case 'sections':

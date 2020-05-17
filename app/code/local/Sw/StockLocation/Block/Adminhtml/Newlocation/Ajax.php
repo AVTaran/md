@@ -38,8 +38,6 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 		$helper = Mage::helper('swstocklocation');
 
 		$resource = Mage::getSingleton('core/resource');
-		$connection = $resource->getConnection('core_write');
-
 		$tableLp = $resource->getTableName('swstocklocation/table_location_product');
 		$tableL  = $resource->getTableName('swstocklocation/table_location');
 		$tableZ  = $resource->getTableName('swstocklocation/table_zone');
@@ -48,20 +46,20 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 		$tableBo = $resource->getTableName('swstocklocation/table_box');
 		$tableSe = $resource->getTableName('swstocklocation/table_section');
 
+		$connection = $resource->getConnection('core_read');
 		$select = $connection->select()
-			->from(['l' => $tableL], ['l.id, getVolumeLocation(l.id) AS volumeLocation'])
-			->from(['z' => $tableZ], ['z.name AS zone'])
-			->joinLeft(['bl' => $tableBl], 'l.id_block=bl.id', ['bl.name AS block'])
-			->joinLeft(['sh' => $tableSh], 'l.id_shelf=sh.id', ['sh.name AS shelf'])
-			->joinLeft(['box' => $tableBo], 'l.id_box=box.id', ['box.name AS box'])
-			->joinLeft(['se' => $tableSe], 'l.id_section=se.id', ['se.name AS section'])
-			->joinLeft(['lp' => $tableLp], 'l.id=lp.id_location')
-			->where('l.id_zone=z.id')
-			->where('lp.id_product IS NULL')
-			->limit($params['limit'])
+			->from		(['l' 	=> $tableL],  ['l.id, getVolumeLocation(l.id) AS volumeLocation'])
+			->from		(['z' 	=> $tableZ],  ['z.name AS zone'])
+			->joinLeft	(['bl' 	=> $tableBl], 'l.id_block=bl.id', ['bl.name AS block'])
+			->joinLeft	(['sh' 	=> $tableSh], 'l.id_shelf=sh.id', ['sh.name AS shelf'])
+			->joinLeft	(['box' => $tableBo], 'l.id_box=box.id', ['box.name AS box'])
+			->joinLeft	(['se' 	=> $tableSe], 'l.id_section=se.id', ['se.name AS section'])
+			->joinLeft	(['lp' 	=> $tableLp], 'l.id=lp.id_location')
+			->where		('l.id_zone	= z.id')
+			->where		('lp.id_product IS NULL')
+			->limit		($params['limit'])
 		;
 
-		// print_r($params);
 		if (!in_array('Any', $params['filter']['zone']) AND count($params['filter']['zone'])>0) {
 			$select->where(
 				'l.id_zone IN ('. implode(',',$params['filter']['zone']).')'
@@ -76,22 +74,18 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 
 			$listSize = implode(',',$params['filter']['size']);
 			$tableLS = $resource->getTableName('swstocklocation/table_locsize');
+
 			$selectMin = $connection->select()
 				->from(['ls' => $tableLS], ['MIN(ls.volumeMin) AS volumeMin'])
 				->where('ls.id IN ('.$listSize.')')
 			;
 			$volumeMin = $connection->fetchOne($selectMin);
-			// $volumeMin = $volumeMin['volumeMin'];
 
 			$selectMax = $connection->select()
 				->from(['ls' => $tableLS], ['MAX(ls.volumeMax) AS volumeMax'])
 				->where('ls.id IN ('.$listSize.')')
 			;
-			// echo $selectMax."\n\n\n";
 			$volumeMax = $connection->fetchOne($selectMax);
-
-			// $volumeMax = $volumeMax['volumeMax'];
-			// print_r($volumeMax);
 
 			$select->where ('getVolumeLocation(l.id) BETWEEN ('.$volumeMin.') AND ('.$volumeMax.')');
 		}
@@ -99,7 +93,6 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 		// echo $select;
 
 		$arLocation = $connection->fetchAll($select);
-
 		$locationsTable = '
 			<h3>We have not locations which match filter\'s criteria. :-(</h3> 
 			<p>Please, try to change the filter.</p>
@@ -141,31 +134,9 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 			';
 		}
 
-		/*
-		SELECT
-			CONCAT(`z`.`name`, `bl`.`name`,'-',`sh`.`name`,'/', `box`.`name`, `se`.`name`) `locationName`,
-			`z`.`name` `zone`,
-			`bl`.`name` `block`,
-			`sh`.`name` `shelf`,
-			`box`.`name` `box`,
-			`se`.`name` `section`
-		FROM
-			`sw_sl_location` `l`
-				LEFT JOIN `sw_sl_block` `bl` ON `l`.`id_block`=`bl`.`id`
-				LEFT JOIN `sw_sl_shelf` `sh` ON `l`.`id_shelf`=`sh`.`id`
-				LEFT JOIN `sw_sl_box` `box` ON `l`.`id_box`=`box`.`id`
-				LEFT JOIN `sw_sl_section` `se` ON `l`.`id_section`=`se`.`id`,
-			`sw_sl_zone` `z`
-		WHERE
-			`l`.`id_zone`=`z`.`id`
-		LIMIT
-			10
-		;
-		*/
 
 		$ret['arLocation'] = $arLocation;
 		$ret['locationsTable'] = $locationsTable;
-
 		return $ret;
 	}
 
@@ -189,6 +160,22 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 				// ->addAttributeToFilter('name', array('like' => '%'.$queryName.'%'))
 				->getFirstItem()
 			;
+			/*
+			$sAttributeName = 'size';
+			$mOptionValue = 'medium';
+			$collection = Mage::getModel('catalog/product')->getCollection()
+				->addAttributeToSelect('*')
+				->addFieldToFilter(
+					$sAttributeName,
+					array (
+						'eq' => Mage::getResourceModel('catalog/product')
+							->getAttribute($sAttributeName)
+							->getSource()
+							->getOptionId($mOptionValue)
+					)
+				);
+			*/
+
 			$productId = $productModel->getID();
 		} else {
 			$productId = $params['prodId'];
@@ -201,30 +188,12 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 			$productInformation = $this->getLayout()
 				->createBlock('swstocklocation/adminhtml_newlocation_ajaxproductinfo')
 				->setProduct($product)
-				// ->setHelper($helper)
 				->toHtml()
 			;
 		}
 
-		/*
-		$sAttributeName = 'size';
-		$mOptionValue = 'medium';
-		$collection = Mage::getModel('catalog/product')->getCollection()
-			->addAttributeToSelect('*')
-			->addFieldToFilter(
-				$sAttributeName,
-				array (
-					'eq' => Mage::getResourceModel('catalog/product')
-						->getAttribute($sAttributeName)
-						->getSource()
-						->getOptionId($mOptionValue)
-				)
-			);
-		*/
-
 
 		$ret['productInformation'] = $productInformation;
-		//$ret['product'] = $product;
 		return $ret;
 	}
 

@@ -119,10 +119,6 @@
 						<sort_order>10</sort_order>
 						<action>swstocklocation_admin/adminhtml_locations</action>
 					</locations>
-					<separ1>
-						<title>--------------------------------------</title>
-						<sort_order>20</sort_order>
-					</separ1>
 					<locationforproduct>
 						<title>New location for product</title>
 						<sort_order>30</sort_order>
@@ -157,21 +153,21 @@
 						<sort_order>90</sort_order>
 						<action>swstocklocation_admin/adminhtml_boxes</action>
 					</box>
-					<typebox>
-						<title>Type boxes</title>
-						<sort_order>91</sort_order>
-						<action>swstocklocation_admin/adminhtml_typeboxes</action>
-					</typebox>
-					<sizelocation>
-						<title>Size location</title>
-						<sort_order>92</sort_order>
-						<action>swstocklocation_admin/adminhtml_sizelocation</action>
-					</sizelocation>
 					<section>
 						<title>Sections</title>
 						<sort_order>100</sort_order>
 						<action>swstocklocation_admin/adminhtml_sections</action>
 					</section>
+					<typebox>
+						<title>Type boxes</title>
+						<sort_order>110</sort_order>
+						<action>swstocklocation_admin/adminhtml_typeboxes</action>
+					</typebox>
+					<sizelocation>
+						<title>Location's sizes</title>
+						<sort_order>110</sort_order>
+						<action>swstocklocation_admin/adminhtml_sizelocation</action>
+					</sizelocation>
 				</children>
 			</swstocklocation>
 		</menu>
