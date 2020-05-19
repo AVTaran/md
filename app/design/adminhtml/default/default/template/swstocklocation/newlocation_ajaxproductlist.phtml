@@ -1,0 +1,58 @@
+<?php
+    $pList = $this->getProductlist();
+    $h = Mage::helper('swstocklocation');
+?>
+<table class="list-product">
+    <tr>
+        <th>More than one product match to your search phrase.</th>
+        <th>Please, choose the right one item.</th>
+    </tr>
+    <? foreach ($pList AS $p) { ?>
+        <tbody>
+        <tr>
+            <td width="80%" class="short-product-info">
+                <div>
+                    <input type="hidden" name="productId" value="<?=$p->getId();?>">
+                    <img src="http://magento.loc/media/catalog/product/<?=$p->getThumbnail();?>" >
+                    <ul>
+                        <li>ID: <?=$p->getId();?></li>
+                        <li>Name: <b><?=$p->getName();?></b></li>
+                        <li>SKY: <b><?=$p->getSku();?></b></li>
+                        <li>BC: <b> - <?=$p->getBarcode();?></b></li>
+                    </ul>
+                </div>
+            </td>
+            <td class="product-action">
+                <button onclick="newLocation.showProduct('<?=$p->getId();?>');" id="prodId">
+                    Select
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    <? } ?>
+</table>
+
+
+<style>
+    .list-product th {
+        border-bottom: 1px solid #f5f5f5;
+        padding: 0px 0px 20px 0px;
+        font-size: 1.2em;
+    }
+
+    .list-product tbody tr:hover {
+        background-color: #f9f9f9;
+    }
+    .short-product-info div {
+        padding:10px 0px 20px 0px;
+    }
+    .product-action,
+    .product-action button{
+        vertical-align: center;
+    }
+    .product-action button {
+        margin: 40px 0px 0px 20px;
+
+    }
+</style>
+

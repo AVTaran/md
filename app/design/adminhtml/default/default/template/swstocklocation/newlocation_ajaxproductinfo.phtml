@@ -31,8 +31,34 @@
 					<? foreach ($arLocations AS $k => $location) { ?>
                         <tr>
                             <td><?=$h->getLocationName($location['id'])?></td>
-                            <td><?=$location['qty']?></td>
-                            <td></td>
+                            <td>
+                                <input id="qtyDefault_<?=$location['id']?>" type="hidden" value="<?=$location['qty']?>">
+                                <input
+                                    id="qty_<?=$location['id']?>"
+                                    type="text"
+                                    value="<?=$location['qty']?>"
+                                    disabled
+                                    style="width: 50px;"
+                                >
+                            </td>
+                            <td>
+                                <button
+                                    class="no-display"
+                                    id="button_<?=$location['id']?>"
+                                    onclick="newLocation.correctProdInLocation('<?=$location['id']?>','<?=$p->getId();?>');"
+                                >
+                                    Update
+                                </button>
+                                <span class="correct-checkbox" id="correct_<?=$location['id']?>" >
+                                    <input
+                                        type="checkbox"
+                                        name="correct[<?=$location['id']?>]"
+                                        onclick="newLocation.showCorrectButton('<?=$location['id']?>');"
+                                        id="correct<?=$location['id']?>"
+                                    >
+                                    <label for="correct<?=$location['id']?>">Change</label>
+                                </span>
+                            </td>
                         </tr>
 					<? } ?>
                     </tbody>
@@ -80,6 +106,8 @@
         margin: 20px 0px 0px 0px;
     }
 
+    .correct-checkbox {
+        float: right;
+    }
 </style>
-
 

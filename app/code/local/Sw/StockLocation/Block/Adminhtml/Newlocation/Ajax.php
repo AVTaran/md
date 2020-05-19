@@ -1,12 +1,9 @@
 <?php
 
 
-class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_Block_Abstract //
-	// Mage_Core_Block_Template //
-	// Mage_Adminhtml_Block_Dashboard_Bar
-{
-    protected function _construct()
-    {
+class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_Block_Abstract {
+
+    protected function _construct() {
         parent::_construct();
 		$this->setTemplate('swstocklocation/newlocation_ajax.phtml');
     }
@@ -144,8 +141,12 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 		$ret = array();
 
 		$productInformation = null;
+		$productList = $productIdList = array();
 
-		if (!isset($params['prodId']) OR $params['prodId']==0) {
+		if (!is_null($params['prodId']) AND $params['prodId']>0) {
+			$productIdList[] = $params['prodId'];
+
+		} elseif($params['searchLine']!='') {
 			$queryName = $params['searchLine'];
 
 			$productModel = Mage::getModel('catalog/product')
@@ -158,33 +159,50 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 					)
 				)
 				// ->addAttributeToFilter('name', array('like' => '%'.$queryName.'%'))
-				->getFirstItem()
+				// ->getFirstItem()
+				->load()
 			;
 			/*
-			$sAttributeName = 'size';
-			$mOptionValue = 'medium';
-			$collection = Mage::getModel('catalog/product')->getCollection()
-				->addAttributeToSelect('*')
-				->addFieldToFilter(
-					$sAttributeName,
-					array (
-						'eq' => Mage::getResourceModel('catalog/product')
-							->getAttribute($sAttributeName)
-							->getSource()
-							->getOptionId($mOptionValue)
-					)
-				);
+				$sAttributeName = 'size';
+				$mOptionValue = 'medium';
+				$collection = Mage::getModel('catalog/product')->getCollection()
+					->addAttributeToSelect('*')
+					->addFieldToFilter(
+						$sAttributeName,
+						array (
+							'eq' => Mage::getResourceModel('catalog/product')
+								->getAttribute($sAttributeName)
+								->getSource()
+								->getOptionId($mOptionValue)
+						)
+					);
 			*/
 
-			$productId = $productModel->getID();
-		} else {
-			$productId = $params['prodId'];
+			$arProducts = $productModel->toArray();
+
+			//			echo '<pre>';
+			//			print_r($arProducts);
+			//			echo '</pre>';
+
+			if(count($arProducts)>0) {
+				foreach ($arProducts AS $prod) {
+					$productIdList[] = $prod['entity_id'];
+				}
+			}
 		}
 
 
-		if ($productId) {
-			$product = Mage::getModel('catalog/product')->load($productId);
-
+		if (count($productIdList)>1) {
+			foreach ($productIdList AS $productId) {
+				$productList[] = Mage::getModel('catalog/product')->load($productId);
+			}
+			$productInformation = $this->getLayout()
+				->createBlock('swstocklocation/adminhtml_newlocation_ajaxproductlist')
+				->setProductlist($productList)
+				->toHtml()
+			;
+		} elseif(count($productIdList)==1) {
+			$product = Mage::getModel('catalog/product')->load($productIdList[0]);
 			$productInformation = $this->getLayout()
 				->createBlock('swstocklocation/adminhtml_newlocation_ajaxproductinfo')
 				->setProduct($product)
@@ -192,14 +210,14 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 			;
 		}
 
-
 		$ret['productInformation'] = $productInformation;
 		return $ret;
 	}
 
 	public function ajaxUpdateQtyLocationProduct($params) {
 		$ret = array();
-		if (($params['prodId'] + $params['locId'] + $params['Qty'])<3) {
+
+		if (($params['prodId'] + $params['locId'])<2) {
 			$ret['error'][] = 'Not correct parameters: '.$params['prodId'].'; '.$params['locId'].'; '.$params['Qty'].'.';
 			return $ret;
 		}
@@ -221,11 +239,23 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 				$resource = Mage::getSingleton('core/resource');
 				$table = $resource->getTableName('swstocklocation/table_location_product');
 				$writeConnection = Mage::getSingleton('core/resource')->getConnection('core_write');
+
+				/*
 				$sql = '
 					INSERT INTO '.$table. ' (`id_product`, `id_location`, `qty`)
 					VALUES ('.(int)$params['prodId'].', '.(int)$params['locId'].', '.(int)$params['Qty'].' ) 
 				';
 				$writeConnection->query( $sql );
+				*/
+
+				$writeConnection->insert(
+					$table,
+					array(
+						'id_product' 	=> (int)$params['prodId'],
+						'id_location' 	=> (int)$params['locId'],
+						'qty' 			=> (int)$params['Qty'],
+					)
+				);
 
 				$ret['id_location'] = $params['locId'];
 				$ret['id_product']  = $params['prodId'];
@@ -234,24 +264,35 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 			}
 
 		} elseif ($lp['totalRecords']==1) {
+			$resource = Mage::getSingleton('core/resource');
+			$table = $resource->getTableName('swstocklocation/table_location_product');
+			$writeConnection = Mage::getSingleton('core/resource')->getConnection('core_write');
 
 			$qty = $lp['items'][0]['qty'] + $params['Qty'];
-			if ($qty>=0) {
-				$resource = Mage::getSingleton('core/resource');
-				$table = $resource->getTableName('swstocklocation/table_location_product');
+
+			if ($qty==0) {
 				$writeConnection = Mage::getSingleton('core/resource')->getConnection('core_write');
+				$writeConnection->delete(
+					$table,
+					'id_product='.$params['prodId'].' AND id_location='.$params['locId']
+				);
+				$ret['id_location'] = $params['locId'];
+				$ret['id_product']  = $params['prodId'];
+
+			} elseif ($qty>0) {
 				$writeConnection->update(
 					$table,
 					array( 'qty' => $qty ),
 					'id_product='.$params['prodId'].' AND id_location='.$params['locId']
 				);
+				$ret['id_location'] = $params['locId'];
+				$ret['id_product']  = $params['prodId'];
 
-				$ret['id_location'] = $lp['items'][0]['id_location'];
-				$ret['id_product']  = $lp['items'][0]['id_product'];
 			} else {
 				//  TODO if qty after operation will be less than 0 - constrain
 				$ret['error'][] = 'Qty is less than 0. Are you sure?';
 			}
+
 		}
 
 		if (count($ret['error'])==0) {
@@ -264,6 +305,5 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 	public function getAjaxDefault () {
     	return 'unknown request';
 	}
-
 
 }

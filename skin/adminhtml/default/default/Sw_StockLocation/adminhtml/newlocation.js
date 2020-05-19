@@ -12,7 +12,7 @@ newLocationModel.prototype = {
 
     takeCheckedValues: function(classOfCheckGroup) {
         var Objects = $$(""+classOfCheckGroup+":checkbox:checked");
-        let ar = [];
+        var ar = [];
         Objects.each(function(obj) {
             var r = /\[(.+)\]/.exec(obj.name);
             if (r[1]) {
@@ -22,16 +22,12 @@ newLocationModel.prototype = {
         return ar;
     },
 
-    checkAjax: function(event) {
-        this.showProduct();
-        //  this.showAvailableLocation();
-    },
+    // checkAjax: function(event) {
+    //     this.showProduct();
+    //     //  this.showAvailableLocation();
+    // },
 
     showAvailableLocation: function(event) {
-
-        // var arZone = this.takeCheckedValues('.zoneCheck');
-        // console.log(arZone);
-        // return;
 
         this.updateAvailableLocation('');
 
@@ -60,25 +56,19 @@ newLocationModel.prototype = {
 
                             this.updateAvailableLocation(response.locationsTable);
 
-
-                            // if(response.ajaxExpired && response.ajaxRedirect) {
-                            //     setLocation(response.ajaxRedirect);
-                            // }
                         } else {
-                            // $(tabContentElement.id).update(transport.responseText);
-                            // this.showTabContentImmediately(tab);
+
                         }
                     }
                     catch (e) {
-                        // $(tabContentElement.id).update(transport.responseText);
-                        // this.showTabContentImmediately(tab);
+                        console.log(e);
                     }
                 }.bind(this)
             }
         );
     },
 
-    showProduct : function(event) {
+    showProduct : function(prodId = null) {
 
         this.updateProductInformation('');
 
@@ -89,7 +79,8 @@ newLocationModel.prototype = {
                     form_key            : FORM_KEY,
                     ajax                : '1',
                     operation           : 'getProduct',
-                    'param[searchLine]' : $('searchLine').value
+                    'param[searchLine]' : $('searchLine').value,
+                    'param[prodId]'     : prodId,
                 },
                 evalScripts: true,
                 onSuccess: function(transport) {
@@ -97,24 +88,18 @@ newLocationModel.prototype = {
                     try {
                         if (transport.responseText.isJSON()) {
                             var response = transport.responseText.evalJSON();
-                            console.log(response);
+                            // console.log(response);
                             if (response.error) {
                                 alert(response.message);
                             }
 
                             this.updateProductInformation(response.productInformation);
 
-                             // if(response.ajaxExpired && response.ajaxRedirect) {
-                            //     setLocation(response.ajaxRedirect);
-                            // }
                         } else {
-                            // $(tabContentElement.id).update(transport.responseText);
-                            // this.showTabContentImmediately(tab);
                         }
                     }
                     catch (e) {
-                        // $(tabContentElement.id).update(transport.responseText);
-                        // this.showTabContentImmediately(tab);
+                        console.log(e);
                     }
                 }.bind(this)
             }
@@ -153,10 +138,10 @@ newLocationModel.prototype = {
                             el.innerHTML +
                         '</td>' +
                         '<td class="qty">' +
-                            '<input id="qty" type="text" value="1">' +
+                            '<input id="qty" type="text" value="1" style="width: 50px;">' +
                         '</td>' +
                         '<td class="operation">' +
-                            '<input id="updateQty" type="button" value="OK" onclick="newLocation.updateQtyLocationProduct('+locId+');">'+
+                            '<input id="updateQty" type="button" value="OK" onclick="newLocation.addProdInNewLocation('+locId+');">'+
                         '</td>' +
                     '</tr>' +
                 '</table>'
@@ -169,10 +154,20 @@ newLocationModel.prototype = {
         // $('placeForNewLinkProductAndLocation').innerHTML = html;
     },
 
+    correctProdInLocation:function(locId, prodId) {
+        var QtyDefault  = $('qtyDefault_'+locId).value;
+        var Qty         = $('qty_'+locId).value;
+        Qty             = Qty-QtyDefault;
+        this.updateQtyLocationProduct(locId, prodId, Qty);
+    },
 
-    updateQtyLocationProduct: function(locId) {
+    addProdInNewLocation: function(locId) {
         var Qty     = $$('#placeForNewLinkProductAndLocation .qty input')[0].value;
         var prodId  = $$('.short-product-info input')[0].value;
+        this.updateQtyLocationProduct(locId, prodId, Qty);
+    },
+
+    updateQtyLocationProduct: function(locId, prodId, Qty) {
 
         new Ajax.Request(
             this.urlNewLocationController,
@@ -198,26 +193,26 @@ newLocationModel.prototype = {
 
                             this.updateProductInformation(response.productInformation);
 
-                            // if(response.ajaxExpired && response.ajaxRedirect) {
-                            //     setLocation(response.ajaxRedirect);
-                            // }
                         } else {
-                            // $(tabContentElement.id).update(transport.responseText);
-                            // this.showTabContentImmediately(tab);
+
                         }
                     }
                     catch (e) {
-                        // $(tabContentElement.id).update(transport.responseText);
-                        // this.showTabContentImmediately(tab);
+                        console.log(e);
                     }
                 }.bind(this)
             }
         );
         /* */
+    },
+
+    showCorrectButton: function (idLoc){
+        // console.log(idLoc);
+        $('qty_'+idLoc).removeAttribute('disabled');
+        $('button_'+idLoc).removeClassName('no-display');
+        $('correct_'+idLoc).addClassName('no-display');
     }
-
 }
-
 
 
 

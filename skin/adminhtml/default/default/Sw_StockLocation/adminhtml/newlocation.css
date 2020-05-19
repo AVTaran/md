@@ -37,6 +37,33 @@
 	background-color: #F9F9F9;
 }
 
+#productInformation table {
+	width: 100%;
+}
+#productInformation .short-product-info {
+	margin:0px 20px 0px 0px;
+}
+#productInformation .short-product-info img {
+	margin: 0px 10px 0px 0px;
+	height: 100px;
+	width: auto;
+	float: left;
+}
+#productInformation .short-product-info ul {
+
+}
+#productInformation .short-product-info ul li {
+	margin:0px 0px 5px;
+}
+#productInformation table.listLocations {
+	margin:0px 0px 20px 0px;
+}
+
+#productInformation .history-movement {
+	margin: 20px 0px 0px 0px;
+}
+
+
 
 #availableLocations {
 	margin:20px 0px 10px 0px;
