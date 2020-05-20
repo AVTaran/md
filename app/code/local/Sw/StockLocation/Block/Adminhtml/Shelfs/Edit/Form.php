@@ -80,7 +80,6 @@ class sw_StockLocation_Block_Adminhtml_Shelfs_Edit_Form extends Mage_Adminhtml_B
 			'disabled' 			=> $disabled['block'],
 		));
 
-
 		$fieldset->addField('name', 'text', array(
 			'label' => $helper->__('Name'),
 			'required' => true,
@@ -118,6 +117,21 @@ class sw_StockLocation_Block_Adminhtml_Shelfs_Edit_Form extends Mage_Adminhtml_B
             'name' => 'sp_z',
         ));
 
+		$fieldset->addField('approx_length', 'text', array(
+			'label' => $helper->__('A. Length'),
+			'required' => true,
+			'name' => 'approx_length',
+		));
+		$fieldset->addField('approx_width', 'text', array(
+			'label' => $helper->__('A. Width'),
+			'required' => true,
+			'name' => 'approx_width',
+		));
+		$fieldset->addField('approx_height', 'text', array(
+			'label' => $helper->__('A. Height'),
+			'required' => true,
+			'name' => 'approx_height',
+		));
 
 		$form->setUseContainer(true);
 

@@ -45,7 +45,7 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 
 		$connection = $resource->getConnection('core_read');
 		$select = $connection->select()
-			->from		(['l' 	=> $tableL],  ['l.id, getVolumeLocation(l.id) AS volumeLocation'])
+			->from		(['l' 	=> $tableL],  ['l.id, sw_sl_getVolumeLocation(l.id) AS volumeLocation'])
 			->from		(['z' 	=> $tableZ],  ['z.name AS zone'])
 			->joinLeft	(['bl' 	=> $tableBl], 'l.id_block=bl.id', ['bl.name AS block'])
 			->joinLeft	(['sh' 	=> $tableSh], 'l.id_shelf=sh.id', ['sh.name AS shelf'])
@@ -84,7 +84,7 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 			;
 			$volumeMax = $connection->fetchOne($selectMax);
 
-			$select->where ('getVolumeLocation(l.id) BETWEEN ('.$volumeMin.') AND ('.$volumeMax.')');
+			$select->where ('sw_sl_getVolumeLocation(l.id) BETWEEN ('.$volumeMin.') AND ('.$volumeMax.')');
 		}
 
 		// echo $select;
@@ -158,8 +158,6 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 						'like' => '%'.$queryName.'%'
 					)
 				)
-				// ->addAttributeToFilter('name', array('like' => '%'.$queryName.'%'))
-				// ->getFirstItem()
 				->load()
 			;
 			/*
@@ -179,10 +177,6 @@ class Sw_StockLocation_Block_Adminhtml_Newlocation_Ajax extends  Mage_Adminhtml_
 			*/
 
 			$arProducts = $productModel->toArray();
-
-			//			echo '<pre>';
-			//			print_r($arProducts);
-			//			echo '</pre>';
 
 			if(count($arProducts)>0) {
 				foreach ($arProducts AS $prod) {

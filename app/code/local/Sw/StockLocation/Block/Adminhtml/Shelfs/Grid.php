@@ -145,6 +145,28 @@ class sw_StockLocation_Block_Adminhtml_Shelfs_Grid extends Mage_Adminhtml_Block_
 			'width'			=> '50px',
 		));
 
+		$this->addColumn('approx_length', array(
+			'header'		=> $helper->__('A. Length'),
+			'index'			=> 'approx_length',
+			'filter_index'  => 'main_table.length',
+			'type'			=> 'text',
+			'width'			=> '50px',
+		));
+		$this->addColumn('approx_width', array(
+			'header'		=> $helper->__('A. width'),
+			'index'			=> 'approx_width',
+			'filter_index'  => 'main_table.width',
+			'type'			=> 'text',
+			'width'			=> '50px',
+		));
+		$this->addColumn('approx_height', array(
+			'header'		=> $helper->__('A. height'),
+			'index'			=> 'approx_height',
+			'filter_index'  => 'main_table.height',
+			'type'			=> 'text',
+			'width'			=> '50px',
+		));
+
 		return parent::_prepareColumns();
 	}
 
