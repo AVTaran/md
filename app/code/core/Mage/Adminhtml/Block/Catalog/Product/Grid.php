@@ -194,6 +194,7 @@ class Mage_Adminhtml_Block_Catalog_Product_Grid extends Mage_Adminhtml_Block_Wid
                 'header'=> Mage::helper('catalog')->__('SKU'),
                 'width' => '80px',
                 'index' => 'sku',
+				'filter_condition_callback' => array($this, '_skuRegExpFilter'),
         ));
 
         $store = $this->_getStore();
@@ -324,4 +325,44 @@ class Mage_Adminhtml_Block_Catalog_Product_Grid extends Mage_Adminhtml_Block_Wid
             'id'=>$row->getId())
         );
     }
+
+
+
+
+	// ============================================
+	//
+	//
+	protected function _skuRegExpFilter($collection, $column) {
+		$filterVal = $column->getFilter()->getValue();
+		if ($filterVal === NULL OR strlen($filterVal) == 0) {
+			return $this;
+		}
+
+		$filterParam = array('like' => '%'.$filterVal.'%');
+		if ($this->isRegexp($filterVal)) {
+			$filterParam = array('regexp' => $this->prepareRegExpToMysql($filterVal));
+		}
+		$this->getCollection()->addFieldToFilter('sku', $filterParam);
+
+		return $this;
+	}
+	// check - is the search's string the regular expression?
+	protected function isRegExp($str) {
+		$ret = false;
+		if ($str[0]==$str[strlen($str)-1] AND $str[0]=='#') {
+			$ret = true;
+		}
+		return $ret;
+	}
+	// preparing the string to MySQL request.
+	protected function prepareRegExpToMysql($str) {
+		$str = substr($str, 0, -1);
+		$str = substr($str, 1);
+		return $str;
+	}
+	// ============================================
+
 }
+
+
+
