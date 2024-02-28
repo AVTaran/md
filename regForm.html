@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>regExp form</title>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+	<style>
+		label, input { display:block; }
+		input.text { margin-bottom:12px; width:95%; padding: .4em; }
+		fieldset { padding:0; border:0; margin-top:25px; }
+		h1 { font-size: 1.2em; margin: .6em 0; }
+		div#users-contain { width: 350px; margin: 20px 0; }
+		div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+		div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+		.ui-dialog .ui-state-error { padding: .3em; }
+		.validateTips { border: 1px solid transparent; padding: 0.3em; }
+	</style>
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="http://magento.stepweb.ru/regForm.js"></script>
+</head>
+<body>
+
+<div id="dialog-form" title="Create new user">
+	<form>
+		<fieldset id="warehouses">
+			<legend>Warehouse(s): </legend>
+			<label for="warehouse-M">M</label>
+			<input type="checkbox" name="warehouse[]" value="M" id="warehouse-M">
+			<label for="warehouse-O">O</label>
+			<input type="checkbox" name="warehouse[]" value="O" id="warehouse-O">
+			<label for="warehouse-P">P</label>
+			<input type="checkbox" name="warehouse[]" value="P" id="warehouse-P">
+			<label for="warehouse-L">L</label>
+			<input type="checkbox" name="warehouse[]" value="L" id="warehouse-L">
+		</fieldset>
+
+		<fieldset id="rows">
+			<legend>Row(s): </legend>
+			<label for="row-1">1</label>
+			<input type="checkbox" name="row[]" value="1" id="row-1">
+			<label for="row-2">2</label>
+			<input type="checkbox" name="row[]" value="2" id="row-2">
+			<label for="row-3">3</label>
+			<input type="checkbox" name="row[]" value="3" id="row-3">
+			<label for="row-4">4</label>
+			<input type="checkbox" name="row[]" value="4" id="row-4">
+		</fieldset>
+
+		<fieldset id="bins">
+			<legend>Bin(s): </legend>
+			<label for="bin-1">1</label>
+			<input type="checkbox" name="bin[]" value="1" id="bin-1">
+			<label for="bin-2">2</label>
+			<input type="checkbox" name="bin[]" value="2" id="bin-2">
+			<label for="bin-3">3</label>
+			<input type="checkbox" name="bin[]" value="3" id="bin-3">
+			<label for="bin-4">4</label>
+			<input type="checkbox" name="bin[]" value="4" id="bin-4">
+		</fieldset>
+
+		<fieldset>
+			<label for="shelves">Shelf(shelves):</label>
+			<input type="text" id="shelves" readonly style="border:0; color:#f6931f; font-weight:bold;">
+			<div id="shelves-range"></div>
+		</fieldset>
+
+		<fieldset>
+			<div id="newRegExpPlease"> </div>
+		</fieldset>
+
+		<fieldset>
+			<!-- Allow form submission with keyboard without duplicating the dialog button -->
+			<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+		</fieldset>
+	</form>
+</div>
+
+<button id="create-regExp">New expression</button>
+
+</html>

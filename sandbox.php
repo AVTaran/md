@@ -6,6 +6,50 @@ Mage::app();
 umask(0);
 ini_set('display_errors', 1);
 
+$params = array();
+$params['Qty'] = '4';
+$params['prodId'] = '231';
+$params['locId'] = '1';
+
+$resource = Mage::getSingleton('core/resource');
+$table = $resource->getTableName('swstocklocation/table_location_product');
+
+$writeConnection = Mage::getSingleton('core/resource')->getConnection('core_write');
+$writeConnection->update(
+	$table,
+	array(
+		'qty' => ''.$params['Qty'].''
+	),
+	'id_product='.$params['prodId'].' AND id_location='.$params['locId']
+);
+
+echo '<pre>';
+print_r($writeConnection);
+echo '</pre>';
+
+
+
+/*
+$dimensionsParent				= array('h'=>2000);
+
+$dimensionsChildTotal			= array('h'=>1500);
+$totalChildWithoutDimensions	= 7;
+
+$dimensionsChildAverage			= array();
+
+
+$rule = '$dimensionsChildAverage["approx_height"] = round($dimensionsChildTotal["h"]/$totalChildWithoutDimensions, 0);';
+// $rule = '$dimensionsChildAverage = 4;';
+eval($rule);
+
+
+echo '<pre>';
+print_r($dimensionsChildAverage);
+echo '</pre>';
+
+
+
+/*
 
 
 $ret = array();

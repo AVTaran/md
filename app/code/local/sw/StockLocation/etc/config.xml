@@ -171,6 +171,15 @@
 				</children>
 			</swstocklocation>
 		</menu>
+
+		<layout>
+			<catalog_product_index>
+				<reference name="head">
+
+				</reference>
+			</catalog_product_index>
+		</layout>
+
 	</adminhtml>
 
 	<default>

@@ -174,9 +174,13 @@ class Mage_Adminhtml_Catalog_ProductController extends Mage_Adminhtml_Controller
     public function indexAction()
     {
         $this->_title($this->__('Catalog'))
-             ->_title($this->__('Manage Products'));
+             ->_title($this->__('Manage Products'))
+		;
 
         $this->loadLayout();
+		$this->_addContent(
+			$this->getLayout()->createBlock('swstocklocation/adminhtml_search_searchform')
+		);
         $this->renderLayout();
     }
 
